@@ -16,6 +16,8 @@ private:	// User declarations
         normal Normal;
         elemplano **Plano;
         BYTE *LinePtr;
+        int LUT[256];
+        int Histo[256];
 public:         // User declarations
         plano();
         plano(float tamx,float tamy);
@@ -25,7 +27,7 @@ public:         // User declarations
         void Trasladar(float x, float y, float z);
         normal GetNormal();
         elemplano GetElemPlano(int i, int j);
-        void CargarPlano(voxel *Vox,TProgressBar *Barra, bool Volume, bool MIP, bool Trilinear, int Uinf, int Usup);
+        void CargarPlano(voxel *Vox,TProgressBar *Barra, bool Volume, bool MIP, bool Trilinear, int Uinf, int Usup,int Profmax, int Profmin);
         void Mostrar(TImage *Image);
         void Borrar();
         void Restore();
@@ -34,6 +36,14 @@ public:         // User declarations
         void TrasladarXYZ(float X, float Y, float Z);
         void Trilinear(voxel * VoxT, float fact_esc);
         void Previa(voxel * Vox,int Uruido);
+        void Histograma();
+        void LoadLUT(float * Array, int size);
+        float GetLUT(int index);
+        void ApplyLUT();
+        float GetHistograma(int nivel);
+        void UmbralFijo(int Umbral);
+        float Isodata();
+        void Ecualizar();
         
 };
 //---------------------------------------------------------------------------

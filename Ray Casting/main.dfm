@@ -1,7 +1,7 @@
 object FormPpal: TFormPpal
-  Left = 326
-  Top = 71
-  Width = 913
+  Left = 343
+  Top = 169
+  Width = 1097
   Height = 619
   AlphaBlend = True
   AutoSize = True
@@ -35,16 +35,16 @@ object FormPpal: TFormPpal
     end
   end
   object Panel1: TPanel
-    Left = 720
+    Left = 904
     Top = 0
     Width = 177
-    Height = 129
+    Height = 185
     TabOrder = 1
     object ListBox1: TListBox
       Left = 8
       Top = 8
       Width = 161
-      Height = 113
+      Height = 169
       ItemHeight = 13
       TabOrder = 0
       OnClick = ListBox1Click
@@ -180,7 +180,7 @@ object FormPpal: TFormPpal
   end
   object GroupBox3: TGroupBox
     Left = 536
-    Top = 136
+    Top = 192
     Width = 177
     Height = 289
     Caption = 'Panel de Control'
@@ -312,8 +312,8 @@ object FormPpal: TFormPpal
     end
   end
   object Salir: TGroupBox
-    Left = 720
-    Top = 520
+    Left = 712
+    Top = 512
     Width = 177
     Height = 41
     TabOrder = 5
@@ -335,14 +335,14 @@ object FormPpal: TFormPpal
     end
   end
   object ByC: TGroupBox
-    Left = 536
-    Top = 432
+    Left = 904
+    Top = 336
     Width = 177
-    Height = 129
+    Height = 145
     TabOrder = 6
     object Label4: TLabel
       Left = 68
-      Top = 9
+      Top = 17
       Width = 45
       Height = 13
       Caption = 'BRILLO'
@@ -355,7 +355,7 @@ object FormPpal: TFormPpal
     end
     object Label5: TLabel
       Left = 48
-      Top = 69
+      Top = 77
       Width = 76
       Height = 13
       Caption = 'CONTRASTE'
@@ -368,7 +368,7 @@ object FormPpal: TFormPpal
     end
     object UpDown1: TUpDown
       Left = 8
-      Top = 32
+      Top = 40
       Width = 161
       Height = 17
       Min = 0
@@ -380,7 +380,7 @@ object FormPpal: TFormPpal
     end
     object UpDown2: TUpDown
       Left = 8
-      Top = 92
+      Top = 100
       Width = 161
       Height = 17
       Min = 0
@@ -391,7 +391,7 @@ object FormPpal: TFormPpal
     end
     object Edit9: TEdit
       Left = 136
-      Top = 68
+      Top = 76
       Width = 33
       Height = 21
       Font.Charset = DEFAULT_CHARSET
@@ -405,7 +405,7 @@ object FormPpal: TFormPpal
     end
     object Edit8: TEdit
       Left = 136
-      Top = 8
+      Top = 16
       Width = 33
       Height = 21
       Font.Charset = DEFAULT_CHARSET
@@ -419,10 +419,10 @@ object FormPpal: TFormPpal
     end
   end
   object GroupBox4: TGroupBox
-    Left = 536
-    Top = 0
+    Left = 904
+    Top = 192
     Width = 177
-    Height = 130
+    Height = 137
     Caption = 'Umbrales'
     TabOrder = 7
     object Bevel4: TBevel
@@ -473,34 +473,34 @@ object FormPpal: TFormPpal
       TabOrder = 4
       OnClick = CheckBox4Click
     end
-  end
-  object StaticText11: TStaticText
-    Left = 560
-    Top = 72
-    Width = 49
-    Height = 17
-    Caption = 'Superior='
-    TabOrder = 8
-  end
-  object Edit11: TEdit
-    Left = 616
-    Top = 68
-    Width = 41
-    Height = 21
-    Enabled = False
-    TabOrder = 9
-    Text = '250'
+    object Edit11: TEdit
+      Left = 80
+      Top = 68
+      Width = 41
+      Height = 21
+      Enabled = False
+      TabOrder = 5
+      Text = '250'
+    end
+    object StaticText11: TStaticText
+      Left = 24
+      Top = 72
+      Width = 49
+      Height = 17
+      Caption = 'Superior='
+      TabOrder = 6
+    end
   end
   object GroupBox5: TGroupBox
     Left = 720
-    Top = 136
+    Top = 192
     Width = 177
-    Height = 121
+    Height = 137
     Caption = 'Profundidad Ray Casting'
-    TabOrder = 10
+    TabOrder = 8
     object Bevel5: TBevel
       Left = 8
-      Top = 16
+      Top = 24
       Width = 161
       Height = 97
     end
@@ -512,8 +512,8 @@ object FormPpal: TFormPpal
       TabOrder = 0
     end
     object StaticText13: TStaticText
-      Left = 40
-      Top = 32
+      Left = 35
+      Top = 40
       Width = 45
       Height = 17
       Caption = 'M'#237'nima='
@@ -521,7 +521,7 @@ object FormPpal: TFormPpal
     end
     object Edit13: TEdit
       Left = 88
-      Top = 28
+      Top = 36
       Width = 41
       Height = 21
       Enabled = False
@@ -530,43 +530,49 @@ object FormPpal: TFormPpal
     end
     object CheckBox5: TCheckBox
       Left = 48
-      Top = 88
+      Top = 96
       Width = 97
       Height = 17
       Caption = 'Autom'#225'tico'
       Checked = True
       State = cbChecked
       TabOrder = 3
-      OnClick = CheckBox4Click
+      OnClick = CheckBox5Click
     end
-  end
-  object Edit12: TEdit
-    Left = 808
-    Top = 188
-    Width = 41
-    Height = 21
-    Enabled = False
-    TabOrder = 11
-    Text = '0'
-  end
-  object StaticText14: TStaticText
-    Left = 760
-    Top = 192
-    Width = 46
-    Height = 17
-    Caption = 'M'#225'xima='
-    TabOrder = 12
+    object StaticText14: TStaticText
+      Left = 35
+      Top = 72
+      Width = 46
+      Height = 17
+      Caption = 'M'#225'xima='
+      TabOrder = 4
+    end
+    object Edit12: TEdit
+      Left = 88
+      Top = 68
+      Width = 41
+      Height = 21
+      Enabled = False
+      TabOrder = 5
+      Text = '0'
+    end
   end
   object GroupBox6: TGroupBox
     Left = 720
-    Top = 264
+    Top = 336
     Width = 177
-    Height = 121
+    Height = 145
     Caption = 'LUT'
-    TabOrder = 13
-    object RadioButton3: TRadioButton
+    TabOrder = 9
+    object Bevel6: TBevel
       Left = 8
-      Top = 24
+      Top = 32
+      Width = 161
+      Height = 97
+    end
+    object RadioButton3: TRadioButton
+      Left = 32
+      Top = 40
       Width = 113
       Height = 17
       Caption = 'Ninguna'
@@ -575,50 +581,75 @@ object FormPpal: TFormPpal
       TabStop = True
     end
     object RadioButton4: TRadioButton
-      Left = 8
-      Top = 40
+      Left = 32
+      Top = 56
       Width = 113
       Height = 17
       Caption = 'Altos'
       TabOrder = 1
     end
     object RadioButton5: TRadioButton
-      Left = 8
-      Top = 72
+      Left = 32
+      Top = 88
       Width = 113
       Height = 17
       Caption = 'Bajos'
       TabOrder = 2
     end
     object RadioButton6: TRadioButton
-      Left = 8
-      Top = 56
+      Left = 32
+      Top = 72
       Width = 113
       Height = 17
       Caption = 'Medios'
       TabOrder = 3
     end
     object RadioButton7: TRadioButton
-      Left = 8
-      Top = 88
+      Left = 32
+      Top = 104
       Width = 113
       Height = 17
       Caption = 'Logaritmica'
       TabOrder = 4
     end
   end
-  object GroupBox7: TGroupBox
-    Left = 720
-    Top = 392
-    Width = 177
-    Height = 121
-    Caption = 'GroupBox7'
-    TabOrder = 14
-    object Bevel6: TBevel
-      Left = 8
-      Top = 16
-      Width = 161
-      Height = 97
+  object Chart1: TChart
+    Left = 536
+    Top = 0
+    Width = 361
+    Height = 185
+    BackWall.Brush.Color = clWhite
+    BackWall.Brush.Style = bsClear
+    Title.Text.Strings = (
+      'Histograma')
+    BottomAxis.Automatic = False
+    BottomAxis.AutomaticMaximum = False
+    BottomAxis.AutomaticMinimum = False
+    BottomAxis.Maximum = 256
+    BottomAxis.Title.Caption = 'Intensidad'
+    LeftAxis.Title.Caption = 'Apariciones'
+    Legend.Visible = False
+    View3D = False
+    TabOrder = 10
+    object Series1: TAreaSeries
+      Marks.ArrowLength = 8
+      Marks.Visible = False
+      SeriesColor = clRed
+      AreaLinesPen.Visible = False
+      DrawArea = True
+      LinePen.Color = clRed
+      LinePen.Visible = False
+      Pointer.InflateMargins = True
+      Pointer.Style = psRectangle
+      Pointer.Visible = False
+      XValues.DateTime = False
+      XValues.Name = 'X'
+      XValues.Multiplier = 1
+      XValues.Order = loAscending
+      YValues.DateTime = False
+      YValues.Name = 'Y'
+      YValues.Multiplier = 1
+      YValues.Order = loNone
     end
   end
   object OpenDialog1: TOpenDialog
@@ -649,6 +680,9 @@ object FormPpal: TFormPpal
     end
     object E1: TMenuItem
       Caption = '&Edici'#243'n'
+      object Bilinear1: TMenuItem
+        Caption = 'Bilinear'
+      end
       object Ecualizacin1: TMenuItem
         Caption = 'Ecualizaci'#243'n'
         OnClick = Ecualizacin1Click
@@ -664,13 +698,13 @@ object FormPpal: TFormPpal
     end
     object Filtros1: TMenuItem
       Caption = '&Filtros'
-      object PasaBajos1: TMenuItem
-        Caption = 'Pasa Bajos'
-        OnClick = PasaBajos1Click
-      end
       object PasaAltos1: TMenuItem
         Caption = 'Pasa Altos'
         OnClick = PasaAltos1Click
+      end
+      object PasaBajos1: TMenuItem
+        Caption = 'Pasa Bajos'
+        OnClick = PasaBajos1Click
       end
     end
     object Ver1: TMenuItem

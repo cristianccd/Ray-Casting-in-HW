@@ -18,6 +18,10 @@
 #include <Buttons.hpp>
 #include <ComCtrls.hpp>
 #include <ExtDlgs.hpp>
+#include <Chart.hpp>
+#include <Series.hpp>
+#include <TeEngine.hpp>
+#include <TeeProcs.hpp>
 //---------------------------------------------------------------------------
 class TFormPpal : public TForm
 {
@@ -83,8 +87,6 @@ __published:	// IDE-managed Components
         TStaticText *StaticText10;
         TEdit *Edit7;
         TEdit *Edit10;
-        TStaticText *StaticText11;
-        TEdit *Edit11;
         TCheckBox *CheckBox4;
         TEdit *Edit8;
         TGroupBox *GroupBox5;
@@ -93,19 +95,23 @@ __published:	// IDE-managed Components
         TStaticText *StaticText13;
         TEdit *Edit13;
         TCheckBox *CheckBox5;
-        TEdit *Edit12;
-        TStaticText *StaticText14;
         TGroupBox *GroupBox6;
         TRadioButton *RadioButton3;
         TRadioButton *RadioButton4;
         TRadioButton *RadioButton5;
         TRadioButton *RadioButton6;
         TRadioButton *RadioButton7;
-        TGroupBox *GroupBox7;
-        TBevel *Bevel6;
         TSaveDialog *SaveDialog1;
         TPrintDialog *PrintDialog1;
         TMenuItem *Imprimir1;
+        TBevel *Bevel6;
+        TChart *Chart1;
+        TEdit *Edit11;
+        TStaticText *StaticText11;
+        TStaticText *StaticText14;
+        TEdit *Edit12;
+        TAreaSeries *Series1;
+        TMenuItem *Bilinear1;
         void __fastcall Abrir1Click(TObject *Sender);
         void __fastcall BitBtn1Click(TObject *Sender);
         void __fastcall Image1MouseMove(TObject *Sender, TShiftState Shift,
@@ -127,6 +133,7 @@ __published:	// IDE-managed Components
           TMouseButton Button, TShiftState Shift, int X, int Y);
         void __fastcall CheckBox4Click(TObject *Sender);
         void __fastcall Imprimir1Click(TObject *Sender);
+        void __fastcall CheckBox5Click(TObject *Sender);
 private:	// User declarations
         int NoFiles;
         AnsiString *BmpFiles;

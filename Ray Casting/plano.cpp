@@ -61,12 +61,11 @@ elemplano plano::GetElemPlano(int i, int j)
 }
 //---------------------------------------------------------------------------
 
-void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, bool Trilinear, int Uinf, int Usup)
+void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, bool Trilinear, int Uinf, int Usup, int Profmax, int Profmin)
 {
         Barra->Position=0;
         Barra->Max=TamY;
         float Rx,Ry,Rz;
-        float Rad=sqrt(pow(Vox->getTam(0),2)+pow(Vox->getTam(1),2)+pow(Vox->getTam(2),2));
         float Nx,Ny,Nz,Px,Py,Pz,max=0,a=0,b=0,g=0,value=0;
         Nx=Normal.GetCoords(0);
         Ny=Normal.GetCoords(1);
@@ -82,12 +81,12 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
                                 Px=Plano[fila][col].GetCoords(0);
                                 Py=Plano[fila][col].GetCoords(1);
                                 Pz=Plano[fila][col].GetCoords(2);
-                                for(int lambda=0;lambda<Rad;lambda++)
+                                for(int lambda=Profmin;lambda<Profmax;lambda++)
                                 {
                                         Rx=Nx*lambda+Px;
                                         Ry=Ny*lambda+Py;
                                         Rz=Nz*lambda+Pz;
-                                        if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>Uinf&&Vox->getCubo(Rx,Ry,Rz)<=Usup)
+                                        if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Profmax&&Vox->getCubo(Rx,Ry,Rz)>Uinf&&Vox->getCubo(Rx,Ry,Rz)<=Usup)
                                         {
                                                 a=Rx-(int)Rx;
                                                 b=Ry-(int)Ry;
@@ -118,12 +117,12 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
                                 Px=Plano[fila][col].GetCoords(0);
                                 Py=Plano[fila][col].GetCoords(1);
                                 Pz=Plano[fila][col].GetCoords(2);
-                                for(int lambda=0;lambda<Rad;lambda++)
+                                for(int lambda=Profmin;lambda<Profmax;lambda++)
                                 {
                                         Rx=Nx*lambda+Px;
                                         Ry=Ny*lambda+Py;
                                         Rz=Nz*lambda+Pz;
-                                        if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>Uinf&&Vox->getCubo(Rx,Ry,Rz)<=Usup)
+                                        if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Profmax&&Vox->getCubo(Rx,Ry,Rz)>Uinf&&Vox->getCubo(Rx,Ry,Rz)<=Usup)
                                         {
                                                 Plano[fila][col].SetCoords(Rx,Ry,Rz);
                                                 Plano[fila][col].SetValue(Vox->getCubo(Rx,Ry,Rz));
@@ -145,12 +144,12 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
                                 Py=Plano[fila][col].GetCoords(1);
                                 Pz=Plano[fila][col].GetCoords(2);
                                 max=0;
-                                for(int lambda=0;lambda<Rad;lambda++)
+                                for(int lambda=Profmin;lambda<Profmax;lambda++)
                                 {
                                         Rx=Nx*lambda+Px;
                                         Ry=Ny*lambda+Py;
                                         Rz=Nz*lambda+Pz;
-                                        if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>max&&max<255&&Vox->getCubo(Rx,Ry,Rz)>Uinf&&Vox->getCubo(Rx,Ry,Rz)<=Usup)
+                                        if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Profmax&&Vox->getCubo(Rx,Ry,Rz)>max&&max<255&&Vox->getCubo(Rx,Ry,Rz)>Uinf&&Vox->getCubo(Rx,Ry,Rz)<=Usup)
                                         {
                                                 max=Vox->getCubo(Rx,Ry,Rz);
                                                 Plano[fila][col].SetCoords(Rx,Ry,Rz);
@@ -375,7 +374,7 @@ void plano::Previa(voxel * Vox,int Uruido)
         {
                 for(int col=0;col<TamX;col++)
                 {
-                        if(fila%15==0&col%15==0)
+                        if(fila%6==0&col%6==0)
                         {
                                 Px=Plano[fila][col].GetCoords(0);
                                 Py=Plano[fila][col].GetCoords(1);
@@ -397,3 +396,99 @@ void plano::Previa(voxel * Vox,int Uruido)
         }
 }
 //---------------------------------------------------------------------------
+
+void plano::Histograma()
+{
+        for(int i=0;i<256;i++)
+                Histo[i]=0;
+        for(int fila=0;fila<TamY;fila++)
+                for(int col=0;col<TamX;col++)
+                        Histo[Plano[fila][col].GetValue()]++;
+}
+//---------------------------------------------------------------------------
+
+void plano::LoadLUT(float * Array, int size)
+{
+        for(int i=0;i<size;i++)
+                LUT[i]=Array[i];
+}
+//---------------------------------------------------------------------------
+
+float plano::GetLUT(int index)
+{
+        return LUT[index];
+}
+//---------------------------------------------------------------------------
+
+void plano::ApplyLUT()
+{
+        for(int fila=0;fila<TamY;fila++)
+                for(int col=0;col<TamX;col++)
+                        Plano[fila][col].SetValue(LUT[Plano[fila][col].GetValue()]);
+}
+//---------------------------------------------------------------------------
+
+float plano::GetHistograma(int nivel)
+{
+        return Histo[nivel];
+}
+//---------------------------------------------------------------------------
+
+void plano::UmbralFijo(int Umbral)
+{
+        for(int f=0;f<TamY;f++)
+                for(int c=0;c<TamX;c++)
+                {
+                        if(Plano[f][c].GetValue()>=Umbral)
+                                Plano[f][c].SetValue(255);
+                        else
+                                Plano[f][c].SetValue(0);
+                }
+}
+//---------------------------------------------------------------------------
+
+float plano::Isodata()
+{
+        double Ap[256],SumaHI=0,SumaH=0,SumaHI1=0,SumaH1=0,anterior;
+        double Umean=128, U0=0, U1=255, min=0, max=255;
+        for(int i=0;i<256;i++)
+                Ap[i]=GetHistograma(i);
+        for(;;)
+        {
+                if((Umean-anterior)<=0.1)
+                        break;
+                anterior=Umean;
+                for(int i=min;i<max;i++)
+                {
+                        if(i<=Umean&&i>=min)
+                        {
+                                SumaHI=SumaHI+Ap[i]*i;
+                                SumaH=SumaH+Ap[i];
+                        }
+                        if(i>Umean&&i<=max)
+                        {
+                                SumaHI1=SumaHI1+Ap[i]*i;
+                                SumaH1=SumaH1+Ap[i];
+                        }
+                }
+                U0=SumaHI/SumaH;
+                U1=SumaHI1/SumaH1;
+                Umean=U0+U1/2;
+        }
+        return Umean;
+}
+//---------------------------------------------------------------------------
+
+
+void plano::Ecualizar()
+{
+        float apariciones[256];
+        for(int i=0;i<256;i++)
+                apariciones[i]=0;
+        for(int i=1;i<256;i++)
+                apariciones[i]=apariciones[i-1]+GetHistograma(i);
+        for(int i=0;i<256;i++)
+                apariciones[i]=apariciones[i]/apariciones[255]*256;
+        LoadLUT(apariciones,256);
+        ApplyLUT();
+}

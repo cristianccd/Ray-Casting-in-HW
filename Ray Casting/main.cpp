@@ -174,21 +174,56 @@ void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
         {
                 Usup=Edit11->Text.ToInt();
                 Uinf=Edit7->Text.ToInt();
+                if(Uinf>Usup)
+                {
+                        MessageBox(NULL, "Inferior>Superior!", "Warning!",MB_OK|MB_ICONWARNING)==IDNO;
+                        if(NoFiles!=0)
+                                ChgStatus(true);
+                        Panel2->Hide();
+                        FormPpal->Refresh();
+                        return;
+                }
+
+
         }
         else
         {
                 Usup=255;
                 Uinf=Edit10->Text.ToInt();
         }
-        Plano.CargarPlano(Vox,ProgressBar1,RadioButton1->Checked,RadioButton2->Checked,CheckBox1->Checked,Uinf,Usup);
+        float Profmax=sqrt(pow(Vox->getTam(0),2)+pow(Vox->getTam(1),2)+pow(Vox->getTam(2),2));
+        float Profmin=0;
+        if(CheckBox5->Checked==false)
+        {
+                Profmax=Edit12->Text.ToInt();
+                Profmin=Edit13->Text.ToInt();
+        }
+        if(Edit13->Text.ToInt()>Edit12->Text.ToInt())
+        {
+                MessageBox(NULL, "Minimo>Maximo!", "Warning!",MB_OK|MB_ICONWARNING)==IDNO;
+                if(NoFiles!=0)
+                        ChgStatus(true);
+                Panel2->Hide();
+                FormPpal->Refresh();
+                return;
+        }
+        Plano.CargarPlano(Vox,ProgressBar1,RadioButton1->Checked,RadioButton2->Checked,CheckBox1->Checked,Uinf,Usup,Profmax,Profmin);
+        //Armo el histograma
+        Plano.Histograma();
         if(CheckBox2->Checked==true)
         {
-                //Ecualizar
+                Plano.Ecualizar();
         }
         if(CheckBox3->Checked==true)
         {
-                //Isodata
+                float Umean=Plano.Isodata();
+                Plano.UmbralFijo(Umean);
         }
+        //Chart Histograma
+        Series1->Clear();
+        Plano.Histograma();
+        for(int i=1;i<256;i++)
+                Series1->AddXY(i,Plano.GetHistograma(i));
         BorrarImg(Image1);
         Plano.Mostrar(Image1);
         Panel2->Hide();
@@ -267,7 +302,17 @@ void __fastcall TFormPpal::Salir1Click(TObject *Sender)
 
 void __fastcall TFormPpal::Ecualizacin1Click(TObject *Sender)
 {
-        //ECUALIZAR PLANO        
+        //ECUALIZAR PLANO
+        /*double apariciones[256];
+        for(int i=0;i<256;i++)
+                apariciones[i]=apariciones[i-1]+Histograma(i);
+        for(int i=0;i<256;i++)
+                apariciones[i]=apariciones[i]/apariciones[255]*256;
+        loadLUT(apariciones);
+        applyLUT();*/
+
+
+
 }
 //---------------------------------------------------------------------------
 
@@ -352,4 +397,18 @@ void __fastcall TFormPpal::CheckBox4Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TFormPpal::CheckBox5Click(TObject *Sender)
+{
+        if(CheckBox5->Checked==false)
+        {
+                Edit12->Enabled=true;
+                Edit13->Enabled=true;
+        }
+        else
+        {
+                Edit12->Enabled=false;
+                Edit13->Enabled=false;
+        }
+}
+//---------------------------------------------------------------------------
 
