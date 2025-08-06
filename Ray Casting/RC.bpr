@@ -4,7 +4,7 @@
   <MACROS>
     <VERSION value="BCB.06.00"/>
     <PROJECT value="RC.exe"/>
-    <OBJFILES value="RC.obj main.obj voxel.obj"/>
+    <OBJFILES value="RC.obj main.obj voxel.obj plano.obj"/>
     <RESFILES value="RC.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -58,6 +58,7 @@
       <FILE FILENAME="RC.cpp" FORMNAME="" UNITNAME="RC" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="main.cpp" FORMNAME="FormPpal" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="voxel.cpp" FORMNAME="" UNITNAME="voxel" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="plano.cpp" FORMNAME="" UNITNAME="plano" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>

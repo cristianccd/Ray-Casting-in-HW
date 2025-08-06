@@ -6,6 +6,7 @@
 
 #include "main.h"
 #include "voxel.h"
+#include "plano.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -67,11 +68,13 @@ void __fastcall TFormPpal::Abrir1Click(TObject *Sender)
                 //Cargo la primer imagen para tener el tamano
                 //Cargo el voxel
                 Vox=new voxel (Bmp->Width,Bmp->Height,NoFiles);
+                VoxR=new voxel (Bmp->Width,Bmp->Height,NoFiles);
                 Panel2->Show();
                 FormPpal->Refresh();
                 Vox->Cargar(Files,NoFiles);
                 Panel2->Hide();
                 FormPpal->Refresh();
+                ConfigImage(Image1,8,Bmp->Width,Bmp->Height);
                 Vox->Mostrar(Image1,0);
         }
         else
@@ -100,10 +103,58 @@ void __fastcall TFormPpal::ListBox1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFormPpal::ComboBox1Change(TObject *Sender)
+void TFormPpal::ConfigImage(TImage * Image, int NBits, int X, int Y)
 {
-        if(ComboBox1->ItemIndex==3)
-                Vox->Vista(Image1,0,0);
+        //TODO: Add your source code here
+        if(NBits==8)
+        {
+                typedef struct
+                {
+                        TLogPalette lpal;
+                        TPaletteEntry dummy[256];
+                } LogPal;
+                Image->Picture->Bitmap->PixelFormat=pf8bit;
+                Image->Picture->Bitmap->Width=X;
+                Image->Picture->Bitmap->Height=Y;
+                LogPal SysPal;
+                SysPal.lpal.palVersion = 0x300;
+                SysPal.lpal.palNumEntries = 256;
+                for (int i=0;i<SysPal.lpal.palNumEntries;i++)
+                {
+                        SysPal.lpal.palPalEntry[i].peRed = i;
+                        SysPal.lpal.palPalEntry[i].peGreen = i;
+                        SysPal.lpal.palPalEntry[i].peBlue = i;
+                        SysPal.lpal.palPalEntry[i].peFlags = 0;
+                }
+                Image->Picture->Bitmap->Palette = CreatePalette(&SysPal.lpal);
+        }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::Button1Click(TObject *Sender)
+{
+        Vox->Borrar(Image1);
+}
+//---------------------------------------------------------------------------
+void __fastcall TFormPpal::Button2Click(TObject *Sender)
+{
+        /*Edit1->Text=Plano.PX;
+        Edit2->Text=Plano.PY;
+        Edit3->Text=Plano.PZ;
+        Edit4->Text=Plano.NX;
+        Edit5->Text=Plano.NY;
+        Edit6->Text=Plano.NZ;*/
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::Button3Click(TObject *Sender)
+{
+        Plano.Rotar(1,45);
+
+    //Plano.Rotar(2,90);
+    //Plano.Graficar(Image2,Image3,Image4);
+    //Plano.Rotar(1,90);
+    //Plano.Graficar(Image2,Image3,Image4);
 }
 //---------------------------------------------------------------------------
 

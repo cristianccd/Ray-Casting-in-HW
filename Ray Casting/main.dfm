@@ -1,7 +1,7 @@
 object FormPpal: TFormPpal
-  Left = 96
-  Top = 31
-  Width = 723
+  Left = 301
+  Top = 26
+  Width = 817
   Height = 704
   Caption = 'Ray Casting'
   Color = clBtnFace
@@ -14,6 +14,48 @@ object FormPpal: TFormPpal
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
+  object Label1: TLabel
+    Left = 712
+    Top = 18
+    Width = 20
+    Height = 13
+    Caption = 'PX='
+  end
+  object Label2: TLabel
+    Left = 712
+    Top = 42
+    Width = 20
+    Height = 13
+    Caption = 'PY='
+  end
+  object Label3: TLabel
+    Left = 712
+    Top = 66
+    Width = 20
+    Height = 13
+    Caption = 'PZ='
+  end
+  object Label4: TLabel
+    Left = 712
+    Top = 114
+    Width = 21
+    Height = 13
+    Caption = 'NX='
+  end
+  object Label5: TLabel
+    Left = 712
+    Top = 138
+    Width = 21
+    Height = 13
+    Caption = 'NY='
+  end
+  object Label6: TLabel
+    Left = 712
+    Top = 162
+    Width = 21
+    Height = 13
+    Caption = 'NZ='
+  end
   object GroupBox1: TGroupBox
     Left = 24
     Top = 8
@@ -103,12 +145,80 @@ object FormPpal: TFormPpal
     Height = 21
     ItemHeight = 13
     TabOrder = 4
-    OnChange = ComboBox1Change
     Items.Strings = (
       'Vista Superior'
       'Vista Inferior'
       'Vista Lateral Izquierda'
       'Vista Lateral Derecha')
+  end
+  object Button1: TButton
+    Left = 224
+    Top = 544
+    Width = 73
+    Height = 33
+    Caption = 'BORRAR'
+    TabOrder = 5
+    OnClick = Button1Click
+  end
+  object Button2: TButton
+    Left = 424
+    Top = 544
+    Width = 75
+    Height = 25
+    Caption = 'Button2'
+    TabOrder = 6
+    OnClick = Button2Click
+  end
+  object Button3: TButton
+    Left = 424
+    Top = 584
+    Width = 75
+    Height = 25
+    Caption = 'Button3'
+    TabOrder = 7
+    OnClick = Button3Click
+  end
+  object Edit1: TEdit
+    Left = 736
+    Top = 16
+    Width = 49
+    Height = 21
+    TabOrder = 8
+  end
+  object Edit2: TEdit
+    Left = 736
+    Top = 40
+    Width = 49
+    Height = 21
+    TabOrder = 9
+  end
+  object Edit3: TEdit
+    Left = 736
+    Top = 64
+    Width = 49
+    Height = 21
+    TabOrder = 10
+  end
+  object Edit4: TEdit
+    Left = 736
+    Top = 112
+    Width = 49
+    Height = 21
+    TabOrder = 11
+  end
+  object Edit5: TEdit
+    Left = 736
+    Top = 136
+    Width = 49
+    Height = 21
+    TabOrder = 12
+  end
+  object Edit6: TEdit
+    Left = 736
+    Top = 160
+    Width = 49
+    Height = 21
+    TabOrder = 13
   end
   object OpenDialog1: TOpenDialog
   end

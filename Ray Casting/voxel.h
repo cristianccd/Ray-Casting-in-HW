@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 
-#if !defined(__MATRIZ_H)
-#define __MATRIZ_H
+#if !defined(__VOXEL_H)
+#define __VOXEL_H
 //---------------------------------------------------------------------------
 
 #include <vcl.h>
@@ -19,16 +19,16 @@ private:	// User declarations
         Graphics::TBitmap *BitMap;
         int TamX;
         int TamY;
-        Byte *ptr;
+        BYTE *LinePtr;
 
 public:         // User declarations
         voxel();
         voxel(unsigned int, unsigned int, unsigned int);
         ~voxel();
-        voxel(voxel &);
+        voxel* operator=(voxel *);
         void __fastcall Cargar(AnsiString * S, int No);
         void Mostrar(TImage *, int);
-        void Vista(TImage *,int, int);
+        void Borrar(TImage *);
 };
 //---------------------------------------------------------------------------
 #endif
