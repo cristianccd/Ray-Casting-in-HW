@@ -31,6 +31,7 @@ public:         // User declarations
         void Restore();
         void RotarXYZ(float AngX, float AngY, float AngZ);
         void VerPlano(voxel *Vox, float Azi, float Elev, float Tilt);
+        void TrasladarXYZ(float X, float Y, float Z);
         
 };
 //---------------------------------------------------------------------------

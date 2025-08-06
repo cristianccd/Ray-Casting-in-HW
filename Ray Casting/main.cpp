@@ -281,6 +281,10 @@ void __fastcall TFormPpal::Button11Click(TObject *Sender)
         Elev=AnsiReplaceText(Edit18->Text,".",",").ToDouble();
         Tilt=AnsiReplaceText(Edit19->Text,".",",").ToDouble();
         Plano.VerPlano(Vox,Azi,Elev,Tilt);
+        Plano.Borrar();
+        Plano.CargarPlano(Vox);
+        BorrarImg(Image1);
+        Plano.Mostrar(Image1);
         Panel2->Hide();
         FormPpal->Refresh();
 }

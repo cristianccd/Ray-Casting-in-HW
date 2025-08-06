@@ -134,7 +134,7 @@ elemplano plano::GetElemPlano(int i, int j)
 
 void plano::Trasladar(float x, float y, float z)
 {
-        int x_=0,y_=0,z_=0,value=0;
+        float x_=0,y_=0,z_=0,value=0;
         //Muevo la normal sin tocar la direccion (no cambia)
         Normal.SetPto(Normal.GetPto(0)+x,Normal.GetPto(1)+y,Normal.GetPto(2)+z);
 
@@ -151,7 +151,7 @@ void plano::Trasladar(float x, float y, float z)
 
 void plano::Trasladar(normal Norm)
 {
-        int x_,y_,z_;
+        float x_,y_,z_;
         x_=Norm.GetCoords(0);
         y_=Norm.GetCoords(1);
         z_=Norm.GetCoords(2);
@@ -315,6 +315,7 @@ void plano::RotarXYZ(float AngX, float AngY, float AngZ)
 
 void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
 {
+        Restore();
         float diametro=sqrt(pow(TamX,2)+pow(TamY,2)+pow(Vox->getTam(2),2));
         float radio=diametro/2;
         float centroX=TamX/2;
@@ -322,7 +323,7 @@ void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
         float centroZ=Vox->getTam(2)/2;
 
         float RotX,RotY,RotZ;
-        RotX=sin(2*M_PI/360*Elev)*cos(2*M_PI/360*Elev);
+        RotX=sin(2*M_PI/360*Elev)*cos(2*M_PI/360*Azi);
         RotY=sin(2*M_PI/360*Azi)*sin(2*M_PI/360*Elev);
         RotZ=cos(2*M_PI/360*Elev);
 
@@ -336,13 +337,15 @@ void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
         //La dir de vision es la opuesta, asi mira dentro de la esfera
         Vision.SetCoords(-RotX,-RotY,-RotZ);
         //Tengo las coordenadas normalizadas, ahora multiplico por el radio
-        RotX=RotX*radio;
-        RotY=RotY*radio;
-        RotZ=RotZ*radio;
+        //Traslado el plano al centro de la esfera
+        RotX=RotX*radio+centroX;
+        RotY=RotY*radio+centroY;
+        RotZ=RotZ*radio+centroZ;
         //Ese es el punto de inicio de mi vector normal
         Vision.SetPto(RotX,RotY,RotZ);
         //Ya seteado el destino, ahora tengo que calcular la rotacion del plano
         //Veo cuanto hay q rotar y en que direccion
+        Normal.SetCoords(-Normal.GetCoords(0),-Normal.GetCoords(1),-Normal.GetCoords(2));
         float DirX,DirY,DirZ,PX,PY,PZ,O_Azi,O_Elev,O_Tilt;
         DirX=Normal.GetCoords(0);
         DirY=Normal.GetCoords(1);
@@ -359,6 +362,27 @@ void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
         DifRotZ=Azi-O_Azi;
         //Roto el plano
         RotarXYZ(Tilt,DifRotY,DifRotZ);
+        TrasladarXYZ(RotX,RotY,RotZ);
         
+}
 
+void plano::TrasladarXYZ(float X, float Y, float Z)
+{
+        float x_,y_,z_,difx,dify,difz;
+        x_=Normal.GetPto(0);
+        y_=Normal.GetPto(1);
+        z_=Normal.GetPto(2);
+        difx=X-x_;
+        dify=Y-y_;
+        difz=Z-z_;
+        Normal.SetPto(X,Y,Z);
+        for(int j=0;j<TamY;j++)
+                for(int i=0;i<TamX;i++)
+                {
+                        x_=difx+Plano[i][j].GetCoords(0);
+                        y_=dify+Plano[i][j].GetCoords(1);
+                        z_=difz+Plano[i][j].GetCoords(2);
+                        Plano[i][j].SetValue(0);
+                        Plano[i][j].SetCoords(x_,y_,z_);
+                }
 }
