@@ -45,96 +45,87 @@ plano::~plano()
 {
 
 }
-
-void plano::Rotar(normal Vect, float Angle)
-{
-        //Roto a partir de un vector que parte del origen y un angulo.
-        float Ux,Uy,Uz,x,y,z,x_,y_,z_,TX=0,TY=0,TZ=0;
-        //llevo al 0 el plano
-        TX=Normal.GetPto(0);
-        TY=Normal.GetPto(1);
-        TZ=Normal.GetPto(2);
-        Trasladar(-TX,-TY,-TZ);
-        Ux=Vect.GetCoords(0);
-        Uy=Vect.GetCoords(1);
-        Uz=Vect.GetCoords(2);
-        for(int j=0;j<TamY;j++)
-        {
-                for(int i=0;i<TamX;i++)
-                {
-                        x=Plano[i][j].GetCoords(0);
-                        y=Plano[i][j].GetCoords(1);
-                        z=Plano[i][j].GetCoords(2);
-                        x_=x*(cos(2*M_PI/360*Angle)+Ux*Ux*(1-cos(2*M_PI/360*Angle)))+y*(Ux*Uy*(1-cos(2*M_PI/360*Angle))-Uz*sin(2*M_PI/360*Angle))+z*(Ux*Uz*(1-cos(2*M_PI/360*Angle))+Uy*sin(2*M_PI/360*Angle));
-                        y_=x*(Uy*Ux*(1-cos(2*M_PI/360*Angle))+Uz*sin(2*M_PI/360*Angle))+y*(cos(2*M_PI/360*Angle)+Uy*Uy*(1-cos(2*M_PI/360*Angle)))+z*(Uy*Uz*(1-cos(2*M_PI/360*Angle))-Ux*sin(2*M_PI/360*Angle));
-                        z_=x*(Uz*Ux*(1-cos(2*M_PI/360*Angle))-Uy*sin(2*M_PI/360*Angle))+y*(Uz*Uy*(1-cos(2*M_PI/360*Angle))+Ux*sin(2*M_PI/360*Angle))+z*(cos(2*M_PI/360*Angle)+Uz*Uz*(1-cos(2*M_PI/360*Angle)));
-                        Plano[i][j].SetCoords(x_,y_,z_);
-                        //si es el punto medio, guardo el punto de inicio de la normal
-                        if(i==TamX/2&&j==TamY/2)
-                                Normal.SetPto(x_,y_,z_);
-                }
-         }
-                //calculo la nueva normal
-                float nx,ny,nz,nx_,ny_,nz_;
-                nx=Normal.GetCoords(0);
-                ny=Normal.GetCoords(1);
-                nz=Normal.GetCoords(2);
-                nx_=nx*(cos(2*M_PI/360*Angle)+Ux*Ux*(1-cos(2*M_PI/360*Angle)))+ny*(Ux*Uy*(1-cos(2*M_PI/360*Angle))-Uz*sin(2*M_PI/360*Angle))+nz*(Ux*Uz*(1-cos(2*M_PI/360*Angle))+Uy*sin(2*M_PI/360*Angle));
-                ny_=nx*(Uy*Ux*(1-cos(2*M_PI/360*Angle))+Uz*sin(2*M_PI/360*Angle))+ny*(cos(2*M_PI/360*Angle)+Uy*Uy*(1-cos(2*M_PI/360*Angle)))+nz*(Uy*Uz*(1-cos(2*M_PI/360*Angle))-Ux*sin(2*M_PI/360*Angle));
-                nz_=nx*(Uz*Ux*(1-cos(2*M_PI/360*Angle))-Uy*sin(2*M_PI/360*Angle))+ny*(Uz*Uy*(1-cos(2*M_PI/360*Angle))+Ux*sin(2*M_PI/360*Angle))+nz*(cos(2*M_PI/360*Angle)+Uz*Uz*(1-cos(2*M_PI/360*Angle)));
-                Normal.SetCoords(nx_,ny_,nz_);
-                //El pto inicial de la normal no se deberia tocar
-
-                //Vuelvo a colocar el plano donde corresponde
-                Trasladar(TX,TY,TZ);
-}
-
-void plano::Rotar(float azi, float elev, float tilt)
-{
-        float RotX,RotY,RotZ,AngX,AngY,AngZ;
-        normal Vect;
-
-        RotX=sin(2*M_PI/360*elev)*cos(2*M_PI/360*azi);
-        RotY=sin(2*M_PI/360*azi)*sin(2*M_PI/360*elev);
-        RotZ=cos(2*M_PI/360*elev);
-
-
-       /* RotX=cos(2*M_PI/360*elev);
-        RotY=sin(2*M_PI/360*azi);
-        RotZ=sin(2*M_PI/360*elev); -*/
-
-
-        /*       Z^
-                  |
-                  |
-                  |
-                  |         X
-                  /-------->
-                 /
-               Y/               */
-
-
-        Vect.SetCoords(RotX,RotY,RotZ);
-        Vect.normalizar();
-        //Roto la matriz
-        Rotar(Vect,tilt);
-}
+//---------------------------------------------------------------------------
 
 normal plano::GetNormal()
 {
         //TODO: Add your source code here
         return Normal;
 }
+//---------------------------------------------------------------------------
 
 elemplano plano::GetElemPlano(int i, int j)
 {
         //TODO: Add your source code here
         return Plano[i][j];
 }
+//---------------------------------------------------------------------------
+
+void plano::CargarPlano(voxel *Vox)
+{
+        int Rx,Ry,Rz;
+        float Rad=sqrt(pow(Vox->getTam(0),2)+pow(Vox->getTam(1),2)+pow(Vox->getTam(2),2));
+        float Nx,Ny,Nz,Px,Py,Pz,max=0;
+        Nx=Normal.GetCoords(0);
+        Ny=Normal.GetCoords(1);
+        Nz=Normal.GetCoords(2);
+        for(int fila=0;fila<TamY;fila++)
+                for(int col=0;col<TamX;col++)
+                {
+                        Px=Plano[fila][col].GetCoords(0);
+                        Py=Plano[fila][col].GetCoords(1);
+                        Pz=Plano[fila][col].GetCoords(2);
+                        max=0;
+                        for(int lambda=0;lambda<Rad;lambda++)
+                        {
+                                Rx=Nx*lambda+Px;
+                                Ry=Ny*lambda+Py;
+                                Rz=Nz*lambda+Pz;
+                                if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>0&&Ry>0&&Rz>0)
+                                {
+                                        //Interpolacion trilinear
+                                        float x1=0,x2=0,x3=0,x4=0,x5=0,x6=0,x7=0,x8=0;
+                                        float a=0,b=0,g=0,X=0,Y=0,Z=0,value=0;
+                                        X=Rx;
+                                        Y=Ry;
+                                        Z=Rz;
+                                        a=X-(int)X;
+                                        b=Y-(int)Y;
+                                        g=Z-(int)Z;
+                                        x1=Vox->getCubo(X,Y,Z);
+                                        x2=Vox->getCubo(X+1,Y,Z);
+                                        x3=Vox->getCubo(X,Y+1,Z);
+                                        x4=Vox->getCubo(X+1,Y+1,Z);
+                                        x5=Vox->getCubo(X,Y,Z+1);
+                                        x6=Vox->getCubo(X+1,Y,Z+1);
+                                        x7=Vox->getCubo(X,Y+1,Z+1);
+                                        x8=Vox->getCubo(X+1,Y+1,Z+1);
+                                        value=((1-g)*(1-b)*(1-a)*x1+(1-g)*(1-b)*(1+a)*x2+(1-g)*(1+b)*(1-a)*x3+
+                                              (1-g)*(1+b)*(1+a)*x4+(1+g)*(1-b)*(1-a)*x5+(1+g)*(1-b)*(1+a)*x6+
+                                              (1+g)*(1+b)*(1-a)*x7+(1+g)*(1+b)*(1+a)*x8)/8;
+                                        Vox->setCubo(X,Y,Z,value);
+                                        Rx=X;
+                                        Ry=Y;
+                                        Rz=Z;
+                                        //Fin trilinear
+                                        //Elimino ruido de la TCy comparo por el max
+                                        if(Vox->getCubo(Rx,Ry,Rz)>30&&Vox->getCubo(Rx,Ry,Rz)>max||max==255)
+                                        {
+                                                max=Vox->getCubo(Rx,Ry,Rz);
+                                                Plano[fila][col].SetCoords(Rx,Ry,Rz);
+                                                Plano[fila][col].SetValue(max);
+                                                if(max==255)
+                                                        break;
+                                        }
+                                }
+                        }
+                }
+}
+//---------------------------------------------------------------------------
 
 void plano::Trasladar(float x, float y, float z)
 {
-        float x_=0,y_=0,z_=0,value=0;
+        float x_=0,y_=0,z_=0;
         //Muevo la normal sin tocar la direccion (no cambia)
         Normal.SetPto(Normal.GetPto(0)+x,Normal.GetPto(1)+y,Normal.GetPto(2)+z);
 
@@ -148,64 +139,29 @@ void plano::Trasladar(float x, float y, float z)
                         Plano[i][j].SetCoords(x_+x,y_+y,z_+z);
                 }
 }
+//---------------------------------------------------------------------------
 
-void plano::Trasladar(normal Norm)
+void plano::TrasladarXYZ(float X, float Y, float Z)
 {
-        float x_,y_,z_;
-        x_=Norm.GetCoords(0);
-        y_=Norm.GetCoords(1);
-        z_=Norm.GetCoords(2);
-        Normal.SetPto(Normal.GetPto(0)+x_,Normal.GetPto(1)+y_,Normal.GetPto(2)+z_);
+        float x_,y_,z_,difx,dify,difz;
+        x_=Normal.GetPto(0);
+        y_=Normal.GetPto(1);
+        z_=Normal.GetPto(2);
+        difx=X-x_;
+        dify=Y-y_;
+        difz=Z-z_;
+        Normal.SetPto(X,Y,Z);
         for(int j=0;j<TamY;j++)
                 for(int i=0;i<TamX;i++)
                 {
-                        x_=x_+Plano[i][j].GetCoords(0);
-                        y_=y_+Plano[i][j].GetCoords(1);
-                        z_=z_+Plano[i][j].GetCoords(2);
+                        x_=difx+Plano[i][j].GetCoords(0);
+                        y_=dify+Plano[i][j].GetCoords(1);
+                        z_=difz+Plano[i][j].GetCoords(2);
                         Plano[i][j].SetValue(0);
                         Plano[i][j].SetCoords(x_,y_,z_);
                 }
-
 }
-
-void plano::CargarPlano(voxel *Vox)
-{
-        int Rx,Ry,Rz;
-        float Nx,Ny,Nz,Px,Py,Pz,max=0;
-        Nx=Normal.GetCoords(0);
-        Ny=Normal.GetCoords(1);
-        Nz=Normal.GetCoords(2);
-        for(int fila=0;fila<TamY;fila++)
-        {
-                for(int col=0;col<TamX;col++)
-                {
-                        Px=Plano[fila][col].GetCoords(0);
-                        Py=Plano[fila][col].GetCoords(1);
-                        Pz=Plano[fila][col].GetCoords(2);
-                        max=0;
-                        //int lambda=0;
-                        for(int lambda=0;lambda<512;lambda++)//512
-                        {
-                                Rx=Nx*lambda+Px;
-                                Ry=Ny*lambda+Py;
-                                Rz=Nz*lambda+Pz;
-                                if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>0&&Ry>0&&Rz>0)
-                                {
-                                        if(Vox->getCubo(Rx,Ry,Rz)>70)//>max)
-                                        {
-                                                max=Vox->getCubo(Rx,Ry,Rz);
-                                                //if(Vox->getCubo(Rx,Ry,Rz)>170&&Vox->getCubo(Rx,Ry,Rz)<200)
-                                                //{
-                                                        Plano[fila][col].SetCoords(Rx,Ry,Rz);
-                                                        Plano[fila][col].SetValue(max);
-                                                        break;
-                                                //}
-                                        }
-                                }
-                        }
-                }
-        }
-}
+//---------------------------------------------------------------------------
 
 void plano::Mostrar(TImage *Image)
 {
@@ -220,7 +176,7 @@ void plano::Mostrar(TImage *Image)
         }
         Image->Refresh();
 }
-
+//---------------------------------------------------------------------------
 
 void plano::Borrar()
 {
@@ -229,6 +185,7 @@ void plano::Borrar()
                 for (int i=0;i<TamX;i++)
                                 Plano[i][j].SetValue(0);
 }
+//---------------------------------------------------------------------------
 
 void plano::Restore()
 {
@@ -241,6 +198,7 @@ void plano::Restore()
         Normal.SetCoords(1,0,0);
         Normal.SetPto(0,TamX/2,TamY/2);
 }
+//---------------------------------------------------------------------------
 
 void plano::RotarXYZ(float AngX, float AngY, float AngZ)
 {
@@ -312,6 +270,7 @@ void plano::RotarXYZ(float AngX, float AngY, float AngZ)
         Trasladar(TX,TY,TZ);
 
 }
+//---------------------------------------------------------------------------
 
 void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
 {
@@ -346,18 +305,15 @@ void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
         //Ya seteado el destino, ahora tengo que calcular la rotacion del plano
         //Veo cuanto hay q rotar y en que direccion
         Normal.SetCoords(-Normal.GetCoords(0),-Normal.GetCoords(1),-Normal.GetCoords(2));
-        float DirX,DirY,DirZ,PX,PY,PZ,O_Azi,O_Elev,O_Tilt;
+        float DirX,DirY,DirZ,O_Azi,O_Elev,O_Tilt;
         DirX=Normal.GetCoords(0);
         DirY=Normal.GetCoords(1);
         DirZ=Normal.GetCoords(2);
-        PX=Normal.GetPto(0);
-        PY=Normal.GetPto(1);
-        PZ=Normal.GetPto(2);
         //Calculo los angulos originales
         O_Azi=atan(DirY/DirX)/(2*M_PI)*360;
         O_Elev=acos(DirZ)/(2*M_PI)*360;
         //Calculo la rotacion necesaria (rotacion con respecto al origen!)
-        float DifRotY=0,DifRotX=0,DifRotZ=0;
+        float DifRotY=0,DifRotZ=0;
         DifRotY=Elev-O_Elev;
         DifRotZ=Azi-O_Azi;
         //Roto el plano
@@ -365,24 +321,7 @@ void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
         TrasladarXYZ(RotX,RotY,RotZ);
         
 }
+//---------------------------------------------------------------------------
 
-void plano::TrasladarXYZ(float X, float Y, float Z)
-{
-        float x_,y_,z_,difx,dify,difz;
-        x_=Normal.GetPto(0);
-        y_=Normal.GetPto(1);
-        z_=Normal.GetPto(2);
-        difx=X-x_;
-        dify=Y-y_;
-        difz=Z-z_;
-        Normal.SetPto(X,Y,Z);
-        for(int j=0;j<TamY;j++)
-                for(int i=0;i<TamX;i++)
-                {
-                        x_=difx+Plano[i][j].GetCoords(0);
-                        y_=dify+Plano[i][j].GetCoords(1);
-                        z_=difz+Plano[i][j].GetCoords(2);
-                        Plano[i][j].SetValue(0);
-                        Plano[i][j].SetCoords(x_,y_,z_);
-                }
-}
+
+

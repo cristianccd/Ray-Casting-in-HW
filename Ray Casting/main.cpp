@@ -33,6 +33,8 @@ void __fastcall TFormPpal::Abrir1Click(TObject *Sender)
         {
                 Panel2->Show();
                 FormPpal->Refresh();
+                //Habilito la listbox
+                ListBox1->Enabled=true;
                 //Carga de nombre de archivos en la listbox
                 NamesTs=OpenDialog1->Files;
                 NamesAs=NamesTs->GetText();
@@ -71,8 +73,6 @@ void __fastcall TFormPpal::Abrir1Click(TObject *Sender)
                 //Cargo la primer imagen para tener el tamano
                 //Cargo el voxel
                 Vox=new voxel (Bmp->Width,Bmp->Height,NoFiles);
-                VoxR=new voxel (Bmp->Width,Bmp->Height,NoFiles);
-                FormPpal->Refresh();
                 Vox->Cargar(Files,NoFiles);
                 Panel2->Hide();
                 FormPpal->Refresh();
@@ -87,7 +87,6 @@ void __fastcall TFormPpal::Abrir1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-
 void __fastcall TFormPpal::BitBtn1Click(TObject *Sender)
 {
         if( MessageBox(NULL, "Desea Salir?", "Salir",MB_YESNO|MB_ICONQUESTION) == IDNO)
@@ -98,16 +97,8 @@ void __fastcall TFormPpal::BitBtn1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFormPpal::ListBox1Click(TObject *Sender)
-{
-        int index=ListBox1->ItemIndex;
-        Vox->Mostrar(Image1,index);
-}
-//---------------------------------------------------------------------------
-
 void TFormPpal::ConfigImage(TImage * Image, int NBits, int X, int Y)
 {
-        //TODO: Add your source code here
         if(NBits==8)
         {
                 typedef struct
@@ -133,30 +124,6 @@ void TFormPpal::ConfigImage(TImage * Image, int NBits, int X, int Y)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFormPpal::Button1Click(TObject *Sender)
-{
-        BorrarImg(Image1);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormPpal::Button2Click(TObject *Sender)
-{
-        float X,Y,Z,PX,PY,PZ;
-        X=Plano.GetNormal().GetCoords(0);
-        Y=Plano.GetNormal().GetCoords(1);
-        Z=Plano.GetNormal().GetCoords(2);
-        PX=Plano.GetNormal().GetPto(0);
-        PY=Plano.GetNormal().GetPto(1);
-        PZ=Plano.GetNormal().GetPto(2);
-        Edit1->Text=PX;
-        Edit2->Text=PY;
-        Edit3->Text=PZ;
-        Edit4->Text=X;
-        Edit5->Text=Y;
-        Edit6->Text=Z;
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TFormPpal::Image1MouseMove(TObject *Sender,
       TShiftState Shift, int X, int Y)
 {
@@ -166,83 +133,6 @@ void __fastcall TFormPpal::Image1MouseMove(TObject *Sender,
         Edit10->Text=Plano.GetElemPlano(X,Y).GetValue();
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TFormPpal::Button4Click(TObject *Sender)
-{
-        Panel2->Show();
-        FormPpal->Refresh();
-        Plano.Borrar();
-        Plano.CargarPlano(Vox);
-        BorrarImg(Image1);
-        Plano.Mostrar(Image1);
-        Panel2->Hide();
-        FormPpal->Refresh();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormPpal::Button5Click(TObject *Sender)
-{
-        AnsiString Texto = "90";
-        bool SI = InputQuery("Ingrese el angulo deseado", "Angulo:", Texto);
-        if(!SI) return;
-        int Ang=Texto.ToInt();
-        Vect.SetPto(0,0,0); //debe ser el origen para el vector de rotacion
-        Vect.SetCoords(0,1,0);
-        Plano.Rotar(Vect,Ang);        
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormPpal::Button6Click(TObject *Sender)
-{
-        AnsiString Texto = "90";
-        bool SI = InputQuery("Ingrese el angulo deseado", "Angulo:", Texto);
-        if(!SI) return;
-        int Ang=Texto.ToInt();
-        Vect.SetPto(0,0,0); //debe ser el origen para el vector de rotacion
-        Vect.SetCoords(0,0,1);
-        Plano.Rotar(Vect,Ang);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormPpal::Button3Click(TObject *Sender)
-{
-        AnsiString Texto = "90";
-        bool SI = InputQuery("Ingrese el angulo deseado", "Angulo:", Texto);
-        if(!SI) return;
-        int Ang=Texto.ToInt();
-        Vect.SetPto(0,0,0); //debe ser el origen para el vector de rotacion
-        Vect.SetCoords(1,0,0);
-        Plano.Rotar(Vect,Ang);
-}
-//---------------------------------------------------------------------------
-
-
-void __fastcall TFormPpal::Button7Click(TObject *Sender)
-{
-        AnsiString Texto = "90";
-        bool SI = InputQuery("Ingrese el angulo deseado", "Azimuth:", Texto);
-        if(!SI) return;
-        float Azi=Texto.ToDouble();
-        SI = InputQuery("Ingrese el angulo deseado", "Elevacion:", Texto);
-        if(!SI) return;
-        float Elev=Texto.ToDouble();
-        SI = InputQuery("Ingrese el angulo deseado", "Tilt:", Texto);
-        if(!SI) return;
-        float Tilt=Texto.ToDouble();
-        Plano.Rotar(Azi,Elev,Tilt);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormPpal::Button8Click(TObject *Sender)
-{
-        int TX,TY,TZ;
-        TX=AnsiReplaceText(Edit11->Text,".",",").ToInt();
-        TY=AnsiReplaceText(Edit12->Text,".",",").ToInt();
-        TZ=AnsiReplaceText(Edit13->Text,".",",").ToInt();
-        Plano.Trasladar(TX,TY,TZ);
-}
-//---------------------------------------------------------------------------
-
 
 void TFormPpal::BorrarImg(TImage *Image1)
 {
@@ -255,27 +145,13 @@ void TFormPpal::BorrarImg(TImage *Image1)
         }
         Image1->Refresh();
 }
-
-void __fastcall TFormPpal::Button9Click(TObject *Sender)
-{
-        Plano.Restore();
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormPpal::Button10Click(TObject *Sender)
-{
-        int AX,AY,AZ;
-        AX=AnsiReplaceText(Edit14->Text,".",",").ToDouble();
-        AY=AnsiReplaceText(Edit15->Text,".",",").ToDouble();
-        AZ=AnsiReplaceText(Edit16->Text,".",",").ToDouble();
-        Plano.RotarXYZ(AX,AY,AZ);
-}
 //---------------------------------------------------------------------------
 
 void __fastcall TFormPpal::Button11Click(TObject *Sender)
 {
         Panel2->Show();
         FormPpal->Refresh();
+        ListBox1->Enabled=false;
         int Azi,Elev,Tilt;
         Azi=AnsiReplaceText(Edit17->Text,".",",").ToDouble();
         Elev=AnsiReplaceText(Edit18->Text,".",",").ToDouble();
@@ -287,6 +163,13 @@ void __fastcall TFormPpal::Button11Click(TObject *Sender)
         Plano.Mostrar(Image1);
         Panel2->Hide();
         FormPpal->Refresh();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::ListBox1Click(TObject *Sender)
+{
+        int index=ListBox1->ItemIndex;
+        Vox->Mostrar(Image1,index);
 }
 //---------------------------------------------------------------------------
 

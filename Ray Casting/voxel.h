@@ -25,11 +25,11 @@ public:         // User declarations
         voxel();
         voxel(unsigned int, unsigned int, unsigned int);
         ~voxel();
-        voxel* operator=(voxel *);
         void __fastcall Cargar(AnsiString * S, int No);
         void Mostrar(TImage *, int);
         int getCubo(int x, int y, int z);
         int getTam(int index);
+        void setCubo(int X, int Y, int Z, float value);
 };
 //---------------------------------------------------------------------------
 #endif

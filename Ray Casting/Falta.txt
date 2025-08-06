@@ -1,0 +1,9 @@
+Escalar
+
+Umbralizacion
+
+Profundidad del Rayo
+
+LUT para eliminar el ruido y en el MPI quedarme solo con el hueso
+
+Algo mas que se me ocurra

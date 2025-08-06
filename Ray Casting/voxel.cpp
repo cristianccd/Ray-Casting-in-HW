@@ -6,10 +6,8 @@
 
 //---------------------------------------------------------------------------
 
-
 voxel::voxel()
 {
-        //TODO: Add your source code here
         BitMap=new Graphics::TBitmap();
         CantImgs=0;
         TamX=512;
@@ -25,10 +23,10 @@ voxel::voxel()
                         for(int k=0;k<CantImgs;k++)
                                 Cubo[i][j][k]=0;
 }
+//---------------------------------------------------------------------------
 
 voxel::voxel(unsigned int TX, unsigned int TY, unsigned int CImgs)
 {
-        //TODO: Add your source code here
         BitMap=new Graphics::TBitmap();
         CantImgs=CImgs;
         TamX=TX;
@@ -44,23 +42,10 @@ voxel::voxel(unsigned int TX, unsigned int TY, unsigned int CImgs)
                         for(int k=0;k<CantImgs;k++)
                                 Cubo[i][j][k]=0;
 }
-
-voxel* voxel::operator=(voxel *Vxl)
-{
-       /* char valor;
-        for(int j=0;j<TamY;j++)
-                for(int i=0;i<TamX;i++)
-                        for(int k=0;k<CantImgs;k++)
-                        {
-                                valor=Vxl->Cubo[i][j][k];
-                                Cubo[i][j][k]=valor;
-                        }*/
-
-}
+//---------------------------------------------------------------------------
 
 voxel::~voxel()
 {
-        //TODO: Add your source code here
         for (int i = 0; i < TamY; i++)
         {
                 for (int j = 0; j < TamX; j++)
@@ -69,10 +54,10 @@ voxel::~voxel()
         }
         delete BitMap;
 }
+//---------------------------------------------------------------------------
 
 void __fastcall voxel::Cargar(AnsiString * S, int No)
 {
-        //TODO: Add your source code here
         CantImgs=No;
         BitMap=new Graphics::TBitmap();
         for(int k=0;k<No;k++)
@@ -88,6 +73,7 @@ void __fastcall voxel::Cargar(AnsiString * S, int No)
                 }
         }
 }
+//---------------------------------------------------------------------------
 
 void voxel::Mostrar(TImage *Image1, int index)
 {
@@ -100,11 +86,19 @@ void voxel::Mostrar(TImage *Image1, int index)
         }
         Image1->Refresh();
 }
+//---------------------------------------------------------------------------
+
+void voxel::setCubo(int X, int Y, int Z, float value)
+{
+        Cubo[X][Y][Z]=value;
+}
+//---------------------------------------------------------------------------
 
 int voxel::getCubo(int x, int y, int z)
 {
         return Cubo[x][y][z];
 }
+//---------------------------------------------------------------------------
 
 int voxel::getTam(int index)
 {
@@ -114,3 +108,4 @@ int voxel::getTam(int index)
         Tamanos[2]=CantImgs;
         return Tamanos[index];
 }
+//---------------------------------------------------------------------------
