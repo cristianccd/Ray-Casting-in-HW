@@ -79,6 +79,7 @@ __published:	// IDE-managed Components
         TEdit *Edit9;
         TBitBtn *BitBtn2;
         TProgressBar *ProgressBar1;
+        TBitBtn *BitBtn3;
         void __fastcall Abrir1Click(TObject *Sender);
         void __fastcall BitBtn1Click(TObject *Sender);
         void __fastcall Image1MouseMove(TObject *Sender, TShiftState Shift,
@@ -94,6 +95,11 @@ __published:	// IDE-managed Components
         void __fastcall PasaAltos1Click(TObject *Sender);
         void __fastcall Rotar1Click(TObject *Sender);
         void __fastcall Zoom1Click(TObject *Sender);
+        void __fastcall RadioButton2Click(TObject *Sender);
+        void __fastcall RadioButton1Click(TObject *Sender);
+        void __fastcall BitBtn3Click(TObject *Sender);
+        void __fastcall Image1MouseDown(TObject *Sender,
+          TMouseButton Button, TShiftState Shift, int X, int Y);
 private:	// User declarations
         int NoFiles;
         AnsiString *BmpFiles;

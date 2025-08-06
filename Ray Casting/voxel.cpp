@@ -18,10 +18,6 @@ voxel::voxel()
         for(int i=0;i<TamX;i++)
                 for(int j=0;j<TamY;j++)
                         Cubo[i][j]=new unsigned char [CantImgs];
-        /*for(int j=0;j<TamY;j++)
-                for(int i=0;i<TamX;i++)
-                        for(int k=0;k<CantImgs;k++)
-                                Cubo[i][j][k]=0;*/
 }
 //---------------------------------------------------------------------------
 
@@ -37,10 +33,6 @@ voxel::voxel(unsigned int TX, unsigned int TY, unsigned int CImgs)
         for(int i=0;i<TamX;i++)
                 for(int j=0;j<TamY;j++)
                         Cubo[i][j]=new unsigned char [CantImgs];
-        /*for(int j=0;j<TamY;j++)
-                for(int i=0;i<TamX;i++)
-                        for(int k=0;k<CantImgs;k++)
-                                Cubo[i][j][k]=0;*/
 }
 //---------------------------------------------------------------------------
 
@@ -52,6 +44,7 @@ voxel::~voxel()
                         delete [] Cubo[i][j];
                 delete [] Cubo[i];
         }
+        delete Cubo;
         delete BitMap;
 }
 //---------------------------------------------------------------------------

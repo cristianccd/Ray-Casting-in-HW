@@ -43,7 +43,9 @@ plano::plano(float tamx,float tamy)
 
 plano::~plano()
 {
-
+        for (int j = 0; j < TamY; j++)
+                delete Plano[j];
+        delete Plano;
 }
 //---------------------------------------------------------------------------
 
@@ -65,13 +67,49 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
 {
         Barra->Position=0;
         Barra->Max=TamY;
-        int Rx,Ry,Rz;
+        float Rx,Ry,Rz;
         float Rad=sqrt(pow(Vox->getTam(0),2)+pow(Vox->getTam(1),2)+pow(Vox->getTam(2),2));
-        float Nx,Ny,Nz,Px,Py,Pz,max=0;
+        float Nx,Ny,Nz,Px,Py,Pz,max=0,value=0,a=0,b=0,g=0;
         Nx=Normal.GetCoords(0);
         Ny=Normal.GetCoords(1);
         Nz=Normal.GetCoords(2);
-        if(Volume==true)
+        if(Volume==true&&Trilinear==true)
+        {
+                //Volumen
+                for(int fila=0;fila<TamY;fila++)
+                {
+                        Barra->Position++;
+                        for(int col=0;col<TamX;col++)
+                        {
+                                Px=Plano[fila][col].GetCoords(0);
+                                Py=Plano[fila][col].GetCoords(1);
+                                Pz=Plano[fila][col].GetCoords(2);
+                                for(int lambda=0;lambda<Rad;lambda++)
+                                {
+                                        Rx=Nx*lambda+Px;
+                                        Ry=Ny*lambda+Py;
+                                        Rz=Nz*lambda+Pz;
+                                        if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>40)
+                                        {
+                                                a=Rx-(int)Rx;
+                                                b=Ry-(int)Ry;
+                                                g=Rz-(int)Rz;
+                                                Plano[fila][col].SetCoords(Rx,Ry,Rz);
+                                                value=((1-g)*(1-b)*(1-a)*Vox->getCubo(Rx,Ry,Rz)+(1-g)*(1-b)*(1+a)*Vox->getCubo(Rx+1,Ry,Rz)+
+                                                      (1-g)*(1+b)*(1-a)*Vox->getCubo(Rx,Ry+1,Rz)+(1-g)*(1+b)*(1+a)*Vox->getCubo(Rx+1,Ry+1,Rz)+
+                                                      (1+g)*(1-b)*(1-a)*Vox->getCubo(Rx,Ry,Rz+1)+(1+g)*(1-b)*(1+a)*Vox->getCubo(Rx+1,Ry,Rz+1)+
+                                                      (1+g)*(1+b)*(1-a)*Vox->getCubo(Rx,Ry+1,Rz+1)+(1+g)*(1+b)*(1+a)*Vox->getCubo(Rx+1,Ry+1,Rz+1))/8;
+                                                Plano[fila][col].SetValue(value);
+                                                break;
+                                        }
+                                }
+                        }
+                }
+        }
+        //----------------------------------------------------------------------
+        //EN EL CASO QUE NO HAYA TRILINEAR, HAGO TODO POR SEPARADO PARA MINIMIZAR TIEMPOS
+        //----------------------------------------------------------------------
+        if(Volume==true&&Trilinear==false)
         {
                 //Volumen
                 for(int fila=0;fila<TamY;fila++)
@@ -284,28 +322,23 @@ void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
         float centroX=TamX/2;
         float centroY=TamY/2;
         float centroZ=Vox->getTam(2)/2;
-
         float RotX,RotY,RotZ;
         RotX=sin(2*M_PI/360*Elev)*cos(2*M_PI/360*Azi);
         RotY=sin(2*M_PI/360*Azi)*sin(2*M_PI/360*Elev);
         RotZ=cos(2*M_PI/360*Elev);
-
-        normal Vision;
         //El punto inicial es el cruce con la esfera
-        Vision.SetCoords(RotX,RotY,RotZ);
-        Vision.normalizar();
-        RotX=Vision.GetCoords(0);
-        RotY=Vision.GetCoords(1);
-        RotZ=Vision.GetCoords(2);
+        float raiz=sqrt(RotX*RotX+RotY*RotY+RotZ*RotZ);
+        RotX=RotX/raiz;
+        RotY=RotY/raiz;
+        RotZ=RotZ/raiz;
         //La dir de vision es la opuesta, asi mira dentro de la esfera
-        Vision.SetCoords(-RotX,-RotY,-RotZ);
+        //Vision.SetCoords(-RotX,-RotY,-RotZ);
         //Tengo las coordenadas normalizadas, ahora multiplico por el radio
         //Traslado el plano al centro de la esfera
         RotX=RotX*radio+centroX;
         RotY=RotY*radio+centroY;
         RotZ=RotZ*radio+centroZ;
         //Ese es el punto de inicio de mi vector normal
-        Vision.SetPto(RotX,RotY,RotZ);
         //Ya seteado el destino, ahora tengo que calcular la rotacion del plano
         //Veo cuanto hay q rotar y en que direccion
         Normal.SetCoords(-Normal.GetCoords(0),-Normal.GetCoords(1),-Normal.GetCoords(2));
@@ -323,41 +356,41 @@ void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
         //Roto el plano
         RotarXYZ(Tilt,DifRotY,DifRotZ);
         TrasladarXYZ(RotX,RotY,RotZ);
-        
 }
 //---------------------------------------------------------------------------
 
-
-
-
-
-
-/*if(Trilinear==true)
+void plano::Previa(voxel * Vox)
+{
+        float Rx,Ry,Rz;
+        float Rad=sqrt(pow(Vox->getTam(0),2)+pow(Vox->getTam(1),2)+pow(Vox->getTam(2),2));
+        float Nx,Ny,Nz,Px,Py,Pz;
+        Nx=Normal.GetCoords(0);
+        Ny=Normal.GetCoords(1);
+        Nz=Normal.GetCoords(2);
+        for(int fila=0;fila<TamY;fila++)
+        {
+                for(int col=0;col<TamX;col++)
+                {
+                        if(fila%10==0&col%10==0)
+                        {
+                                Px=Plano[fila][col].GetCoords(0);
+                                Py=Plano[fila][col].GetCoords(1);
+                                Pz=Plano[fila][col].GetCoords(2);
+                                for(int lambda=0;lambda<Rad;lambda++)
+                                {
+                                        Rx=Nx*lambda+Px;
+                                        Ry=Ny*lambda+Py;
+                                        Rz=Nz*lambda+Pz;
+                                        if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>40)
                                         {
-                                                float x1=0,x2=0,x3=0,x4=0,x5=0,x6=0,x7=0,x8=0;
-                                                float a=0,b=0,g=0,X=0,Y=0,Z=0,value=0;
-                                                voxel VoxT;
+                                                Plano[fila][col].SetCoords(Rx,Ry,Rz);
+                                                Plano[fila][col].SetValue(Vox->getCubo(Rx,Ry,Rz));
+                                                break;
+                                        }
+                                }
+                        }
+                }
+        }
+}
+//---------------------------------------------------------------------------
 
-                                                X=Rx;
-                                                Y=Ry;
-                                                Z=Rz;
-                                                a=X-(int)X;
-                                                b=Y-(int)Y;
-                                                g=Z-(int)Z;
-                                                x1=Vox->getCubo(X,Y,Z);
-                                                x2=Vox->getCubo(X+1,Y,Z);
-                                                x3=Vox->getCubo(X,Y+1,Z);
-                                                x4=Vox->getCubo(X+1,Y+1,Z);
-                                                x5=Vox->getCubo(X,Y,Z+1);
-                                                x6=Vox->getCubo(X+1,Y,Z+1);
-                                                x7=Vox->getCubo(X,Y+1,Z+1);
-                                                x8=Vox->getCubo(X+1,Y+1,Z+1);
-                                                value=((1-g)*(1-b)*(1-a)*x1+(1-g)*(1-b)*(1+a)*x2+(1-g)*(1+b)*(1-a)*x3+
-                                                      (1-g)*(1+b)*(1+a)*x4+(1+g)*(1-b)*(1-a)*x5+(1+g)*(1-b)*(1+a)*x6+
-                                                      (1+g)*(1+b)*(1-a)*x7+(1+g)*(1+b)*(1+a)*x8)/8;
-                                                Vox->setCubo(X,Y,Z,value);//se debe aplicar sobre un nuevo cubo
-                                                Rx=X;
-                                                Ry=Y;
-                                                Rz=Z;
-                                                //Fin trilinear
-                                        }*/

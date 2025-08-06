@@ -99,3 +99,4 @@ void normal::normalizar()
         Y=Y/raiz;
         Z=Z/raiz;
 }
+

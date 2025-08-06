@@ -12,6 +12,7 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TFormPpal *FormPpal;
+float Azimuth=0,Elevacion=0;
 
 //---------------------------------------------------------------------------
 __fastcall TFormPpal::TFormPpal(TComponent* Owner)
@@ -160,8 +161,6 @@ void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
         ChgStatus(false);
         Panel2->Show();
         FormPpal->Refresh();
-        int pepe=Vox->getTam(2);
-        if(Vox->getTam(2)==0)return;
         int Azi,Elev,Tilt;
         Azi=AnsiReplaceText(Edit5->Text,".",",").ToDouble();
         Elev=AnsiReplaceText(Edit6->Text,".",",").ToDouble();
@@ -278,4 +277,38 @@ void __fastcall TFormPpal::Zoom1Click(TObject *Sender)
         //ZOOM + Bilinear!        
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::RadioButton2Click(TObject *Sender)
+{
+        CheckBox1->Checked=false;
+        CheckBox1->Enabled=false;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::RadioButton1Click(TObject *Sender)
+{
+        CheckBox1->Checked=true;
+        CheckBox1->Enabled=true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::BitBtn3Click(TObject *Sender)
+{
+        Plano.VerPlano(Vox,-90,90,0);
+        Plano.Previa(Vox);
+        Plano.Mostrar(Image1);
+}
+//---------------------------------------------------------------------------
+void __fastcall TFormPpal::Image1MouseDown(TObject *Sender,
+      TMouseButton Button, TShiftState Shift, int X, int Y)
+{
+        Azimuth=X*180/512-180;
+        Elevacion=180-Y*180/512;
+        Plano.VerPlano(Vox,Azimuth,Elevacion,0);
+        Plano.Previa(Vox);
+        Plano.Mostrar(Image1);
+
+}
+//---------------------------------------------------------------------------
+
 

@@ -33,6 +33,7 @@ public:         // User declarations
         void VerPlano(voxel *Vox, float Azi, float Elev, float Tilt);
         void TrasladarXYZ(float X, float Y, float Z);
         void Trilinear(voxel * VoxT, float fact_esc);
+        void Previa(voxel * Vox);
         
 };
 //---------------------------------------------------------------------------
