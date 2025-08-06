@@ -248,6 +248,11 @@ void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
         Panel2->Hide();
         FormPpal->Refresh();
         ChgStatus(true);
+        if(RadioButton2->Checked==true||RadioButton8->Checked==true)
+        {
+                        CheckBox1->Checked=false;
+                        CheckBox1->Enabled=false;
+        }
 }
 //---------------------------------------------------------------------------
 
@@ -419,10 +424,6 @@ void __fastcall TFormPpal::Image1MouseDown(TObject *Sender,
                 Edit6->Text=Elevacion;
                 Plano.VerPlano(Vox,Azimuth,Elevacion,0);
                 Plano.Previa(Vox,Edit10->Text.ToInt());
-                /*float Mask[9]={(float)1/16,(float)2/16,(float)1/16,(float)2/16,(float)4/16,(float)2/16,(float)1/16,(float)2/16,(float)1/16};
-                Plano.SetMask(Mask);
-                Plano.ApplyMask(Aux);
-                Aux.Mostrar(Image1);*/
                 Plano.Mostrar(Image1);
                 Image1->Refresh();
         }
@@ -558,8 +559,8 @@ void __fastcall TFormPpal::Bilinear1Click(TObject *Sender)
 
 void __fastcall TFormPpal::RadioButton8Click(TObject *Sender)
 {
-        CheckBox1->Checked=true;
-        CheckBox1->Enabled=true;        
+        CheckBox1->Checked=false;
+        CheckBox1->Enabled=false;
 }
 //---------------------------------------------------------------------------
 

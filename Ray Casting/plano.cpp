@@ -159,6 +159,36 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
                         }
                 }
         }
+        if(Transparencias==true)
+        {
+                float suma=0,cantidad=0;
+                for(int i=0;i<256;i++)
+                        LUT[i]=255*exp(-pow(i-256,2)/(2*pow(20,2)));
+                for(int fila=0;fila<TamY;fila++)
+                {
+                        Barra->Position++;
+                        for(int col=0;col<TamX;col++)
+                        {
+                                Px=Plano[fila][col].GetCoords(0);
+                                Py=Plano[fila][col].GetCoords(1);
+                                Pz=Plano[fila][col].GetCoords(2);
+                                suma=0;
+                                cantidad=0;
+                                for(int lambda=Profmin;lambda<Profmax;lambda++)
+                                {
+                                        Rx=Nx*lambda+Px;
+                                        Ry=Ny*lambda+Py;
+                                        Rz=Nz*lambda+Pz;
+                                        if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&Vox->getCubo(Rx,Ry,Rz)>0&&Vox->getCubo(Rx,Ry,Rz)>Uinf&&Vox->getCubo(Rx,Ry,Rz)<=Usup)
+                                        {
+                                                cantidad++;
+                                                suma=suma+LUT[Vox->getCubo(Rx,Ry,Rz)];
+                                                Plano[fila][col].SetValue(suma/cantidad);
+                                        }
+                                }
+                        }
+                }
+        }
 }
 //---------------------------------------------------------------------------
 
@@ -219,7 +249,6 @@ void plano::Mostrar(TImage *Image)
 
 void plano::Borrar()
 {
-        //TODO: Add your source code here
         for (int j=0;j<TamY;j++)
                 for (int i=0;i<TamX;i++)
                                 Plano[i][j].SetValue(0);
