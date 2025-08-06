@@ -43,9 +43,7 @@ plano::plano(float tamx,float tamy)
 
 plano::~plano()
 {
-        for (int j = 0; j < TamY; j++)
-                delete Plano[j];
-        delete Plano;
+
 }
 //---------------------------------------------------------------------------
 
@@ -69,7 +67,7 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
         Barra->Max=TamY;
         float Rx,Ry,Rz;
         float Rad=sqrt(pow(Vox->getTam(0),2)+pow(Vox->getTam(1),2)+pow(Vox->getTam(2),2));
-        float Nx,Ny,Nz,Px,Py,Pz,max=0,value=0,a=0,b=0,g=0;
+        float Nx,Ny,Nz,Px,Py,Pz,max=0,a=0,b=0,g=0,value=0;
         Nx=Normal.GetCoords(0);
         Ny=Normal.GetCoords(1);
         Nz=Normal.GetCoords(2);
@@ -322,23 +320,28 @@ void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
         float centroX=TamX/2;
         float centroY=TamY/2;
         float centroZ=Vox->getTam(2)/2;
+
         float RotX,RotY,RotZ;
         RotX=sin(2*M_PI/360*Elev)*cos(2*M_PI/360*Azi);
         RotY=sin(2*M_PI/360*Azi)*sin(2*M_PI/360*Elev);
         RotZ=cos(2*M_PI/360*Elev);
+
+        normal Vision;
         //El punto inicial es el cruce con la esfera
-        float raiz=sqrt(RotX*RotX+RotY*RotY+RotZ*RotZ);
-        RotX=RotX/raiz;
-        RotY=RotY/raiz;
-        RotZ=RotZ/raiz;
+        Vision.SetCoords(RotX,RotY,RotZ);
+        Vision.normalizar();
+        RotX=Vision.GetCoords(0);
+        RotY=Vision.GetCoords(1);
+        RotZ=Vision.GetCoords(2);
         //La dir de vision es la opuesta, asi mira dentro de la esfera
-        //Vision.SetCoords(-RotX,-RotY,-RotZ);
+        Vision.SetCoords(-RotX,-RotY,-RotZ);
         //Tengo las coordenadas normalizadas, ahora multiplico por el radio
         //Traslado el plano al centro de la esfera
         RotX=RotX*radio+centroX;
         RotY=RotY*radio+centroY;
         RotZ=RotZ*radio+centroZ;
         //Ese es el punto de inicio de mi vector normal
+        Vision.SetPto(RotX,RotY,RotZ);
         //Ya seteado el destino, ahora tengo que calcular la rotacion del plano
         //Veo cuanto hay q rotar y en que direccion
         Normal.SetCoords(-Normal.GetCoords(0),-Normal.GetCoords(1),-Normal.GetCoords(2));
@@ -356,12 +359,14 @@ void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
         //Roto el plano
         RotarXYZ(Tilt,DifRotY,DifRotZ);
         TrasladarXYZ(RotX,RotY,RotZ);
+        
 }
 //---------------------------------------------------------------------------
 
 void plano::Previa(voxel * Vox)
 {
         float Rx,Ry,Rz;
+        int Ux,Uy;
         float Rad=sqrt(pow(Vox->getTam(0),2)+pow(Vox->getTam(1),2)+pow(Vox->getTam(2),2));
         float Nx,Ny,Nz,Px,Py,Pz;
         Nx=Normal.GetCoords(0);
@@ -371,7 +376,7 @@ void plano::Previa(voxel * Vox)
         {
                 for(int col=0;col<TamX;col++)
                 {
-                        if(fila%10==0&col%10==0)
+                        if(fila%8==0&col%8==0)
                         {
                                 Px=Plano[fila][col].GetCoords(0);
                                 Py=Plano[fila][col].GetCoords(1);
@@ -385,6 +390,8 @@ void plano::Previa(voxel * Vox)
                                         {
                                                 Plano[fila][col].SetCoords(Rx,Ry,Rz);
                                                 Plano[fila][col].SetValue(Vox->getCubo(Rx,Ry,Rz));
+                                                Ux=col;
+                                                Uy=fila;
                                                 break;
                                         }
                                 }
@@ -393,4 +400,3 @@ void plano::Previa(voxel * Vox)
         }
 }
 //---------------------------------------------------------------------------
-

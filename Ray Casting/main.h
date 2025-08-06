@@ -50,10 +50,6 @@ __published:	// IDE-managed Components
         TMenuItem *Umbralizacin1;
         TMenuItem *Ecualizacin1;
         TGroupBox *GroupBox3;
-        TLabel *Label1;
-        TLabel *Label2;
-        TEdit *Edit5;
-        TEdit *Edit6;
         TCheckBox *CheckBox1;
         TRadioButton *RadioButton1;
         TRadioButton *RadioButton2;
@@ -67,8 +63,6 @@ __published:	// IDE-managed Components
         TBevel *Bevel2;
         TBevel *Bevel3;
         TBitBtn *BitBtn1;
-        TLabel *Label3;
-        TEdit *Edit7;
         TGroupBox *ByC;
         TGroupBox *Salir;
         TUpDown *UpDown1;
@@ -79,7 +73,10 @@ __published:	// IDE-managed Components
         TEdit *Edit9;
         TBitBtn *BitBtn2;
         TProgressBar *ProgressBar1;
-        TBitBtn *BitBtn3;
+        TStaticText *StaticText7;
+        TStaticText *StaticText8;
+        TEdit *Edit5;
+        TEdit *Edit6;
         void __fastcall Abrir1Click(TObject *Sender);
         void __fastcall BitBtn1Click(TObject *Sender);
         void __fastcall Image1MouseMove(TObject *Sender, TShiftState Shift,
@@ -97,7 +94,6 @@ __published:	// IDE-managed Components
         void __fastcall Zoom1Click(TObject *Sender);
         void __fastcall RadioButton2Click(TObject *Sender);
         void __fastcall RadioButton1Click(TObject *Sender);
-        void __fastcall BitBtn3Click(TObject *Sender);
         void __fastcall Image1MouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
 private:	// User declarations
@@ -116,6 +112,7 @@ public:		// User declarations
         void ConfigImage(TImage * Image, int NBits, int X, int Y);
         void BorrarImg(TImage *);
         void ChgStatus(bool status);
+        int Azimuth,Elevacion;
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TFormPpal *FormPpal;

@@ -12,7 +12,6 @@
 #pragma package(smart_init)
 #pragma resource "*.dfm"
 TFormPpal *FormPpal;
-float Azimuth=0,Elevacion=0;
 
 //---------------------------------------------------------------------------
 __fastcall TFormPpal::TFormPpal(TComponent* Owner)
@@ -79,7 +78,10 @@ void __fastcall TFormPpal::Abrir1Click(TObject *Sender)
                 Panel2->Hide();
                 FormPpal->Refresh();
                 ConfigImage(Image1,8,Bmp->Width,Bmp->Height);
-                Vox->Mostrar(Image1,0);
+                Image1->Enabled=true;
+                Plano.VerPlano(Vox,0,90,0);
+                Plano.Previa(Vox);
+                Plano.Mostrar(Image1);
         }
         else
         {
@@ -161,14 +163,10 @@ void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
         ChgStatus(false);
         Panel2->Show();
         FormPpal->Refresh();
-        int Azi,Elev,Tilt;
-        Azi=AnsiReplaceText(Edit5->Text,".",",").ToDouble();
-        Elev=AnsiReplaceText(Edit6->Text,".",",").ToDouble();
-        Tilt=AnsiReplaceText(Edit7->Text,".",",").ToDouble();
-        Plano.VerPlano(Vox,Azi,Elev,Tilt);
         Plano.Borrar();
-        Plano.CargarPlano(Vox,ProgressBar1,RadioButton1->Checked,RadioButton2->Checked,CheckBox1->Checked);
         BorrarImg(Image1);
+        Plano.VerPlano(Vox,Azimuth,Elevacion,0);
+        Plano.CargarPlano(Vox,ProgressBar1,RadioButton1->Checked,RadioButton2->Checked,CheckBox1->Checked);
         if(CheckBox2->Checked==true)
         {
                 //Ecualizar
@@ -194,9 +192,6 @@ void TFormPpal::ChgStatus(bool status)
                 CheckBox3->Enabled=true;
                 RadioButton1->Enabled=true;
                 RadioButton2->Enabled=true;
-                Edit5->Enabled=true;
-                Edit6->Enabled=true;
-                Edit7->Enabled=true;
                 Edit8->Enabled=true;
                 Edit9->Enabled=true;
                 BitBtn1->Enabled=true;
@@ -212,9 +207,6 @@ void TFormPpal::ChgStatus(bool status)
                 CheckBox3->Enabled=false;
                 RadioButton1->Enabled=false;
                 RadioButton2->Enabled=false;
-                Edit5->Enabled=false;
-                Edit6->Enabled=false;
-                Edit7->Enabled=false;
                 Edit8->Enabled=false;
                 Edit9->Enabled=false;
                 BitBtn1->Enabled=false;
@@ -256,7 +248,7 @@ void __fastcall TFormPpal::Umbralizacin1Click(TObject *Sender)
 
 void __fastcall TFormPpal::PasaBajos1Click(TObject *Sender)
 {
-        //PASA BAJOS        
+        //PASA BAJOS
 }
 //---------------------------------------------------------------------------
 
@@ -292,23 +284,16 @@ void __fastcall TFormPpal::RadioButton1Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFormPpal::BitBtn3Click(TObject *Sender)
-{
-        Plano.VerPlano(Vox,-90,90,0);
-        Plano.Previa(Vox);
-        Plano.Mostrar(Image1);
-}
-//---------------------------------------------------------------------------
 void __fastcall TFormPpal::Image1MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
         Azimuth=X*180/512-180;
         Elevacion=180-Y*180/512;
+        Edit5->Text=Azimuth;
+        Edit6->Text=Elevacion;
         Plano.VerPlano(Vox,Azimuth,Elevacion,0);
         Plano.Previa(Vox);
         Plano.Mostrar(Image1);
-
 }
 //---------------------------------------------------------------------------
-
 

@@ -1,7 +1,7 @@
 object FormPpal: TFormPpal
   Left = 233
   Top = 67
-  Width = 753
+  Width = 729
   Height = 619
   AutoSize = True
   BorderIcons = [biSystemMenu, biMinimize, biMaximize, biHelp]
@@ -28,6 +28,7 @@ object FormPpal: TFormPpal
       Width = 512
       Height = 512
       Cursor = crCross
+      Enabled = False
       OnMouseDown = Image1MouseDown
       OnMouseMove = Image1MouseMove
     end
@@ -35,13 +36,13 @@ object FormPpal: TFormPpal
   object Panel1: TPanel
     Left = 536
     Top = 0
-    Width = 201
+    Width = 177
     Height = 129
     TabOrder = 1
     object ListBox1: TListBox
       Left = 8
       Top = 8
-      Width = 185
+      Width = 161
       Height = 113
       ItemHeight = 13
       TabOrder = 0
@@ -179,67 +180,30 @@ object FormPpal: TFormPpal
   object GroupBox3: TGroupBox
     Left = 536
     Top = 136
-    Width = 201
+    Width = 177
     Height = 289
     Caption = 'Panel de Control'
     TabOrder = 4
     object Bevel3: TBevel
-      Left = 18
+      Left = 8
       Top = 141
       Width = 161
       Height = 84
     end
-    object Label1: TLabel
-      Left = 50
-      Top = 154
-      Width = 43
-      Height = 13
-      Caption = 'Azimuth='
-    end
-    object Label2: TLabel
-      Left = 40
-      Top = 178
-      Width = 53
-      Height = 13
-      Caption = 'Elevaci'#243'n='
-    end
     object Bevel1: TBevel
-      Left = 18
+      Left = 8
       Top = 13
       Width = 161
       Height = 57
     end
     object Bevel2: TBevel
-      Left = 18
+      Left = 8
       Top = 77
       Width = 161
       Height = 57
     end
-    object Label3: TLabel
-      Left = 72
-      Top = 202
-      Width = 20
-      Height = 13
-      Caption = 'Tilt='
-    end
-    object Edit5: TEdit
-      Left = 96
-      Top = 152
-      Width = 49
-      Height = 21
-      TabOrder = 5
-      Text = '0'
-    end
-    object Edit6: TEdit
-      Left = 96
-      Top = 176
-      Width = 49
-      Height = 21
-      TabOrder = 6
-      Text = '0'
-    end
     object CheckBox1: TCheckBox
-      Left = 26
+      Left = 16
       Top = 16
       Width = 97
       Height = 17
@@ -249,7 +213,7 @@ object FormPpal: TFormPpal
       TabOrder = 0
     end
     object RadioButton1: TRadioButton
-      Left = 26
+      Left = 16
       Top = 88
       Width = 113
       Height = 17
@@ -260,7 +224,7 @@ object FormPpal: TFormPpal
       OnClick = RadioButton1Click
     end
     object RadioButton2: TRadioButton
-      Left = 26
+      Left = 16
       Top = 104
       Width = 113
       Height = 17
@@ -269,7 +233,7 @@ object FormPpal: TFormPpal
       OnClick = RadioButton2Click
     end
     object CheckBox2: TCheckBox
-      Left = 26
+      Left = 16
       Top = 32
       Width = 97
       Height = 17
@@ -277,23 +241,15 @@ object FormPpal: TFormPpal
       TabOrder = 1
     end
     object CheckBox3: TCheckBox
-      Left = 26
+      Left = 16
       Top = 48
       Width = 97
       Height = 17
       Caption = 'Isodata'
       TabOrder = 2
     end
-    object Edit7: TEdit
-      Left = 96
-      Top = 200
-      Width = 49
-      Height = 21
-      TabOrder = 7
-      Text = '0'
-    end
     object BitBtn2: TBitBtn
-      Left = 104
+      Left = 40
       Top = 256
       Width = 89
       Height = 25
@@ -305,45 +261,63 @@ object FormPpal: TFormPpal
       Font.Name = 'MS Sans Serif'
       Font.Style = [fsBold]
       ParentFont = False
-      TabOrder = 8
+      TabOrder = 5
       OnClick = BitBtn2Click
       Kind = bkOK
     end
     object ProgressBar1: TProgressBar
-      Left = 18
+      Left = 8
       Top = 232
       Width = 161
       Height = 17
       Min = 0
       Max = 1000
       Smooth = True
-      TabOrder = 9
+      TabOrder = 6
     end
-    object BitBtn3: TBitBtn
-      Left = 8
-      Top = 256
-      Width = 89
-      Height = 25
-      Caption = 'PRE&VIA'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentFont = False
+    object StaticText7: TStaticText
+      Left = 32
+      Top = 160
+      Width = 50
+      Height = 17
+      Caption = 'Azimuth= '
+      TabOrder = 7
+    end
+    object StaticText8: TStaticText
+      Left = 24
+      Top = 184
+      Width = 60
+      Height = 17
+      Caption = 'Elevacion= '
+      TabOrder = 8
+    end
+    object Edit5: TEdit
+      Left = 80
+      Top = 158
+      Width = 41
+      Height = 21
+      Enabled = False
+      TabOrder = 9
+      Text = '0'
+    end
+    object Edit6: TEdit
+      Left = 80
+      Top = 182
+      Width = 41
+      Height = 21
+      Enabled = False
       TabOrder = 10
-      OnClick = BitBtn3Click
-      Kind = bkIgnore
+      Text = '0'
     end
   end
   object Salir: TGroupBox
     Left = 536
     Top = 520
-    Width = 201
+    Width = 177
     Height = 41
     TabOrder = 5
     object BitBtn1: TBitBtn
-      Left = 56
+      Left = 40
       Top = 10
       Width = 97
       Height = 25
@@ -362,7 +336,7 @@ object FormPpal: TFormPpal
   object ByC: TGroupBox
     Left = 536
     Top = 432
-    Width = 201
+    Width = 177
     Height = 89
     TabOrder = 6
     object Label4: TLabel
