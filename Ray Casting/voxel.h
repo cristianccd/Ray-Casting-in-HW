@@ -3,6 +3,10 @@
 #if !defined(__MATRIZ_H)
 #define __MATRIZ_H
 //---------------------------------------------------------------------------
+
+#include <vcl.h>
+#include <math.h>
+#include <stdio.h>
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <StdCtrls.hpp>
@@ -23,7 +27,8 @@ public:         // User declarations
         ~voxel();
         voxel(voxel &);
         void __fastcall Cargar(AnsiString * S, int No);
-
+        void Mostrar(TImage *, int);
+        void Vista(TImage *,int, int);
 };
 //---------------------------------------------------------------------------
 #endif

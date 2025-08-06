@@ -94,3 +94,61 @@ void __fastcall voxel::Cargar(AnsiString * S, int No)
                 }
         }
 }
+
+void voxel::Mostrar(TImage *Image1, int index)
+{
+        BYTE *LinePtr;
+        typedef struct
+        {
+        TLogPalette lpal;
+        TPaletteEntry dummy[256];
+        } LogPal;
+        Image1->Picture->Bitmap->PixelFormat=pf8bit;
+        Image1->Picture->Bitmap->Width=TamX;
+        Image1->Picture->Bitmap->Height=TamY;
+        LogPal SysPal;
+        SysPal.lpal.palVersion = 0x300;
+        SysPal.lpal.palNumEntries = 256;
+        for (int i=0;i<SysPal.lpal.palNumEntries;i++)
+        {
+                SysPal.lpal.palPalEntry[i].peRed = i;
+                SysPal.lpal.palPalEntry[i].peGreen = i;
+                SysPal.lpal.palPalEntry[i].peBlue = i;
+                SysPal.lpal.palPalEntry[i].peFlags = 0;
+        }
+        Image1->Picture->Bitmap->Palette = CreatePalette(&SysPal.lpal);
+        for (int j=0;j<TamY;j++)
+        {
+                LinePtr=(BYTE *) Image1->Picture->Bitmap->ScanLine[j];
+                for (int i=0;i<TamX;i++)
+                        LinePtr[i]=Cubo[i][j][index];
+        }
+        Image1->Refresh();
+}
+
+void voxel::Vista(TImage *Image1, int angulox, int anguloy)
+{
+        int *max=new int [TamX];
+        BYTE *LinePtr;
+        for(int j=0;j<TamY;j++)
+        {
+                LinePtr=(BYTE *) Image1->Picture->Bitmap->ScanLine[j];
+                for(int i=0;i<TamX;i++)
+                {
+                        for(int k=0;k<CantImgs;k++)
+                        {
+
+                                if(Cubo[i][j][k]>max[i])
+                                        max[i]=Cubo[i][j][k];
+                                        //LinePtr[i]=255;//Cubo[i][j][k];
+                                //else
+                                        //LinePtr[i]=0;
+                                        //max[i]=Cubo[i][j][k];
+                        }
+                        LinePtr[i]=max[i];
+
+                 }
+        }
+        Image1->Refresh();
+        delete max;
+}
