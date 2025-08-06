@@ -61,7 +61,7 @@ elemplano plano::GetElemPlano(int i, int j)
 }
 //---------------------------------------------------------------------------
 
-void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, bool Trilinear, int Uinf, int Usup, int Profmax, int Profmin)
+void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, bool Transparencias, bool Trilinear, int Uinf, int Usup, int Profmax, int Profmin)
 {
         Barra->Position=0;
         Barra->Max=TamY;
@@ -374,7 +374,7 @@ void plano::Previa(voxel * Vox,int Uruido)
         {
                 for(int col=0;col<TamX;col++)
                 {
-                        if(fila%6==0&col%6==0)
+                        if(fila%8==0&col%8==0)
                         {
                                 Px=Plano[fila][col].GetCoords(0);
                                 Py=Plano[fila][col].GetCoords(1);
@@ -391,7 +391,15 @@ void plano::Previa(voxel * Vox,int Uruido)
                                                 break;
                                         }
                                 }
+                                if(fila-8>0&&fila-8<TamY&&col-8>0&&col-8<TamX)
+                                {
+                                        Plano[fila-4][col-4].SetValue((Plano[fila][col].GetValue()+Plano[fila-8][col-8].GetValue())/2);
+                                        Plano[fila-2][col-2].SetValue((Plano[fila-4][col-4].GetValue()+Plano[fila][col].GetValue())/2);
+                                        Plano[fila-6][col-6].SetValue((Plano[fila-4][col-4].GetValue()+Plano[fila-8][col-8].GetValue())/2);
+                                }
+
                         }
+
                 }
         }
 }
@@ -603,3 +611,26 @@ void plano::Bilinear(plano &Aux,float FE, int X, int Y)
         }
 }
 
+void plano::SetMask(float *Mask)
+{
+        for(int i=0;i<9;i++)
+                Mascara[i]=Mask[i];
+}
+
+void plano::ApplyMask(plano & Aux)
+{
+        for(int f=0;f<TamY;f++ )
+                for(int c=0;c<TamX;c++)
+                {
+                        if(f==0||c==0||f==TamY-1||c==TamX-1)
+                                Aux.Plano[f][c].SetValue(0);
+                        else
+                        {
+                                Aux.Plano[f][c].SetValue(Mascara[0]*Plano[f-1][c-1].GetValue()+Mascara[1]*Plano[f-1][c].GetValue()+
+                                Mascara[2]*Plano[f-1][c+1].GetValue()+Mascara[3]*Plano[f][c-1].GetValue()+
+                                Mascara[4]*Plano[f][c].GetValue()+Mascara[5]*Plano[f][c+1].GetValue()+
+                                Mascara[6]*Plano[f+1][c-1].GetValue()+Mascara[7]*Plano[f+1][c].GetValue()+
+                                Mascara[8]*Plano[f+1][c+1].GetValue());
+                        }
+                }
+}

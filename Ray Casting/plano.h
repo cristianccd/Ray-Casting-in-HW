@@ -18,6 +18,7 @@ private:	// User declarations
         BYTE *LinePtr;
         int LUT[256];
         int Histo[256];
+        float Mascara[9];
 public:         // User declarations
         plano();
         plano(float tamx,float tamy);
@@ -27,7 +28,7 @@ public:         // User declarations
         void Trasladar(float x, float y, float z);
         normal GetNormal();
         elemplano GetElemPlano(int i, int j);
-        void CargarPlano(voxel *Vox,TProgressBar *Barra, bool Volume, bool MIP, bool Trilinear, int Uinf, int Usup,int Profmax, int Profmin);
+        void CargarPlano(voxel *Vox,TProgressBar *Barra, bool Volume, bool MIP, bool Transparencias, bool Trilinear, int Uinf, int Usup,int Profmax, int Profmin);
         void Mostrar(TImage *Image);
         void Borrar();
         void Restore();
@@ -51,6 +52,8 @@ public:         // User declarations
         plano & operator=(plano &original);
         void Bilinear(plano &Aux,float FE, int X, int Y);
         elemplano **Plano;
+        void SetMask(float *);
+        void ApplyMask(plano & Aux);
 
 };
 //---------------------------------------------------------------------------

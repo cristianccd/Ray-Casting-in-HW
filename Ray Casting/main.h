@@ -48,7 +48,6 @@ __published:	// IDE-managed Components
         TMenuItem *PasaBajos1;
         TMenuItem *PasaAltos1;
         TMenuItem *Ver1;
-        TMenuItem *Rotar1;
         TMenuItem *Zoom1;
         TMenuItem *E1;
         TMenuItem *Isodata1;
@@ -112,6 +111,9 @@ __published:	// IDE-managed Components
         TButton *Button1;
         TScrollBar *ScrollBar1;
         TScrollBar *ScrollBar2;
+        TGroupBox *GroupBox7;
+        TButton *Button2;
+        TRadioButton *RadioButton8;
         void __fastcall Abrir1Click(TObject *Sender);
         void __fastcall BitBtn1Click(TObject *Sender);
         void __fastcall Image1MouseMove(TObject *Sender, TShiftState Shift,
@@ -124,7 +126,6 @@ __published:	// IDE-managed Components
         void __fastcall Isodata1Click(TObject *Sender);
         void __fastcall PasaBajos1Click(TObject *Sender);
         void __fastcall PasaAltos1Click(TObject *Sender);
-        void __fastcall Rotar1Click(TObject *Sender);
         void __fastcall Zoom1Click(TObject *Sender);
         void __fastcall RadioButton2Click(TObject *Sender);
         void __fastcall RadioButton1Click(TObject *Sender);
@@ -138,6 +139,9 @@ __published:	// IDE-managed Components
         void __fastcall ScrollBar2Change(TObject *Sender);
         void __fastcall Image1MouseMoveMouseWheel(TObject *Sender,
       TShiftState Shift, int X, int Y, int WheelDelta);
+        void __fastcall Bilinear1Click(TObject *Sender);
+        void __fastcall RadioButton8Click(TObject *Sender);
+        void __fastcall Button2Click(TObject *Sender);
 private:	// User declarations
         int NoFiles;
         AnsiString *BmpFiles;

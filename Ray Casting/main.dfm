@@ -182,12 +182,12 @@ object FormPpal: TFormPpal
     Left = 536
     Top = 192
     Width = 177
-    Height = 289
+    Height = 369
     Caption = 'Panel de Control'
     TabOrder = 4
     object Bevel3: TBevel
       Left = 8
-      Top = 160
+      Top = 168
       Width = 161
       Height = 57
     end
@@ -199,9 +199,9 @@ object FormPpal: TFormPpal
     end
     object Bevel2: TBevel
       Left = 8
-      Top = 85
+      Top = 77
       Width = 161
-      Height = 57
+      Height = 84
     end
     object CheckBox1: TCheckBox
       Left = 16
@@ -215,7 +215,7 @@ object FormPpal: TFormPpal
     end
     object RadioButton1: TRadioButton
       Left = 16
-      Top = 96
+      Top = 88
       Width = 113
       Height = 17
       Caption = 'Volume Rendering'
@@ -226,7 +226,7 @@ object FormPpal: TFormPpal
     end
     object RadioButton2: TRadioButton
       Left = 16
-      Top = 120
+      Top = 112
       Width = 113
       Height = 17
       Caption = 'MIP'
@@ -251,7 +251,7 @@ object FormPpal: TFormPpal
     end
     object BitBtn2: TBitBtn
       Left = 40
-      Top = 256
+      Top = 336
       Width = 89
       Height = 25
       Caption = 'A&PLICAR'
@@ -268,7 +268,7 @@ object FormPpal: TFormPpal
     end
     object ProgressBar1: TProgressBar
       Left = 8
-      Top = 232
+      Top = 312
       Width = 161
       Height = 17
       Min = 0
@@ -278,7 +278,7 @@ object FormPpal: TFormPpal
     end
     object StaticText7: TStaticText
       Left = 32
-      Top = 168
+      Top = 176
       Width = 50
       Height = 17
       Caption = 'Azimuth= '
@@ -286,7 +286,7 @@ object FormPpal: TFormPpal
     end
     object StaticText8: TStaticText
       Left = 24
-      Top = 192
+      Top = 200
       Width = 60
       Height = 17
       Caption = 'Elevacion= '
@@ -294,7 +294,7 @@ object FormPpal: TFormPpal
     end
     object Edit5: TEdit
       Left = 80
-      Top = 166
+      Top = 174
       Width = 41
       Height = 21
       Enabled = False
@@ -303,17 +303,49 @@ object FormPpal: TFormPpal
     end
     object Edit6: TEdit
       Left = 80
-      Top = 190
+      Top = 198
       Width = 41
       Height = 21
       Enabled = False
       TabOrder = 10
       Text = '0'
     end
+    object GroupBox7: TGroupBox
+      Left = 8
+      Top = 248
+      Width = 161
+      Height = 41
+      Caption = 'Filtros'
+      TabOrder = 11
+      object Button2: TButton
+        Left = 40
+        Top = 16
+        Width = 81
+        Height = 17
+        Caption = 'CON&FIRMAR'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clWindowText
+        Font.Height = -11
+        Font.Name = 'MS Sans Serif'
+        Font.Style = [fsBold]
+        ParentFont = False
+        TabOrder = 0
+        OnClick = Button2Click
+      end
+    end
+    object RadioButton8: TRadioButton
+      Left = 16
+      Top = 136
+      Width = 113
+      Height = 17
+      Caption = 'Transparencias'
+      TabOrder = 12
+      OnClick = RadioButton8Click
+    end
   end
   object Salir: TGroupBox
-    Left = 712
-    Top = 512
+    Left = 720
+    Top = 520
     Width = 177
     Height = 41
     TabOrder = 5
@@ -696,6 +728,7 @@ object FormPpal: TFormPpal
       Caption = '&Edici'#243'n'
       object Bilinear1: TMenuItem
         Caption = 'Bilinear'
+        OnClick = Bilinear1Click
       end
       object Ecualizacin1: TMenuItem
         Caption = 'Ecualizaci'#243'n'
@@ -719,10 +752,6 @@ object FormPpal: TFormPpal
     end
     object Ver1: TMenuItem
       Caption = '&Ver'
-      object Rotar1: TMenuItem
-        Caption = 'Rotar'
-        OnClick = Rotar1Click
-      end
       object Zoom1: TMenuItem
         Caption = 'Zoom'
         OnClick = Zoom1Click

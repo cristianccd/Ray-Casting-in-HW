@@ -101,7 +101,9 @@ void __fastcall TFormPpal::BitBtn1Click(TObject *Sender)
 		return;
         delete Bmp;
         delete Files;
-        Close();        
+        delete NamesTs;
+        delete Vox;
+        Close();
 }
 //---------------------------------------------------------------------------
 
@@ -224,7 +226,7 @@ void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
         //Cargo la LUT
         SelectLUT();
         //Cargo el plano
-        Plano.CargarPlano(Vox,ProgressBar1,RadioButton1->Checked,RadioButton2->Checked,CheckBox1->Checked,Uinf,Usup,Profmax,Profmin);
+        Plano.CargarPlano(Vox,ProgressBar1,RadioButton1->Checked,RadioButton2->Checked,RadioButton8->Checked,CheckBox1->Checked,Uinf,Usup,Profmax,Profmin);
         //Armo el histograma
         Plano.Histograma();
         if(CheckBox2->Checked==true)
@@ -257,15 +259,25 @@ void TFormPpal::ChgStatus(bool status)
                 CheckBox1->Enabled=true;
                 CheckBox2->Enabled=true;
                 CheckBox3->Enabled=true;
+                CheckBox4->Enabled=true;
+                CheckBox5->Enabled=true;
                 RadioButton1->Enabled=true;
                 RadioButton2->Enabled=true;
+                RadioButton3->Enabled=true;
+                RadioButton4->Enabled=true;
+                RadioButton5->Enabled=true;
+                RadioButton6->Enabled=true;
+                RadioButton7->Enabled=true;
+                RadioButton8->Enabled=true;
                 Edit8->Enabled=true;
                 Edit9->Enabled=true;
+                Edit10->Enabled=true;
                 BitBtn1->Enabled=true;
                 BitBtn2->Enabled=true;
                 ScrollBar2->Enabled=true;
                 ScrollBar1->Enabled=true;
                 Button1->Enabled=true;
+                Button2->Enabled=true;
         }
         else
         {
@@ -273,15 +285,25 @@ void TFormPpal::ChgStatus(bool status)
                 CheckBox1->Enabled=false;
                 CheckBox2->Enabled=false;
                 CheckBox3->Enabled=false;
+                CheckBox4->Enabled=false;
+                CheckBox5->Enabled=false;
                 RadioButton1->Enabled=false;
                 RadioButton2->Enabled=false;
+                RadioButton3->Enabled=false;
+                RadioButton4->Enabled=false;
+                RadioButton5->Enabled=false;
+                RadioButton6->Enabled=false;
+                RadioButton7->Enabled=false;
+                RadioButton8->Enabled=false;
                 Edit8->Enabled=false;
                 Edit9->Enabled=false;
+                Edit10->Enabled=false;
                 BitBtn1->Enabled=false;
                 BitBtn2->Enabled=false;
                 ScrollBar2->Enabled=false;
                 ScrollBar1->Enabled=false;
                 Button1->Enabled=false;
+                Button2->Enabled=false;
         }
         FormPpal->Refresh();
 }
@@ -315,7 +337,13 @@ void __fastcall TFormPpal::Imprimir1Click(TObject *Sender)
 
 void __fastcall TFormPpal::Salir1Click(TObject *Sender)
 {
-        //SALIR        
+        if( MessageBox(NULL, "Desea Salir?", "Salir",MB_YESNO|MB_ICONQUESTION) == IDNO)
+		return;
+        delete Bmp;
+        delete Files;
+        delete NamesTs;
+        delete Vox;
+        Close();
 }
 //---------------------------------------------------------------------------
 
@@ -333,19 +361,22 @@ void __fastcall TFormPpal::Isodata1Click(TObject *Sender)
 
 void __fastcall TFormPpal::PasaBajos1Click(TObject *Sender)
 {
-        //PASA BAJOS
+        float Mask[9]={(float)1/9,(float)1/9,(float)1/9,(float)1/9,(float)1/9,
+                      (float)1/9,(float)1/9,(float)1/9,(float)1/9};
+        Plano.SetMask(Mask);
+        Plano.ApplyMask(Aux);
+        Aux.Mostrar(Image1);
+        Image1->Refresh();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TFormPpal::PasaAltos1Click(TObject *Sender)
 {
-        //PASA ALTOS        
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormPpal::Rotar1Click(TObject *Sender)
-{
-        //ROTAR PLANO        
+        float Mask[9]={(float)-1/9,(float)-1/9,(float)-1/9,(float)-1/9,(float)8/9,(float)-1/9,(float)-1/9,(float)-1/9,(float)-1/9};
+        Plano.SetMask(Mask);
+        Plano.ApplyMask(Aux);
+        Aux.Mostrar(Image1);
+        Image1->Refresh();
 }
 //---------------------------------------------------------------------------
 
@@ -388,7 +419,12 @@ void __fastcall TFormPpal::Image1MouseDown(TObject *Sender,
                 Edit6->Text=Elevacion;
                 Plano.VerPlano(Vox,Azimuth,Elevacion,0);
                 Plano.Previa(Vox,Edit10->Text.ToInt());
+                /*float Mask[9]={(float)1/16,(float)2/16,(float)1/16,(float)2/16,(float)4/16,(float)2/16,(float)1/16,(float)2/16,(float)1/16};
+                Plano.SetMask(Mask);
+                Plano.ApplyMask(Aux);
+                Aux.Mostrar(Image1);*/
                 Plano.Mostrar(Image1);
+                Image1->Refresh();
         }
         if(Button==mbRight)
         {
@@ -507,8 +543,29 @@ void __fastcall TFormPpal::ScrollBar2Change(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TFormPpal::Bilinear1Click(TObject *Sender)
+{
+                AnsiString Texto = "1.5";
+                bool SI = InputQuery("Ingrese el Zoom deseado:", "Zoom: ", Texto);
+                if(!SI) return;
+                double FE=AnsiReplaceText(Texto,".",",").ToDouble();
+                Aux=Plano;
+                Plano.Bilinear(Aux,FE,256,256);
+                Aux.Mostrar(Image1);
+                Image1->Refresh();
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TFormPpal::RadioButton8Click(TObject *Sender)
+{
+        CheckBox1->Checked=true;
+        CheckBox1->Enabled=true;        
+}
+//---------------------------------------------------------------------------
 
-
-
+void __fastcall TFormPpal::Button2Click(TObject *Sender)
+{
+        Plano=Aux;        
+}
+//---------------------------------------------------------------------------
 
