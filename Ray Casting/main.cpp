@@ -19,6 +19,7 @@ __fastcall TFormPpal::TFormPpal(TComponent* Owner)
         : TForm(Owner)
 {
         DoubleBuffered=true;
+        ScrollBar2->Enabled=false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TFormPpal::Abrir1Click(TObject *Sender)
@@ -80,7 +81,7 @@ void __fastcall TFormPpal::Abrir1Click(TObject *Sender)
                 FormPpal->Refresh();
                 ConfigImage(Image1,8,Bmp->Width,Bmp->Height);
                 Image1->Enabled=true;
-                Plano.VerPlano(Vox,0,90,0);
+                Plano.VerPlano(Vox,0,0,0);
                 Plano.Previa(Vox,Edit10->Text.ToInt());
                 Plano.Mostrar(Image1);
                 RadioButton1->Checked=true;
@@ -142,6 +143,18 @@ void __fastcall TFormPpal::Image1MouseMove(TObject *Sender,
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TFormPpal::Image1MouseMoveMouseWheel(TObject *Sender,
+      TShiftState Shift, int X, int Y, int WheelDelta)
+{
+        TMouseButton Button;
+        Edit1->Text=X;
+        Edit2->Text=Y;
+        Edit3->Text=(int)Plano.GetElemPlano(X,Y).GetCoords(2);
+        Edit4->Text=Plano.GetElemPlano(X,Y).GetValue();
+}
+
+//---------------------------------------------------------------------------
+
 void TFormPpal::BorrarImg(TImage *Image1)
 {
         BYTE *LinePtr;
@@ -165,11 +178,13 @@ void __fastcall TFormPpal::ListBox1Click(TObject *Sender)
 void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
 {
         ChgStatus(false);
+        //previa=false;
         Panel2->Show();
         FormPpal->Refresh();
         Plano.Borrar();
         Plano.VerPlano(Vox,Azimuth,Elevacion,0);
         int Usup,Uinf;
+        //Verifico Umbrales
         if(CheckBox4->Checked==true)
         {
                 Usup=Edit11->Text.ToInt();
@@ -183,8 +198,6 @@ void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
                         FormPpal->Refresh();
                         return;
                 }
-
-
         }
         else
         {
@@ -198,6 +211,7 @@ void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
                 Profmax=Edit12->Text.ToInt();
                 Profmin=Edit13->Text.ToInt();
         }
+        //Verifico Minimo y Max
         if(Edit13->Text.ToInt()>Edit12->Text.ToInt())
         {
                 MessageBox(NULL, "Minimo>Maximo!", "Warning!",MB_OK|MB_ICONWARNING)==IDNO;
@@ -207,6 +221,9 @@ void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
                 FormPpal->Refresh();
                 return;
         }
+        //Cargo la LUT
+        SelectLUT();
+        //Cargo el plano
         Plano.CargarPlano(Vox,ProgressBar1,RadioButton1->Checked,RadioButton2->Checked,CheckBox1->Checked,Uinf,Usup,Profmax,Profmin);
         //Armo el histograma
         Plano.Histograma();
@@ -246,8 +263,9 @@ void TFormPpal::ChgStatus(bool status)
                 Edit9->Enabled=true;
                 BitBtn1->Enabled=true;
                 BitBtn2->Enabled=true;
-                UpDown1->Enabled=true;
-                UpDown2->Enabled=true;
+                ScrollBar2->Enabled=true;
+                ScrollBar1->Enabled=true;
+                Button1->Enabled=true;
         }
         else
         {
@@ -261,8 +279,9 @@ void TFormPpal::ChgStatus(bool status)
                 Edit9->Enabled=false;
                 BitBtn1->Enabled=false;
                 BitBtn2->Enabled=false;
-                UpDown1->Enabled=false;
-                UpDown2->Enabled=false;
+                ScrollBar2->Enabled=false;
+                ScrollBar1->Enabled=false;
+                Button1->Enabled=false;
         }
         FormPpal->Refresh();
 }
@@ -302,29 +321,13 @@ void __fastcall TFormPpal::Salir1Click(TObject *Sender)
 
 void __fastcall TFormPpal::Ecualizacin1Click(TObject *Sender)
 {
-        //ECUALIZAR PLANO
-        /*double apariciones[256];
-        for(int i=0;i<256;i++)
-                apariciones[i]=apariciones[i-1]+Histograma(i);
-        for(int i=0;i<256;i++)
-                apariciones[i]=apariciones[i]/apariciones[255]*256;
-        loadLUT(apariciones);
-        applyLUT();*/
-
-
-
+        Plano.Ecualizar();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TFormPpal::Isodata1Click(TObject *Sender)
 {
-        //ISODATA PLANO        
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TFormPpal::Umbralizacin1Click(TObject *Sender)
-{
-        //UMBRALIZACION PLANO        
+        Plano.Isodata();
 }
 //---------------------------------------------------------------------------
 
@@ -348,7 +351,15 @@ void __fastcall TFormPpal::Rotar1Click(TObject *Sender)
 
 void __fastcall TFormPpal::Zoom1Click(TObject *Sender)
 {
-        //ZOOM + Bilinear!        
+        //ZOOM + Bilinear!
+        AnsiString Texto = "1.5";
+        bool SI = InputQuery("Ingrese el Zoom deseado:", "Zoom: ", Texto);
+        if(!SI) return;
+        double FE=AnsiReplaceText(Texto,".",",").ToDouble();
+        Aux=Plano;
+        Plano.Bilinear(Aux,FE,256,256);
+        Aux.Mostrar(Image1);
+        Image1->Refresh();
 }
 //---------------------------------------------------------------------------
 
@@ -369,13 +380,28 @@ void __fastcall TFormPpal::RadioButton1Click(TObject *Sender)
 void __fastcall TFormPpal::Image1MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-        Azimuth=X*360/512-180;
-        Elevacion=Y*360/512-180;
-        Edit5->Text=Azimuth;
-        Edit6->Text=Elevacion;
-        Plano.VerPlano(Vox,Azimuth,Elevacion,0);
-        Plano.Previa(Vox,Edit10->Text.ToInt());
-        Plano.Mostrar(Image1);
+        if(Button==mbLeft)
+        {
+                Azimuth=X*360/512-180;
+                Elevacion=Y*360/512-180;
+                Edit5->Text=Azimuth;
+                Edit6->Text=Elevacion;
+                Plano.VerPlano(Vox,Azimuth,Elevacion,0);
+                Plano.Previa(Vox,Edit10->Text.ToInt());
+                Plano.Mostrar(Image1);
+        }
+        if(Button==mbRight)
+        {
+                AnsiString Texto = "1.5";
+                bool SI = InputQuery("Ingrese el Zoom deseado:", "Zoom: ", Texto);
+                if(!SI) return;
+                double FE=AnsiReplaceText(Texto,".",",").ToDouble();
+                Aux=Plano;
+                Plano.Bilinear(Aux,FE,X,Y);
+                Aux.Mostrar(Image1);
+                Image1->Refresh();
+        }
+
 }
 //---------------------------------------------------------------------------
 
@@ -411,4 +437,78 @@ void __fastcall TFormPpal::CheckBox5Click(TObject *Sender)
         }
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::Button1Click(TObject *Sender)
+{
+        ConfigImage(Image1,8,512,512);
+        SelectLUT();
+        Plano.IzqDer();
+        Plano.Mostrar(Image1);
+        Series1->Clear();
+        Plano.Histograma();
+        for(int i=1;i<256;i++)
+                Series1->AddXY(i,Plano.GetHistograma(i));
+        Plano.Borrar();
+        FormPpal->Refresh();
+}
+//---------------------------------------------------------------------------
+
+void TFormPpal::SelectLUT()
+{
+        float LUT[256];
+        if(RadioButton3->Checked==true)
+        {
+                for(int i=0;i<256;i++)
+                        LUT[i]=i;
+        }
+        if(RadioButton4->Checked==true)//Altos
+        {
+                for(int i=0;i<256;i++)
+                        LUT[i]=255*exp(-pow(i-256,2)/(2*pow(20,2)));
+        }
+        if(RadioButton6->Checked==true)//Medios
+        {
+                for(int i=0;i<256;i++)
+                        LUT[i]=255*exp(-pow(i-128,2)/(2*pow(20,2)));
+        }
+        if(RadioButton7->Checked==true)//Bajos
+        {
+                for(int i=0;i<256;i++)
+                        LUT[i]=255*exp(-pow(i,2)/(2*pow(20,2)));
+        }
+        if(RadioButton5->Checked==true)//Log
+        {
+                for(int i=0;i<256;i++)
+                        LUT[i]=255*exp(-i);
+        }
+        Plano.LoadLUT(LUT,256);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::ScrollBar1Change(TObject *Sender)
+{
+        Edit8->Text=ScrollBar1->Position;
+        Edit9->Text=ScrollBar2->Position-100;
+        Aux=Plano;
+        Aux.BrilloContr(ScrollBar1->Position,ScrollBar2->Position);
+        Aux.ApplyLUT();
+        Aux.Mostrar(Image1);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::ScrollBar2Change(TObject *Sender)
+{
+        Edit8->Text=ScrollBar1->Position;
+        Edit9->Text=ScrollBar2->Position-100;
+        Aux=Plano;
+        Aux.BrilloContr(ScrollBar1->Position,ScrollBar2->Position);
+        Aux.ApplyLUT();
+        Aux.Mostrar(Image1);
+}
+//---------------------------------------------------------------------------
+
+
+
+
+
 

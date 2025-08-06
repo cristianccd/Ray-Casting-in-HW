@@ -37,7 +37,6 @@ void elemplano::SetCoords(float x, float y, float z)
 
 float elemplano::GetCoords(int index)
 {
-        //TODO: Add your source code here
         float Coords[3];
         Coords[0]=X;
         Coords[1]=Y;
@@ -47,13 +46,11 @@ float elemplano::GetCoords(int index)
 
 int elemplano::GetValue()
 {
-        //TODO: Add your source code here
         return valor;
 }
 
 void elemplano::SetValue(int v)
 {
-        //TODO: Add your source code here
-        valor=v;
+        valor=(double)v;
 }
 

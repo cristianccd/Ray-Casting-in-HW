@@ -7,7 +7,7 @@ class elemplano
 {
 private:	// User declarations
         float X,Y,Z;
-        int valor;
+        float valor;
 public:         // User declarations
         elemplano();
         elemplano(float x,float y,float z,int v);

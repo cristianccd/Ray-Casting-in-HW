@@ -96,7 +96,7 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
                                                       (1-g)*(1+b)*(1-a)*Vox->getCubo(Rx,Ry+1,Rz)+(1-g)*(1+b)*(1+a)*Vox->getCubo(Rx+1,Ry+1,Rz)+
                                                       (1+g)*(1-b)*(1-a)*Vox->getCubo(Rx,Ry,Rz+1)+(1+g)*(1-b)*(1+a)*Vox->getCubo(Rx+1,Ry,Rz+1)+
                                                       (1+g)*(1+b)*(1-a)*Vox->getCubo(Rx,Ry+1,Rz+1)+(1+g)*(1+b)*(1+a)*Vox->getCubo(Rx+1,Ry+1,Rz+1))/8;
-                                                Plano[fila][col].SetValue(value);
+                                                Plano[fila][col].SetValue(LUT[(int)value]);
                                                 break;
                                         }
                                 }
@@ -125,7 +125,7 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
                                         if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Profmax&&Vox->getCubo(Rx,Ry,Rz)>Uinf&&Vox->getCubo(Rx,Ry,Rz)<=Usup)
                                         {
                                                 Plano[fila][col].SetCoords(Rx,Ry,Rz);
-                                                Plano[fila][col].SetValue(Vox->getCubo(Rx,Ry,Rz));
+                                                Plano[fila][col].SetValue(LUT[Vox->getCubo(Rx,Ry,Rz)]);
                                                 break;
                                         }
                                 }
@@ -153,7 +153,7 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
                                         {
                                                 max=Vox->getCubo(Rx,Ry,Rz);
                                                 Plano[fila][col].SetCoords(Rx,Ry,Rz);
-                                                Plano[fila][col].SetValue(max);
+                                                Plano[fila][col].SetValue(LUT[(int)max]);
                                         }
                                 }
                         }
@@ -403,7 +403,7 @@ void plano::Histograma()
                 Histo[i]=0;
         for(int fila=0;fila<TamY;fila++)
                 for(int col=0;col<TamX;col++)
-                        Histo[Plano[fila][col].GetValue()]++;
+                        Histo[(int)Plano[fila][col].GetValue()]++;
 }
 //---------------------------------------------------------------------------
 
@@ -422,9 +422,9 @@ float plano::GetLUT(int index)
 
 void plano::ApplyLUT()
 {
-        for(int fila=0;fila<TamY;fila++)
-                for(int col=0;col<TamX;col++)
-                        Plano[fila][col].SetValue(LUT[Plano[fila][col].GetValue()]);
+        for(int i=0;i<TamY;i++)
+                for(int j=0;j<TamX;j++)
+                        Plano[j][i].SetValue(LUT[Plano[j][i].GetValue()]);
 }
 //---------------------------------------------------------------------------
 
@@ -492,3 +492,114 @@ void plano::Ecualizar()
         LoadLUT(apariciones,256);
         ApplyLUT();
 }
+
+int plano::GetSize(int index)
+{
+        if(index==0)
+                return TamX;
+        else
+                return TamY;
+}
+
+void plano::IzqDer()
+{
+        for(int f=0;f<TamY;f++)
+                for(int c=0;c<TamX;c++)
+                        Plano[f][c].SetValue(LUT[f/2]);
+}
+
+void plano::BrilloContr(int Brillo, int Contraste)
+{
+        float output[256];
+        for(int i=0;i<256;i++)
+        {
+                output[i]=(float)Contraste/100*i+Brillo;
+                if(output[i]>255)
+                        output[i]=255;
+                if(output[i]<0)
+                        output[i]=0;
+        }
+
+        LoadLUT(output,256);
+}
+
+plano::plano(plano & original)
+{
+        TamX=original.TamX;
+        TamY=original.TamY;
+        Plano=new elemplano *[TamX];
+        for (int i=0;i<TamX;i++)
+                Plano[i]=new elemplano [TamY];
+        for (int j=0;j<TamY;j++)
+                for (int i=0;i<TamX;i++)
+                {
+                        Plano[i][j].SetCoords(original.GetElemPlano(i,j).GetCoords(0),original.GetElemPlano(i,j).GetCoords(1),original.GetElemPlano(i,j).GetCoords(2));
+                        Plano[i][j].SetValue(original.GetElemPlano(i,j).GetValue());
+                }
+        Normal.SetCoords(original.Normal.GetCoords(0),original.Normal.GetCoords(1),original.Normal.GetCoords(2));
+        Normal.SetPto(original.Normal.GetCoords(0),original.Normal.GetCoords(1),original.Normal.GetCoords(2));
+        int ap[256];
+        for (int i=0;i<256;i++)
+        {
+                ap[i]=original.GetLUT(i);
+                Histo[i]=original.GetHistograma(i);
+        }
+}
+
+
+plano & plano::operator=(plano &original)
+{
+        TamX=original.TamX;
+        TamY=original.TamY;
+        Plano=new elemplano *[TamX];
+        for (int i=0;i<TamX;i++)
+                Plano[i]=new elemplano [TamY];
+        for (int j=0;j<TamY;j++)
+                for (int i=0;i<TamX;i++)
+                {
+                        Plano[i][j].SetCoords(original.GetElemPlano(i,j).GetCoords(0),original.GetElemPlano(i,j).GetCoords(1),original.GetElemPlano(i,j).GetCoords(2));
+                        Plano[i][j].SetValue(original.GetElemPlano(i,j).GetValue());
+                }
+        Normal.SetCoords(original.Normal.GetCoords(0),original.Normal.GetCoords(1),original.Normal.GetCoords(2));
+        Normal.SetPto(original.Normal.GetCoords(0),original.Normal.GetCoords(1),original.Normal.GetCoords(2));
+        int ap[256];
+        for (int i=0;i<256;i++)
+        {
+                ap[i]=original.GetLUT(i);
+                Histo[i]=original.GetHistograma(i);
+        }
+        return *this;
+}
+
+void plano::Bilinear(plano &Aux,float FE, int X, int Y)
+{
+        double x,y,dx,dy,aux,x1=0,x2=0,x3=0,x4=0,pepe;
+        Y=Y;
+        X=X;
+        FE=1/FE;
+        for(int f=0;f<TamY-1;f++)
+        {
+                for(int c=0;c<TamX-1;c++)
+                {
+                        x=FE*(c-X)+X;
+                        y=FE*(f-Y)+Y;
+
+                        if(x>=511||x<=0||y>=511||y<=0)
+                        {
+                                Aux.GetElemPlano(f,c).SetValue(0);
+                        }
+                        else
+                        {
+                                dy=y-(int)y;
+                                dx=x-(int)x;
+                                x1=Plano[(int)y][(int)x].GetValue();
+                                x2=Plano[(int)y+1][(int)x].GetValue();
+                                x3=Plano[(int)y][(int)x+1].GetValue();
+                                x4=Plano[(int)y+1][(int)x+1].GetValue();
+                                aux=(1-dx)*(1-dy)*x1+(1-dx)*dy*x2+dx*(1-dy)*x3+dx*dy*x4;
+                                Aux.Plano[f][c].SetValue(aux);
+                        }
+                }
+        }
+}
+

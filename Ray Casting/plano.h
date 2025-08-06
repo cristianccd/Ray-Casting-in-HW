@@ -14,7 +14,7 @@ class plano
 private:	// User declarations
         float TamX,TamY;
         normal Normal;
-        elemplano **Plano;
+
         BYTE *LinePtr;
         int LUT[256];
         int Histo[256];
@@ -44,7 +44,14 @@ public:         // User declarations
         void UmbralFijo(int Umbral);
         float Isodata();
         void Ecualizar();
-        
+        int GetSize(int index);
+        void IzqDer();
+        void BrilloContr(int Brillo, int Contraste);
+        plano(plano & original);
+        plano & operator=(plano &original);
+        void Bilinear(plano &Aux,float FE, int X, int Y);
+        elemplano **Plano;
+
 };
 //---------------------------------------------------------------------------
 #endif

@@ -366,29 +366,6 @@ object FormPpal: TFormPpal
       Font.Style = [fsBold]
       ParentFont = False
     end
-    object UpDown1: TUpDown
-      Left = 8
-      Top = 40
-      Width = 161
-      Height = 17
-      Min = 0
-      Max = 1000
-      Orientation = udHorizontal
-      Position = 0
-      TabOrder = 0
-      Wrap = False
-    end
-    object UpDown2: TUpDown
-      Left = 8
-      Top = 100
-      Width = 161
-      Height = 17
-      Min = 0
-      Orientation = udHorizontal
-      Position = 0
-      TabOrder = 1
-      Wrap = False
-    end
     object Edit9: TEdit
       Left = 136
       Top = 76
@@ -400,7 +377,7 @@ object FormPpal: TFormPpal
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      TabOrder = 2
+      TabOrder = 0
       Text = '0'
     end
     object Edit8: TEdit
@@ -414,8 +391,30 @@ object FormPpal: TFormPpal
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
-      TabOrder = 3
+      TabOrder = 1
       Text = '0'
+    end
+    object ScrollBar1: TScrollBar
+      Left = 8
+      Top = 40
+      Width = 161
+      Height = 25
+      Enabled = False
+      Max = 255
+      PageSize = 0
+      TabOrder = 2
+      OnChange = ScrollBar1Change
+    end
+    object ScrollBar2: TScrollBar
+      Left = 8
+      Top = 104
+      Width = 161
+      Height = 25
+      Max = 150
+      PageSize = 0
+      Position = 100
+      TabOrder = 3
+      OnChange = ScrollBar1Change
     end
   end
   object GroupBox4: TGroupBox
@@ -566,51 +565,66 @@ object FormPpal: TFormPpal
     TabOrder = 9
     object Bevel6: TBevel
       Left = 8
-      Top = 32
+      Top = 16
       Width = 161
       Height = 97
     end
-    object RadioButton3: TRadioButton
-      Left = 32
-      Top = 40
-      Width = 113
-      Height = 17
-      Caption = 'Ninguna'
-      Checked = True
-      TabOrder = 0
-      TabStop = True
-    end
-    object RadioButton4: TRadioButton
-      Left = 32
-      Top = 56
-      Width = 113
-      Height = 17
-      Caption = 'Altos'
-      TabOrder = 1
-    end
-    object RadioButton5: TRadioButton
+    object RadioButton7: TRadioButton
       Left = 32
       Top = 88
       Width = 113
       Height = 17
-      Caption = 'Bajos'
-      TabOrder = 2
+      Caption = 'Exponencial'
+      TabOrder = 0
     end
-    object RadioButton6: TRadioButton
+    object RadioButton5: TRadioButton
       Left = 32
       Top = 72
       Width = 113
       Height = 17
-      Caption = 'Medios'
-      TabOrder = 3
+      Caption = 'Bajos'
+      TabOrder = 1
     end
-    object RadioButton7: TRadioButton
+    object RadioButton6: TRadioButton
       Left = 32
-      Top = 104
+      Top = 56
       Width = 113
       Height = 17
-      Caption = 'Logaritmica'
+      Caption = 'Medios'
+      TabOrder = 2
+    end
+    object RadioButton4: TRadioButton
+      Left = 32
+      Top = 40
+      Width = 113
+      Height = 17
+      Caption = 'Altos'
+      TabOrder = 3
+    end
+    object RadioButton3: TRadioButton
+      Left = 32
+      Top = 24
+      Width = 113
+      Height = 17
+      Caption = 'Ninguna'
+      Checked = True
       TabOrder = 4
+      TabStop = True
+    end
+    object Button1: TButton
+      Left = 64
+      Top = 120
+      Width = 57
+      Height = 17
+      Caption = 'PRE&VIA'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 5
+      OnClick = Button1Click
     end
   end
   object Chart1: TChart
@@ -690,10 +704,6 @@ object FormPpal: TFormPpal
       object Isodata1: TMenuItem
         Caption = 'Isodata'
         OnClick = Isodata1Click
-      end
-      object Umbralizacin1: TMenuItem
-        Caption = 'Umbralizaci'#243'n'
-        OnClick = Umbralizacin1Click
       end
     end
     object Filtros1: TMenuItem

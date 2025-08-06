@@ -52,7 +52,6 @@ __published:	// IDE-managed Components
         TMenuItem *Zoom1;
         TMenuItem *E1;
         TMenuItem *Isodata1;
-        TMenuItem *Umbralizacin1;
         TMenuItem *Ecualizacin1;
         TGroupBox *GroupBox3;
         TCheckBox *CheckBox1;
@@ -70,8 +69,6 @@ __published:	// IDE-managed Components
         TBitBtn *BitBtn1;
         TGroupBox *ByC;
         TGroupBox *Salir;
-        TUpDown *UpDown1;
-        TUpDown *UpDown2;
         TLabel *Label4;
         TLabel *Label5;
         TEdit *Edit9;
@@ -96,11 +93,6 @@ __published:	// IDE-managed Components
         TEdit *Edit13;
         TCheckBox *CheckBox5;
         TGroupBox *GroupBox6;
-        TRadioButton *RadioButton3;
-        TRadioButton *RadioButton4;
-        TRadioButton *RadioButton5;
-        TRadioButton *RadioButton6;
-        TRadioButton *RadioButton7;
         TSaveDialog *SaveDialog1;
         TPrintDialog *PrintDialog1;
         TMenuItem *Imprimir1;
@@ -112,6 +104,14 @@ __published:	// IDE-managed Components
         TEdit *Edit12;
         TAreaSeries *Series1;
         TMenuItem *Bilinear1;
+        TRadioButton *RadioButton7;
+        TRadioButton *RadioButton5;
+        TRadioButton *RadioButton6;
+        TRadioButton *RadioButton4;
+        TRadioButton *RadioButton3;
+        TButton *Button1;
+        TScrollBar *ScrollBar1;
+        TScrollBar *ScrollBar2;
         void __fastcall Abrir1Click(TObject *Sender);
         void __fastcall BitBtn1Click(TObject *Sender);
         void __fastcall Image1MouseMove(TObject *Sender, TShiftState Shift,
@@ -122,7 +122,6 @@ __published:	// IDE-managed Components
         void __fastcall Salir1Click(TObject *Sender);
         void __fastcall Ecualizacin1Click(TObject *Sender);
         void __fastcall Isodata1Click(TObject *Sender);
-        void __fastcall Umbralizacin1Click(TObject *Sender);
         void __fastcall PasaBajos1Click(TObject *Sender);
         void __fastcall PasaAltos1Click(TObject *Sender);
         void __fastcall Rotar1Click(TObject *Sender);
@@ -134,6 +133,11 @@ __published:	// IDE-managed Components
         void __fastcall CheckBox4Click(TObject *Sender);
         void __fastcall Imprimir1Click(TObject *Sender);
         void __fastcall CheckBox5Click(TObject *Sender);
+        void __fastcall Button1Click(TObject *Sender);
+        void __fastcall ScrollBar1Change(TObject *Sender);
+        void __fastcall ScrollBar2Change(TObject *Sender);
+        void __fastcall Image1MouseMoveMouseWheel(TObject *Sender,
+      TShiftState Shift, int X, int Y, int WheelDelta);
 private:	// User declarations
         int NoFiles;
         AnsiString *BmpFiles;
@@ -144,13 +148,14 @@ private:	// User declarations
         Graphics::TBitmap *Bmp;
 public:		// User declarations
         voxel *Vox;
-        plano Plano;
+        plano Plano,Aux;
         normal Vect;
         __fastcall TFormPpal(TComponent* Owner);
         void ConfigImage(TImage * Image, int NBits, int X, int Y);
         void BorrarImg(TImage *);
         void ChgStatus(bool status);
         int Azimuth,Elevacion;
+        void SelectLUT();
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TFormPpal *FormPpal;
