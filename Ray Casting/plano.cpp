@@ -98,7 +98,6 @@ void plano::Rotar(float azi, float elev, float tilt)
         RotY=sin(2*M_PI/360*azi)*sin(2*M_PI/360*elev);
         RotZ=cos(2*M_PI/360*elev);
 
-        AngX
 
        /* RotX=cos(2*M_PI/360*elev);
         RotY=sin(2*M_PI/360*azi);
@@ -245,8 +244,12 @@ void plano::Restore()
 
 void plano::RotarXYZ(float AngX, float AngY, float AngZ)
 {
-        //TODO: Add your source code here
+        float TX,TY,TZ;
         float X,Y,Z,X_,Y_,Z_;
+        TX=Normal.GetPto(0);
+        TY=Normal.GetPto(1);
+        TZ=Normal.GetPto(2);
+        Trasladar(-TX,-TY,-TZ);
         //Rot X
         for (int j=0;j<TamY;j++)
                 for (int i=0;i<TamX;i++)
@@ -258,8 +261,6 @@ void plano::RotarXYZ(float AngX, float AngY, float AngZ)
                         Y_=Y*cos(2*M_PI/360*AngX)-Z*sin(2*M_PI/360*AngX);
                         Z_=Y*sin(2*M_PI/360*AngX)+Z*cos(2*M_PI/360*AngX);
                         Plano[i][j].SetCoords(X_,Y_,Z_);
-                        if(j==TamY/2&&i==TamX/2)
-                                Normal.SetPto(X_,Y_,Z_);
                 }
         X=Normal.GetCoords(0);
         Y=Normal.GetCoords(1);
@@ -279,8 +280,6 @@ void plano::RotarXYZ(float AngX, float AngY, float AngZ)
                         Y_=Y;
                         Z_=X*(-sin(2*M_PI/360*AngY))+Z*cos(2*M_PI/360*AngY);
                         Plano[i][j].SetCoords(X_,Y_,Z_);
-                        if(j==TamY/2&&i==TamX/2)
-                                Normal.SetPto(X_,Y_,Z_);
                 }
         X=Normal.GetCoords(0);
         Y=Normal.GetCoords(1);
@@ -300,8 +299,6 @@ void plano::RotarXYZ(float AngX, float AngY, float AngZ)
                         Y_=X*sin(2*M_PI/360*AngZ)+Y*cos(2*M_PI/360*AngZ);
                         Z_=Z;
                         Plano[i][j].SetCoords(X_,Y_,Z_);
-                        if(j==TamY/2&&i==TamX/2)
-                                Normal.SetPto(X_,Y_,Z_);
                 }
         X=Normal.GetCoords(0);
         Y=Normal.GetCoords(1);
@@ -310,5 +307,58 @@ void plano::RotarXYZ(float AngX, float AngY, float AngZ)
         Y_=X*sin(2*M_PI/360*AngZ)+Y*cos(2*M_PI/360*AngZ);
         Z_=Z;
         Normal.SetCoords(X_,Y_,Z_);
+
+        //Vuelvo al lugar original
+        Trasladar(TX,TY,TZ);
+
+}
+
+void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
+{
+        float diametro=sqrt(pow(TamX,2)+pow(TamY,2)+pow(Vox->getTam(2),2));
+        float radio=diametro/2;
+        float centroX=TamX/2;
+        float centroY=TamY/2;
+        float centroZ=Vox->getTam(2)/2;
+
+        float RotX,RotY,RotZ;
+        RotX=sin(2*M_PI/360*Elev)*cos(2*M_PI/360*Elev);
+        RotY=sin(2*M_PI/360*Azi)*sin(2*M_PI/360*Elev);
+        RotZ=cos(2*M_PI/360*Elev);
+
+        normal Vision;
+        //El punto inicial es el cruce con la esfera
+        Vision.SetCoords(RotX,RotY,RotZ);
+        Vision.normalizar();
+        RotX=Vision.GetCoords(0);
+        RotY=Vision.GetCoords(1);
+        RotZ=Vision.GetCoords(2);
+        //La dir de vision es la opuesta, asi mira dentro de la esfera
+        Vision.SetCoords(-RotX,-RotY,-RotZ);
+        //Tengo las coordenadas normalizadas, ahora multiplico por el radio
+        RotX=RotX*radio;
+        RotY=RotY*radio;
+        RotZ=RotZ*radio;
+        //Ese es el punto de inicio de mi vector normal
+        Vision.SetPto(RotX,RotY,RotZ);
+        //Ya seteado el destino, ahora tengo que calcular la rotacion del plano
+        //Veo cuanto hay q rotar y en que direccion
+        float DirX,DirY,DirZ,PX,PY,PZ,O_Azi,O_Elev,O_Tilt;
+        DirX=Normal.GetCoords(0);
+        DirY=Normal.GetCoords(1);
+        DirZ=Normal.GetCoords(2);
+        PX=Normal.GetPto(0);
+        PY=Normal.GetPto(1);
+        PZ=Normal.GetPto(2);
+        //Calculo los angulos originales
+        O_Azi=atan(DirY/DirX)/(2*M_PI)*360;
+        O_Elev=acos(DirZ)/(2*M_PI)*360;
+        //Calculo la rotacion necesaria (rotacion con respecto al origen!)
+        float DifRotY=0,DifRotX=0,DifRotZ=0;
+        DifRotY=Elev-O_Elev;
+        DifRotZ=Azi-O_Azi;
+        //Roto el plano
+        RotarXYZ(Tilt,DifRotY,DifRotZ);
+        
 
 }

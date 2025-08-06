@@ -30,6 +30,7 @@ public:         // User declarations
         void Borrar();
         void Restore();
         void RotarXYZ(float AngX, float AngY, float AngZ);
+        void VerPlano(voxel *Vox, float Azi, float Elev, float Tilt);
         
 };
 //---------------------------------------------------------------------------

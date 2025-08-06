@@ -262,3 +262,27 @@ void __fastcall TFormPpal::Button9Click(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TFormPpal::Button10Click(TObject *Sender)
+{
+        int AX,AY,AZ;
+        AX=AnsiReplaceText(Edit14->Text,".",",").ToDouble();
+        AY=AnsiReplaceText(Edit15->Text,".",",").ToDouble();
+        AZ=AnsiReplaceText(Edit16->Text,".",",").ToDouble();
+        Plano.RotarXYZ(AX,AY,AZ);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::Button11Click(TObject *Sender)
+{
+        Panel2->Show();
+        FormPpal->Refresh();
+        int Azi,Elev,Tilt;
+        Azi=AnsiReplaceText(Edit17->Text,".",",").ToDouble();
+        Elev=AnsiReplaceText(Edit18->Text,".",",").ToDouble();
+        Tilt=AnsiReplaceText(Edit19->Text,".",",").ToDouble();
+        Plano.VerPlano(Vox,Azi,Elev,Tilt);
+        Panel2->Hide();
+        FormPpal->Refresh();
+}
+//---------------------------------------------------------------------------
+

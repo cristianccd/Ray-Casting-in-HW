@@ -68,6 +68,20 @@ __published:	// IDE-managed Components
         TLabel *Label9;
         TButton *Button8;
         TButton *Button9;
+        TLabel *Label10;
+        TEdit *Edit14;
+        TEdit *Edit15;
+        TLabel *Label11;
+        TLabel *Label12;
+        TEdit *Edit16;
+        TButton *Button10;
+        TLabel *Label13;
+        TEdit *Edit17;
+        TEdit *Edit18;
+        TLabel *Label14;
+        TLabel *Label15;
+        TEdit *Edit19;
+        TButton *Button11;
         void __fastcall Abrir1Click(TObject *Sender);
         void __fastcall BitBtn1Click(TObject *Sender);
         void __fastcall ListBox1Click(TObject *Sender);
@@ -82,6 +96,8 @@ __published:	// IDE-managed Components
         void __fastcall Button7Click(TObject *Sender);
         void __fastcall Button8Click(TObject *Sender);
         void __fastcall Button9Click(TObject *Sender);
+        void __fastcall Button10Click(TObject *Sender);
+        void __fastcall Button11Click(TObject *Sender);
 private:	// User declarations
         int NoFiles;
         AnsiString *BmpFiles;
