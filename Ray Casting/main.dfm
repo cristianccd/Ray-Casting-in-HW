@@ -1,8 +1,9 @@
 object FormPpal: TFormPpal
-  Left = 233
-  Top = 67
-  Width = 729
+  Left = 326
+  Top = 71
+  Width = 913
   Height = 619
+  AlphaBlend = True
   AutoSize = True
   BorderIcons = [biSystemMenu, biMinimize, biMaximize, biHelp]
   Caption = '::: MIP y Volume Rendering ::: Cristian D'#39'Alessandro :::'
@@ -34,7 +35,7 @@ object FormPpal: TFormPpal
     end
   end
   object Panel1: TPanel
-    Left = 536
+    Left = 720
     Top = 0
     Width = 177
     Height = 129
@@ -186,9 +187,9 @@ object FormPpal: TFormPpal
     TabOrder = 4
     object Bevel3: TBevel
       Left = 8
-      Top = 141
+      Top = 160
       Width = 161
-      Height = 84
+      Height = 57
     end
     object Bevel1: TBevel
       Left = 8
@@ -198,7 +199,7 @@ object FormPpal: TFormPpal
     end
     object Bevel2: TBevel
       Left = 8
-      Top = 77
+      Top = 85
       Width = 161
       Height = 57
     end
@@ -214,7 +215,7 @@ object FormPpal: TFormPpal
     end
     object RadioButton1: TRadioButton
       Left = 16
-      Top = 88
+      Top = 96
       Width = 113
       Height = 17
       Caption = 'Volume Rendering'
@@ -225,7 +226,7 @@ object FormPpal: TFormPpal
     end
     object RadioButton2: TRadioButton
       Left = 16
-      Top = 104
+      Top = 120
       Width = 113
       Height = 17
       Caption = 'MIP'
@@ -277,7 +278,7 @@ object FormPpal: TFormPpal
     end
     object StaticText7: TStaticText
       Left = 32
-      Top = 160
+      Top = 168
       Width = 50
       Height = 17
       Caption = 'Azimuth= '
@@ -285,7 +286,7 @@ object FormPpal: TFormPpal
     end
     object StaticText8: TStaticText
       Left = 24
-      Top = 184
+      Top = 192
       Width = 60
       Height = 17
       Caption = 'Elevacion= '
@@ -293,7 +294,7 @@ object FormPpal: TFormPpal
     end
     object Edit5: TEdit
       Left = 80
-      Top = 158
+      Top = 166
       Width = 41
       Height = 21
       Enabled = False
@@ -302,7 +303,7 @@ object FormPpal: TFormPpal
     end
     object Edit6: TEdit
       Left = 80
-      Top = 182
+      Top = 190
       Width = 41
       Height = 21
       Enabled = False
@@ -311,7 +312,7 @@ object FormPpal: TFormPpal
     end
   end
   object Salir: TGroupBox
-    Left = 536
+    Left = 720
     Top = 520
     Width = 177
     Height = 41
@@ -337,7 +338,7 @@ object FormPpal: TFormPpal
     Left = 536
     Top = 432
     Width = 177
-    Height = 89
+    Height = 129
     TabOrder = 6
     object Label4: TLabel
       Left = 68
@@ -353,8 +354,8 @@ object FormPpal: TFormPpal
       ParentFont = False
     end
     object Label5: TLabel
-      Left = 56
-      Top = 45
+      Left = 48
+      Top = 69
       Width = 76
       Height = 13
       Caption = 'CONTRASTE'
@@ -367,10 +368,11 @@ object FormPpal: TFormPpal
     end
     object UpDown1: TUpDown
       Left = 8
-      Top = 24
+      Top = 32
       Width = 161
       Height = 17
       Min = 0
+      Max = 1000
       Orientation = udHorizontal
       Position = 0
       TabOrder = 0
@@ -378,7 +380,7 @@ object FormPpal: TFormPpal
     end
     object UpDown2: TUpDown
       Left = 8
-      Top = 60
+      Top = 92
       Width = 161
       Height = 17
       Min = 0
@@ -387,6 +389,20 @@ object FormPpal: TFormPpal
       TabOrder = 1
       Wrap = False
     end
+    object Edit9: TEdit
+      Left = 136
+      Top = 68
+      Width = 33
+      Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -4
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      Text = '0'
+    end
     object Edit8: TEdit
       Left = 136
       Top = 8
@@ -394,26 +410,215 @@ object FormPpal: TFormPpal
       Height = 21
       Font.Charset = DEFAULT_CHARSET
       Font.Color = clWindowText
-      Font.Height = -8
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 2
-      Text = '0'
-    end
-    object Edit9: TEdit
-      Left = 136
-      Top = 44
-      Width = 33
-      Height = 21
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -8
+      Font.Height = -4
       Font.Name = 'MS Sans Serif'
       Font.Style = []
       ParentFont = False
       TabOrder = 3
       Text = '0'
+    end
+  end
+  object GroupBox4: TGroupBox
+    Left = 536
+    Top = 0
+    Width = 177
+    Height = 130
+    Caption = 'Umbrales'
+    TabOrder = 7
+    object Bevel4: TBevel
+      Left = 8
+      Top = 16
+      Width = 161
+      Height = 105
+    end
+    object StaticText9: TStaticText
+      Left = 32
+      Top = 48
+      Width = 42
+      Height = 17
+      Caption = 'Inferior='
+      TabOrder = 0
+    end
+    object StaticText10: TStaticText
+      Left = 36
+      Top = 24
+      Width = 38
+      Height = 17
+      Caption = 'Ruido='
+      TabOrder = 1
+    end
+    object Edit7: TEdit
+      Left = 80
+      Top = 44
+      Width = 41
+      Height = 21
+      Enabled = False
+      TabOrder = 2
+      Text = '200'
+    end
+    object Edit10: TEdit
+      Left = 80
+      Top = 20
+      Width = 41
+      Height = 21
+      TabOrder = 3
+      Text = '50'
+    end
+    object CheckBox4: TCheckBox
+      Left = 40
+      Top = 96
+      Width = 97
+      Height = 17
+      Caption = 'Segmentacion'
+      TabOrder = 4
+      OnClick = CheckBox4Click
+    end
+  end
+  object StaticText11: TStaticText
+    Left = 560
+    Top = 72
+    Width = 49
+    Height = 17
+    Caption = 'Superior='
+    TabOrder = 8
+  end
+  object Edit11: TEdit
+    Left = 616
+    Top = 68
+    Width = 41
+    Height = 21
+    Enabled = False
+    TabOrder = 9
+    Text = '250'
+  end
+  object GroupBox5: TGroupBox
+    Left = 720
+    Top = 136
+    Width = 177
+    Height = 121
+    Caption = 'Profundidad Ray Casting'
+    TabOrder = 10
+    object Bevel5: TBevel
+      Left = 8
+      Top = 16
+      Width = 161
+      Height = 97
+    end
+    object StaticText12: TStaticText
+      Left = 32
+      Top = 56
+      Width = 4
+      Height = 4
+      TabOrder = 0
+    end
+    object StaticText13: TStaticText
+      Left = 40
+      Top = 32
+      Width = 45
+      Height = 17
+      Caption = 'M'#237'nima='
+      TabOrder = 1
+    end
+    object Edit13: TEdit
+      Left = 88
+      Top = 28
+      Width = 41
+      Height = 21
+      Enabled = False
+      TabOrder = 2
+      Text = '0'
+    end
+    object CheckBox5: TCheckBox
+      Left = 48
+      Top = 88
+      Width = 97
+      Height = 17
+      Caption = 'Autom'#225'tico'
+      Checked = True
+      State = cbChecked
+      TabOrder = 3
+      OnClick = CheckBox4Click
+    end
+  end
+  object Edit12: TEdit
+    Left = 808
+    Top = 188
+    Width = 41
+    Height = 21
+    Enabled = False
+    TabOrder = 11
+    Text = '0'
+  end
+  object StaticText14: TStaticText
+    Left = 760
+    Top = 192
+    Width = 46
+    Height = 17
+    Caption = 'M'#225'xima='
+    TabOrder = 12
+  end
+  object GroupBox6: TGroupBox
+    Left = 720
+    Top = 264
+    Width = 177
+    Height = 121
+    Caption = 'LUT'
+    TabOrder = 13
+    object RadioButton3: TRadioButton
+      Left = 8
+      Top = 24
+      Width = 113
+      Height = 17
+      Caption = 'Ninguna'
+      Checked = True
+      TabOrder = 0
+      TabStop = True
+    end
+    object RadioButton4: TRadioButton
+      Left = 8
+      Top = 40
+      Width = 113
+      Height = 17
+      Caption = 'Altos'
+      TabOrder = 1
+    end
+    object RadioButton5: TRadioButton
+      Left = 8
+      Top = 72
+      Width = 113
+      Height = 17
+      Caption = 'Bajos'
+      TabOrder = 2
+    end
+    object RadioButton6: TRadioButton
+      Left = 8
+      Top = 56
+      Width = 113
+      Height = 17
+      Caption = 'Medios'
+      TabOrder = 3
+    end
+    object RadioButton7: TRadioButton
+      Left = 8
+      Top = 88
+      Width = 113
+      Height = 17
+      Caption = 'Logaritmica'
+      TabOrder = 4
+    end
+  end
+  object GroupBox7: TGroupBox
+    Left = 720
+    Top = 392
+    Width = 177
+    Height = 121
+    Caption = 'GroupBox7'
+    TabOrder = 14
+    object Bevel6: TBevel
+      Left = 8
+      Top = 16
+      Width = 161
+      Height = 97
     end
   end
   object OpenDialog1: TOpenDialog
@@ -424,11 +629,18 @@ object FormPpal: TFormPpal
       Caption = '&Archivo'
       object Abrir1: TMenuItem
         Caption = 'Abrir...'
+        ShortCut = 16463
         OnClick = Abrir1Click
       end
       object Guardar1: TMenuItem
         Caption = 'Guardar...'
+        ShortCut = 16467
         OnClick = Guardar1Click
+      end
+      object Imprimir1: TMenuItem
+        Caption = 'Imprimir'
+        ShortCut = 16464
+        OnClick = Imprimir1Click
       end
       object Salir1: TMenuItem
         Caption = 'Salir'
@@ -472,5 +684,11 @@ object FormPpal: TFormPpal
         OnClick = Zoom1Click
       end
     end
+  end
+  object SaveDialog1: TSaveDialog
+    Left = 64
+  end
+  object PrintDialog1: TPrintDialog
+    Left = 96
   end
 end

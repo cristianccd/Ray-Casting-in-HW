@@ -17,6 +17,7 @@
 #include "plano.h"
 #include <Buttons.hpp>
 #include <ComCtrls.hpp>
+#include <ExtDlgs.hpp>
 //---------------------------------------------------------------------------
 class TFormPpal : public TForm
 {
@@ -69,7 +70,6 @@ __published:	// IDE-managed Components
         TUpDown *UpDown2;
         TLabel *Label4;
         TLabel *Label5;
-        TEdit *Edit8;
         TEdit *Edit9;
         TBitBtn *BitBtn2;
         TProgressBar *ProgressBar1;
@@ -77,6 +77,35 @@ __published:	// IDE-managed Components
         TStaticText *StaticText8;
         TEdit *Edit5;
         TEdit *Edit6;
+        TGroupBox *GroupBox4;
+        TBevel *Bevel4;
+        TStaticText *StaticText9;
+        TStaticText *StaticText10;
+        TEdit *Edit7;
+        TEdit *Edit10;
+        TStaticText *StaticText11;
+        TEdit *Edit11;
+        TCheckBox *CheckBox4;
+        TEdit *Edit8;
+        TGroupBox *GroupBox5;
+        TBevel *Bevel5;
+        TStaticText *StaticText12;
+        TStaticText *StaticText13;
+        TEdit *Edit13;
+        TCheckBox *CheckBox5;
+        TEdit *Edit12;
+        TStaticText *StaticText14;
+        TGroupBox *GroupBox6;
+        TRadioButton *RadioButton3;
+        TRadioButton *RadioButton4;
+        TRadioButton *RadioButton5;
+        TRadioButton *RadioButton6;
+        TRadioButton *RadioButton7;
+        TGroupBox *GroupBox7;
+        TBevel *Bevel6;
+        TSaveDialog *SaveDialog1;
+        TPrintDialog *PrintDialog1;
+        TMenuItem *Imprimir1;
         void __fastcall Abrir1Click(TObject *Sender);
         void __fastcall BitBtn1Click(TObject *Sender);
         void __fastcall Image1MouseMove(TObject *Sender, TShiftState Shift,
@@ -96,6 +125,8 @@ __published:	// IDE-managed Components
         void __fastcall RadioButton1Click(TObject *Sender);
         void __fastcall Image1MouseDown(TObject *Sender,
           TMouseButton Button, TShiftState Shift, int X, int Y);
+        void __fastcall CheckBox4Click(TObject *Sender);
+        void __fastcall Imprimir1Click(TObject *Sender);
 private:	// User declarations
         int NoFiles;
         AnsiString *BmpFiles;

@@ -8,6 +8,7 @@
 #include "voxel.h"
 #include "elemplano.h"
 #include "plano.h"
+#include <Printers.hpp>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma resource "*.dfm"
@@ -80,8 +81,10 @@ void __fastcall TFormPpal::Abrir1Click(TObject *Sender)
                 ConfigImage(Image1,8,Bmp->Width,Bmp->Height);
                 Image1->Enabled=true;
                 Plano.VerPlano(Vox,0,90,0);
-                Plano.Previa(Vox);
+                Plano.Previa(Vox,Edit10->Text.ToInt());
                 Plano.Mostrar(Image1);
+                RadioButton1->Checked=true;
+                CheckBox1->Checked=true;
         }
         else
         {
@@ -131,6 +134,7 @@ void TFormPpal::ConfigImage(TImage * Image, int NBits, int X, int Y)
 void __fastcall TFormPpal::Image1MouseMove(TObject *Sender,
       TShiftState Shift, int X, int Y)
 {
+        TMouseButton Button;
         Edit1->Text=X;
         Edit2->Text=Y;
         Edit3->Text=(int)Plano.GetElemPlano(X,Y).GetCoords(2);
@@ -164,9 +168,19 @@ void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
         Panel2->Show();
         FormPpal->Refresh();
         Plano.Borrar();
-        BorrarImg(Image1);
         Plano.VerPlano(Vox,Azimuth,Elevacion,0);
-        Plano.CargarPlano(Vox,ProgressBar1,RadioButton1->Checked,RadioButton2->Checked,CheckBox1->Checked);
+        int Usup,Uinf;
+        if(CheckBox4->Checked==true)
+        {
+                Usup=Edit11->Text.ToInt();
+                Uinf=Edit7->Text.ToInt();
+        }
+        else
+        {
+                Usup=255;
+                Uinf=Edit10->Text.ToInt();
+        }
+        Plano.CargarPlano(Vox,ProgressBar1,RadioButton1->Checked,RadioButton2->Checked,CheckBox1->Checked,Uinf,Usup);
         if(CheckBox2->Checked==true)
         {
                 //Ecualizar
@@ -175,6 +189,7 @@ void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
         {
                 //Isodata
         }
+        BorrarImg(Image1);
         Plano.Mostrar(Image1);
         Panel2->Hide();
         FormPpal->Refresh();
@@ -218,7 +233,29 @@ void TFormPpal::ChgStatus(bool status)
 }
 void __fastcall TFormPpal::Guardar1Click(TObject *Sender)
 {
-        //GUARDAR        
+        //GUARDAR
+        SaveDialog1->Filter = "Bmp files (*.bmp)|*.BMP";
+        if(SaveDialog1->Execute())
+        {
+                Image1->Picture->SaveToFile(SaveDialog1->FileName+".bmp");
+        }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::Imprimir1Click(TObject *Sender)
+{
+        //IMPRIMIR
+
+        TPrinter *Prntr = Printer();
+        if(PrintDialog1->Execute())
+        {
+                TRect R=Rect(Prntr->PageWidth/2-256*4,Prntr->PageHeight/2-256*4,Prntr->PageWidth/2+256*4,Prntr->PageHeight/2+256*4);
+                Image1->Transparent=true;
+                Prntr->BeginDoc();
+                Prntr->Canvas->StretchDraw(R,Image1->Picture->Graphic);
+                Prntr->EndDoc();
+                Image1->Transparent=false;
+        }
 }
 //---------------------------------------------------------------------------
 
@@ -287,13 +324,32 @@ void __fastcall TFormPpal::RadioButton1Click(TObject *Sender)
 void __fastcall TFormPpal::Image1MouseDown(TObject *Sender,
       TMouseButton Button, TShiftState Shift, int X, int Y)
 {
-        Azimuth=X*180/512-180;
-        Elevacion=180-Y*180/512;
+        Azimuth=X*360/512-180;
+        Elevacion=Y*360/512-180;
         Edit5->Text=Azimuth;
         Edit6->Text=Elevacion;
         Plano.VerPlano(Vox,Azimuth,Elevacion,0);
-        Plano.Previa(Vox);
+        Plano.Previa(Vox,Edit10->Text.ToInt());
         Plano.Mostrar(Image1);
 }
 //---------------------------------------------------------------------------
+
+
+void __fastcall TFormPpal::CheckBox4Click(TObject *Sender)
+{
+        if(CheckBox4->Checked==true)
+        {
+                Edit7->Enabled=true;
+                Edit11->Enabled=true;
+                Edit10->Enabled=false;
+        }
+        else
+        {
+                Edit7->Enabled=false;
+                Edit11->Enabled=false;
+                Edit10->Enabled=true;
+        }
+}
+//---------------------------------------------------------------------------
+
 

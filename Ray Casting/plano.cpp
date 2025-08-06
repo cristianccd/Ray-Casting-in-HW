@@ -61,7 +61,7 @@ elemplano plano::GetElemPlano(int i, int j)
 }
 //---------------------------------------------------------------------------
 
-void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, bool Trilinear)
+void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, bool Trilinear, int Uinf, int Usup)
 {
         Barra->Position=0;
         Barra->Max=TamY;
@@ -87,7 +87,7 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
                                         Rx=Nx*lambda+Px;
                                         Ry=Ny*lambda+Py;
                                         Rz=Nz*lambda+Pz;
-                                        if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>40)
+                                        if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>Uinf&&Vox->getCubo(Rx,Ry,Rz)<=Usup)
                                         {
                                                 a=Rx-(int)Rx;
                                                 b=Ry-(int)Ry;
@@ -123,7 +123,7 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
                                         Rx=Nx*lambda+Px;
                                         Ry=Ny*lambda+Py;
                                         Rz=Nz*lambda+Pz;
-                                        if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>40)
+                                        if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>Uinf&&Vox->getCubo(Rx,Ry,Rz)<=Usup)
                                         {
                                                 Plano[fila][col].SetCoords(Rx,Ry,Rz);
                                                 Plano[fila][col].SetValue(Vox->getCubo(Rx,Ry,Rz));
@@ -150,7 +150,7 @@ void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, 
                                         Rx=Nx*lambda+Px;
                                         Ry=Ny*lambda+Py;
                                         Rz=Nz*lambda+Pz;
-                                        if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>max&&max<255)
+                                        if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>max&&max<255&&Vox->getCubo(Rx,Ry,Rz)>Uinf&&Vox->getCubo(Rx,Ry,Rz)<=Usup)
                                         {
                                                 max=Vox->getCubo(Rx,Ry,Rz);
                                                 Plano[fila][col].SetCoords(Rx,Ry,Rz);
@@ -363,10 +363,9 @@ void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
 }
 //---------------------------------------------------------------------------
 
-void plano::Previa(voxel * Vox)
+void plano::Previa(voxel * Vox,int Uruido)
 {
         float Rx,Ry,Rz;
-        int Ux,Uy;
         float Rad=sqrt(pow(Vox->getTam(0),2)+pow(Vox->getTam(1),2)+pow(Vox->getTam(2),2));
         float Nx,Ny,Nz,Px,Py,Pz;
         Nx=Normal.GetCoords(0);
@@ -376,22 +375,20 @@ void plano::Previa(voxel * Vox)
         {
                 for(int col=0;col<TamX;col++)
                 {
-                        if(fila%8==0&col%8==0)
+                        if(fila%15==0&col%15==0)
                         {
                                 Px=Plano[fila][col].GetCoords(0);
                                 Py=Plano[fila][col].GetCoords(1);
                                 Pz=Plano[fila][col].GetCoords(2);
-                                for(int lambda=0;lambda<Rad;lambda++)
+                                for(int lambda=0;lambda<Rad/2;lambda++)
                                 {
-                                        Rx=Nx*lambda+Px;
-                                        Ry=Ny*lambda+Py;
-                                        Rz=Nz*lambda+Pz;
-                                        if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>40)
+                                        Rx=Nx*2*lambda+Px;
+                                        Ry=Ny*2*lambda+Py;
+                                        Rz=Nz*2*lambda+Pz;
+                                        if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>Uruido)
                                         {
                                                 Plano[fila][col].SetCoords(Rx,Ry,Rz);
                                                 Plano[fila][col].SetValue(Vox->getCubo(Rx,Ry,Rz));
-                                                Ux=col;
-                                                Uy=fila;
                                                 break;
                                         }
                                 }
