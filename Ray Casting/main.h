@@ -66,12 +66,9 @@ __published:	// IDE-managed Components
         TBevel *Bevel1;
         TBevel *Bevel2;
         TBevel *Bevel3;
-        TBitBtn *BitBtn2;
         TBitBtn *BitBtn1;
         TLabel *Label3;
         TEdit *Edit7;
-        TProgressBar *ProgressBar1;
-        TGroupBox *Aplicar;
         TGroupBox *ByC;
         TGroupBox *Salir;
         TUpDown *UpDown1;
@@ -80,6 +77,8 @@ __published:	// IDE-managed Components
         TLabel *Label5;
         TEdit *Edit8;
         TEdit *Edit9;
+        TBitBtn *BitBtn2;
+        TProgressBar *ProgressBar1;
         void __fastcall Abrir1Click(TObject *Sender);
         void __fastcall BitBtn1Click(TObject *Sender);
         void __fastcall Image1MouseMove(TObject *Sender, TShiftState Shift,
@@ -104,7 +103,7 @@ private:	// User declarations
         TStrings *NamesTs;
         Graphics::TBitmap *Bmp;
 public:		// User declarations
-        voxel *Vox,*VoxR;
+        voxel *Vox;
         plano Plano;
         normal Vect;
         __fastcall TFormPpal(TComponent* Owner);

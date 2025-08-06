@@ -160,6 +160,8 @@ void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
         ChgStatus(false);
         Panel2->Show();
         FormPpal->Refresh();
+        int pepe=Vox->getTam(2);
+        if(Vox->getTam(2)==0)return;
         int Azi,Elev,Tilt;
         Azi=AnsiReplaceText(Edit5->Text,".",",").ToDouble();
         Elev=AnsiReplaceText(Edit6->Text,".",",").ToDouble();

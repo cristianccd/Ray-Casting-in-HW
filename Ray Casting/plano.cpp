@@ -64,58 +64,64 @@ elemplano plano::GetElemPlano(int i, int j)
 void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, bool Trilinear)
 {
         Barra->Position=0;
-        Barra->Max=TamY*TamX;
+        Barra->Max=TamY;
         int Rx,Ry,Rz;
         float Rad=sqrt(pow(Vox->getTam(0),2)+pow(Vox->getTam(1),2)+pow(Vox->getTam(2),2));
         float Nx,Ny,Nz,Px,Py,Pz,max=0;
         Nx=Normal.GetCoords(0);
         Ny=Normal.GetCoords(1);
         Nz=Normal.GetCoords(2);
-        for(int fila=0;fila<TamY;fila++)
+        if(Volume==true)
         {
-                for(int col=0;col<TamX;col++)
+                //Volumen
+                for(int fila=0;fila<TamY;fila++)
                 {
-                        Px=Plano[fila][col].GetCoords(0);
-                        Py=Plano[fila][col].GetCoords(1);
-                        Pz=Plano[fila][col].GetCoords(2);
-                        Rx=Nx*Rad+Px;
-                        Ry=Ny*Rad+Py;
-                        Rz=Nz*Rad+Pz;
-                        max=0;
-                        //Si en el centro hay algo tiro el rayo, sino no
-                        if(Rx>Vox->getTam(0)||Ry>Vox->getTam(1)||Rz>Vox->getTam(2))
-                                break;
-
-
-
-
-                        for(int lambda=0;lambda<Rad;lambda++)
+                        Barra->Position++;
+                        for(int col=0;col<TamX;col++)
                         {
-                                Rx=Nx*lambda+Px;
-                                Ry=Ny*lambda+Py;
-                                Rz=Nz*lambda+Pz;
-                                //if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>0&&Ry>0&&Rz>0)
-                                if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0)
+                                Px=Plano[fila][col].GetCoords(0);
+                                Py=Plano[fila][col].GetCoords(1);
+                                Pz=Plano[fila][col].GetCoords(2);
+                                for(int lambda=0;lambda<Rad;lambda++)
                                 {
-                                        //Interpolacion trilinear
-                                        if(Volume==true&&Vox->getCubo(Rx,Ry,Rz)>30)
+                                        Rx=Nx*lambda+Px;
+                                        Ry=Ny*lambda+Py;
+                                        Rz=Nz*lambda+Pz;
+                                        if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>40)
                                         {
                                                 Plano[fila][col].SetCoords(Rx,Ry,Rz);
                                                 Plano[fila][col].SetValue(Vox->getCubo(Rx,Ry,Rz));
                                                 break;
                                         }
-                                        //Elimino ruido de la TC y comparo por el max
-                                        if(MIP==true&&Vox->getCubo(Rx,Ry,Rz)>30&&Vox->getCubo(Rx,Ry,Rz)>max)
+                                }
+                        }
+                }
+        }
+        if(MIP==true)
+        {
+                //MIP
+                for(int fila=0;fila<TamY;fila++)
+                {
+                        Barra->Position++;
+                        for(int col=0;col<TamX;col++)
+                        {
+                                Px=Plano[fila][col].GetCoords(0);
+                                Py=Plano[fila][col].GetCoords(1);
+                                Pz=Plano[fila][col].GetCoords(2);
+                                max=0;
+                                for(int lambda=0;lambda<Rad;lambda++)
+                                {
+                                        Rx=Nx*lambda+Px;
+                                        Ry=Ny*lambda+Py;
+                                        Rz=Nz*lambda+Pz;
+                                        if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0&&sqrt(pow(Rx,2)+pow(Ry,2)+pow(Rz,2))<Rad&&Vox->getCubo(Rx,Ry,Rz)>max&&max<255)
                                         {
                                                 max=Vox->getCubo(Rx,Ry,Rz);
                                                 Plano[fila][col].SetCoords(Rx,Ry,Rz);
                                                 Plano[fila][col].SetValue(max);
-                                                if(max==255)
-                                                        break;
                                         }
                                 }
                         }
-                        Barra->Position++;
                 }
         }
 }

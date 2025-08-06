@@ -31,39 +31,6 @@ object FormPpal: TFormPpal
       OnMouseMove = Image1MouseMove
     end
   end
-  object Aplicar: TGroupBox
-    Left = 536
-    Top = 368
-    Width = 177
-    Height = 65
-    TabOrder = 5
-    object BitBtn2: TBitBtn
-      Left = 40
-      Top = 32
-      Width = 89
-      Height = 25
-      Caption = 'A&PLICAR'
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -11
-      Font.Name = 'MS Sans Serif'
-      Font.Style = [fsBold]
-      ParentFont = False
-      TabOrder = 0
-      OnClick = BitBtn2Click
-      Kind = bkOK
-    end
-    object ProgressBar1: TProgressBar
-      Left = 8
-      Top = 8
-      Width = 161
-      Height = 17
-      Min = 0
-      Max = 1000
-      Smooth = True
-      TabOrder = 1
-    end
-  end
   object Panel1: TPanel
     Left = 536
     Top = 0
@@ -212,7 +179,7 @@ object FormPpal: TFormPpal
     Left = 536
     Top = 136
     Width = 177
-    Height = 233
+    Height = 289
     Caption = 'Panel de Control'
     TabOrder = 4
     object Bevel3: TBevel
@@ -259,7 +226,7 @@ object FormPpal: TFormPpal
       Top = 152
       Width = 49
       Height = 21
-      TabOrder = 0
+      TabOrder = 5
       Text = '0'
     end
     object Edit6: TEdit
@@ -267,7 +234,7 @@ object FormPpal: TFormPpal
       Top = 176
       Width = 49
       Height = 21
-      TabOrder = 1
+      TabOrder = 6
       Text = '0'
     end
     object CheckBox1: TCheckBox
@@ -278,7 +245,7 @@ object FormPpal: TFormPpal
       Caption = 'Filtrado Trilinear'
       Checked = True
       State = cbChecked
-      TabOrder = 2
+      TabOrder = 0
     end
     object RadioButton1: TRadioButton
       Left = 16
@@ -304,7 +271,7 @@ object FormPpal: TFormPpal
       Width = 97
       Height = 17
       Caption = 'Ecualizaci'#243'n'
-      TabOrder = 5
+      TabOrder = 1
     end
     object CheckBox3: TCheckBox
       Left = 16
@@ -312,7 +279,7 @@ object FormPpal: TFormPpal
       Width = 97
       Height = 17
       Caption = 'Isodata'
-      TabOrder = 6
+      TabOrder = 2
     end
     object Edit7: TEdit
       Left = 80
@@ -322,13 +289,40 @@ object FormPpal: TFormPpal
       TabOrder = 7
       Text = '0'
     end
+    object BitBtn2: TBitBtn
+      Left = 40
+      Top = 256
+      Width = 89
+      Height = 25
+      Caption = 'A&PLICAR'
+      Enabled = False
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 8
+      OnClick = BitBtn2Click
+      Kind = bkOK
+    end
+    object ProgressBar1: TProgressBar
+      Left = 8
+      Top = 232
+      Width = 161
+      Height = 17
+      Min = 0
+      Max = 1000
+      Smooth = True
+      TabOrder = 9
+    end
   end
   object Salir: TGroupBox
     Left = 536
     Top = 520
     Width = 177
     Height = 41
-    TabOrder = 6
+    TabOrder = 5
     object BitBtn1: TBitBtn
       Left = 40
       Top = 10
@@ -351,7 +345,7 @@ object FormPpal: TFormPpal
     Top = 432
     Width = 177
     Height = 89
-    TabOrder = 7
+    TabOrder = 6
     object Label4: TLabel
       Left = 68
       Top = 9
