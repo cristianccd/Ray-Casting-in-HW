@@ -3,29 +3,34 @@
 #ifndef planoH
 #define planoH
 
-#include <vcl.h>
-#include <math.h>
-#include <stdio.h>
-#include <Classes.hpp>
-#include <Controls.hpp>
-#include <StdCtrls.hpp>
+#include "normal.h"
+#include "voxel.h"
+#include "elemplano.h"
 //---------------------------------------------------------------------------
 class plano
 {
 private:	// User declarations
-        float PX,PY,PZ;
-        float NX,NY,NZ;
-
+        float TamX,TamY;
+        normal Normal;
+        elemplano **Plano;
+        BYTE *LinePtr;
 public:         // User declarations
-
-
         plano();
-        plano(float,float,float,float,float,float);
+        plano(float tamx,float tamy);
         ~plano();
-        void Rotar(int eje,int ang);
-        void Graficar(TImage *,TImage *,TImage *);
-        void BorrarImages(TImage * Image1, TImage * Image2, TImage * Image3);
+        void Rotar(normal Norm, float Angle);
+        void Rotar(float azi, float elev, float tilt);
+        void Trasladar(float x, float y, float z);
+        //falta borrar el plano, se superponen!!!! dsps q hago mas de 1 muestra
+        void Trasladar(normal Norm);
+        normal GetNormal();
+        elemplano GetElemPlano(int i, int j);
+        void CargarPlano(voxel *Vox);
+        void Mostrar(TImage *Image);
+        void Borrar();
+        void Restore();
+        void RotarXYZ(float AngX, float AngY, float AngZ);
+        
 };
-
-
+//---------------------------------------------------------------------------
 #endif

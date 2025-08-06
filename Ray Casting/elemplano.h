@@ -13,7 +13,7 @@ public:         // User declarations
         elemplano(float x,float y,float z,int v);
         ~elemplano();
         void SetCoords(float x, float y, float z);
-        float * GetCoords();
+        float GetCoords(int index);
         int GetValue();
         void SetValue(int v);
 
