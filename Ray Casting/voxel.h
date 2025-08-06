@@ -28,8 +28,7 @@ public:         // User declarations
         voxel* operator=(voxel *);
         void __fastcall Cargar(AnsiString * S, int No);
         void Mostrar(TImage *, int);
-        int getCubo(int x, int y, int z);
-        int getTam(int index);
+        void Borrar(TImage *);
 };
 //---------------------------------------------------------------------------
 #endif

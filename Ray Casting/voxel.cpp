@@ -101,16 +101,13 @@ void voxel::Mostrar(TImage *Image1, int index)
         Image1->Refresh();
 }
 
-int voxel::getCubo(int x, int y, int z)
+void voxel::Borrar(TImage *Image1)
 {
-        return Cubo[x][y][z];
-}
-
-int voxel::getTam(int index)
-{
-        int Tamanos[3];
-        Tamanos[0]=TamX;
-        Tamanos[1]=TamY;
-        Tamanos[2]=CantImgs;
-        return Tamanos[index];
+        for (int j=0;j<TamY;j++)
+        {
+                LinePtr=(BYTE *) Image1->Picture->Bitmap->ScanLine[j];
+                for (int i=0;i<TamX;i++)
+                        LinePtr[i]=0;
+        }
+        Image1->Refresh();
 }

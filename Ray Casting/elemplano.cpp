@@ -35,14 +35,14 @@ void elemplano::SetCoords(float x, float y, float z)
         Z=z;
 }
 
-float elemplano::GetCoords(int index)
+float * elemplano::GetCoords()
 {
         //TODO: Add your source code here
         float Coords[3];
         Coords[0]=X;
         Coords[1]=Y;
         Coords[2]=Z;
-        return Coords[index];
+        return Coords;
 }
 
 int elemplano::GetValue()
