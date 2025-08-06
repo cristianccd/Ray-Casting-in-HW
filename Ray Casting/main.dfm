@@ -1,7 +1,7 @@
 object FormPpal: TFormPpal
-  Left = 235
-  Top = 2
-  Width = 960
+  Left = 36
+  Top = 22
+  Width = 967
   Height = 704
   Caption = 'Ray Casting'
   Color = clBtnFace
@@ -55,6 +55,69 @@ object FormPpal: TFormPpal
     Width = 21
     Height = 13
     Caption = 'NZ='
+  end
+  object Label7: TLabel
+    Left = 712
+    Top = 290
+    Width = 13
+    Height = 13
+    Caption = 'X='
+  end
+  object Label8: TLabel
+    Left = 792
+    Top = 290
+    Width = 13
+    Height = 13
+    Caption = 'Y='
+  end
+  object Label9: TLabel
+    Left = 872
+    Top = 290
+    Width = 13
+    Height = 13
+    Caption = 'Z='
+  end
+  object Label10: TLabel
+    Left = 712
+    Top = 386
+    Width = 13
+    Height = 13
+    Caption = 'X='
+  end
+  object Label11: TLabel
+    Left = 792
+    Top = 386
+    Width = 13
+    Height = 13
+    Caption = 'Y='
+  end
+  object Label12: TLabel
+    Left = 872
+    Top = 386
+    Width = 13
+    Height = 13
+    Caption = 'Z='
+  end
+  object Label13: TLabel
+    Left = 704
+    Top = 474
+    Width = 23
+    Height = 13
+    Caption = 'AZI='
+  end
+  object Label14: TLabel
+    Left = 776
+    Top = 474
+    Width = 33
+    Height = 13
+    Caption = 'ELEV='
+  end
+  object Label15: TLabel
+    Left = 856
+    Top = 474
+    Width = 29
+    Height = 13
+    Caption = 'TILT='
   end
   object GroupBox1: TGroupBox
     Left = 24
@@ -201,11 +264,11 @@ object FormPpal: TFormPpal
     OnClick = Button2Click
   end
   object Button3: TButton
-    Left = 776
+    Left = 712
     Top = 216
-    Width = 97
+    Width = 73
     Height = 17
-    Caption = 'Rotar Normal'
+    Caption = 'Rotar X'
     TabOrder = 12
     OnClick = Button3Click
   end
@@ -300,6 +363,150 @@ object FormPpal: TFormPpal
       TabOrder = 7
     end
   end
+  object Button4: TButton
+    Left = 776
+    Top = 264
+    Width = 97
+    Height = 17
+    Caption = 'Mostrar Plano'
+    TabOrder = 14
+    OnClick = Button4Click
+  end
+  object Button5: TButton
+    Left = 792
+    Top = 216
+    Width = 73
+    Height = 17
+    Caption = 'Rotar Y'
+    TabOrder = 15
+    OnClick = Button5Click
+  end
+  object Button6: TButton
+    Left = 872
+    Top = 216
+    Width = 73
+    Height = 17
+    Caption = 'Rotar Z'
+    TabOrder = 16
+    OnClick = Button6Click
+  end
+  object Button7: TButton
+    Left = 776
+    Top = 240
+    Width = 97
+    Height = 17
+    Caption = 'Rotar Angulo'
+    TabOrder = 17
+    OnClick = Button7Click
+  end
+  object Edit11: TEdit
+    Left = 728
+    Top = 288
+    Width = 49
+    Height = 21
+    TabOrder = 18
+    Text = '0'
+  end
+  object Edit12: TEdit
+    Left = 808
+    Top = 288
+    Width = 49
+    Height = 21
+    TabOrder = 19
+    Text = '0'
+  end
+  object Edit13: TEdit
+    Left = 888
+    Top = 288
+    Width = 49
+    Height = 21
+    TabOrder = 20
+    Text = '0'
+  end
+  object Button8: TButton
+    Left = 776
+    Top = 312
+    Width = 97
+    Height = 17
+    Caption = 'Trasladar'
+    TabOrder = 21
+    OnClick = Button8Click
+  end
+  object Button9: TButton
+    Left = 776
+    Top = 336
+    Width = 97
+    Height = 17
+    Caption = 'Restaurar'
+    TabOrder = 22
+    OnClick = Button9Click
+  end
+  object Edit14: TEdit
+    Left = 728
+    Top = 384
+    Width = 49
+    Height = 21
+    TabOrder = 23
+    Text = '0'
+  end
+  object Edit15: TEdit
+    Left = 808
+    Top = 384
+    Width = 49
+    Height = 21
+    TabOrder = 24
+    Text = '0'
+  end
+  object Edit16: TEdit
+    Left = 888
+    Top = 384
+    Width = 49
+    Height = 21
+    TabOrder = 25
+    Text = '0'
+  end
+  object Button10: TButton
+    Left = 776
+    Top = 416
+    Width = 97
+    Height = 17
+    Caption = 'Rotar XYZ'
+    TabOrder = 26
+    OnClick = Button10Click
+  end
+  object Edit17: TEdit
+    Left = 728
+    Top = 472
+    Width = 49
+    Height = 21
+    TabOrder = 27
+    Text = '0'
+  end
+  object Edit18: TEdit
+    Left = 808
+    Top = 472
+    Width = 49
+    Height = 21
+    TabOrder = 28
+    Text = '0'
+  end
+  object Edit19: TEdit
+    Left = 888
+    Top = 472
+    Width = 49
+    Height = 21
+    TabOrder = 29
+    Text = '0'
+  end
+  object Button11: TButton
+    Left = 776
+    Top = 504
+    Width = 97
+    Height = 17
+    Caption = 'Ver'
+    TabOrder = 30
+    OnClick = Button11Click
+  end
   object OpenDialog1: TOpenDialog
   end
   object MainMenu1: TMainMenu
@@ -307,7 +514,7 @@ object FormPpal: TFormPpal
     object Archivo1: TMenuItem
       Caption = 'Archivo'
       object Abrir1: TMenuItem
-        Caption = 'Abrir...'
+        Caption = '&Abrir...'
         OnClick = Abrir1Click
       end
     end

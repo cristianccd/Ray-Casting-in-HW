@@ -56,6 +56,32 @@ __published:	// IDE-managed Components
         TStaticText *StaticText4;
         TStaticText *StaticText5;
         TStaticText *StaticText6;
+        TButton *Button4;
+        TButton *Button5;
+        TButton *Button6;
+        TButton *Button7;
+        TEdit *Edit11;
+        TEdit *Edit12;
+        TEdit *Edit13;
+        TLabel *Label7;
+        TLabel *Label8;
+        TLabel *Label9;
+        TButton *Button8;
+        TButton *Button9;
+        TLabel *Label10;
+        TEdit *Edit14;
+        TEdit *Edit15;
+        TLabel *Label11;
+        TLabel *Label12;
+        TEdit *Edit16;
+        TButton *Button10;
+        TLabel *Label13;
+        TEdit *Edit17;
+        TEdit *Edit18;
+        TLabel *Label14;
+        TLabel *Label15;
+        TEdit *Edit19;
+        TButton *Button11;
         void __fastcall Abrir1Click(TObject *Sender);
         void __fastcall BitBtn1Click(TObject *Sender);
         void __fastcall ListBox1Click(TObject *Sender);
@@ -64,6 +90,14 @@ __published:	// IDE-managed Components
         void __fastcall Button2Click(TObject *Sender);
         void __fastcall Image1MouseMove(TObject *Sender, TShiftState Shift,
           int X, int Y);
+        void __fastcall Button4Click(TObject *Sender);
+        void __fastcall Button5Click(TObject *Sender);
+        void __fastcall Button6Click(TObject *Sender);
+        void __fastcall Button7Click(TObject *Sender);
+        void __fastcall Button8Click(TObject *Sender);
+        void __fastcall Button9Click(TObject *Sender);
+        void __fastcall Button10Click(TObject *Sender);
+        void __fastcall Button11Click(TObject *Sender);
 private:	// User declarations
         int NoFiles;
         AnsiString *BmpFiles;
@@ -78,6 +112,7 @@ public:		// User declarations
         normal Vect;
         __fastcall TFormPpal(TComponent* Owner);
         void ConfigImage(TImage * Image, int NBits, int X, int Y);
+        void BorrarImg(TImage *);
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TFormPpal *FormPpal;
