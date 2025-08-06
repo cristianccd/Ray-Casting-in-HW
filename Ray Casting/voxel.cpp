@@ -18,10 +18,10 @@ voxel::voxel()
         for(int i=0;i<TamX;i++)
                 for(int j=0;j<TamY;j++)
                         Cubo[i][j]=new unsigned char [CantImgs];
-        for(int j=0;j<TamY;j++)
+        /*for(int j=0;j<TamY;j++)
                 for(int i=0;i<TamX;i++)
                         for(int k=0;k<CantImgs;k++)
-                                Cubo[i][j][k]=0;
+                                Cubo[i][j][k]=0;*/
 }
 //---------------------------------------------------------------------------
 
@@ -37,10 +37,10 @@ voxel::voxel(unsigned int TX, unsigned int TY, unsigned int CImgs)
         for(int i=0;i<TamX;i++)
                 for(int j=0;j<TamY;j++)
                         Cubo[i][j]=new unsigned char [CantImgs];
-        for(int j=0;j<TamY;j++)
+        /*for(int j=0;j<TamY;j++)
                 for(int i=0;i<TamX;i++)
                         for(int k=0;k<CantImgs;k++)
-                                Cubo[i][j][k]=0;
+                                Cubo[i][j][k]=0;*/
 }
 //---------------------------------------------------------------------------
 
@@ -109,3 +109,21 @@ int voxel::getTam(int index)
         return Tamanos[index];
 }
 //---------------------------------------------------------------------------
+
+voxel::voxel(voxel *VoxC)
+{
+        BitMap=new Graphics::TBitmap();
+        CantImgs=VoxC->getTam(2);
+        TamX=VoxC->getTam(0);
+        TamY=VoxC->getTam(1);
+        Cubo=new unsigned char **[TamX];
+        for(int i=0;i<TamX;i++)
+                Cubo[i]=new unsigned char *[TamY];
+        for(int i=0;i<TamX;i++)
+                for(int j=0;j<TamY;j++)
+                {
+                        Cubo[i][j]=new unsigned char [CantImgs];
+                        for(int k=0;k<CantImgs;k++)
+                                Cubo[i][j][k]=VoxC->getCubo(i,j,k);
+                }
+}

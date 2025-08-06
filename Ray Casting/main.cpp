@@ -33,8 +33,8 @@ void __fastcall TFormPpal::Abrir1Click(TObject *Sender)
         {
                 Panel2->Show();
                 FormPpal->Refresh();
+                ChgStatus(false);
                 //Habilito la listbox
-                ListBox1->Enabled=true;
                 //Carga de nombre de archivos en la listbox
                 NamesTs=OpenDialog1->Files;
                 NamesAs=NamesTs->GetText();
@@ -74,6 +74,7 @@ void __fastcall TFormPpal::Abrir1Click(TObject *Sender)
                 //Cargo el voxel
                 Vox=new voxel (Bmp->Width,Bmp->Height,NoFiles);
                 Vox->Cargar(Files,NoFiles);
+                ChgStatus(true);
                 Panel2->Hide();
                 FormPpal->Refresh();
                 ConfigImage(Image1,8,Bmp->Width,Bmp->Height);
@@ -127,10 +128,10 @@ void TFormPpal::ConfigImage(TImage * Image, int NBits, int X, int Y)
 void __fastcall TFormPpal::Image1MouseMove(TObject *Sender,
       TShiftState Shift, int X, int Y)
 {
-        Edit7->Text=X;
-        Edit8->Text=Y;
-        Edit9->Text=Plano.GetElemPlano(X,Y).GetCoords(2);
-        Edit10->Text=Plano.GetElemPlano(X,Y).GetValue();
+        Edit1->Text=X;
+        Edit2->Text=Y;
+        Edit3->Text=(int)Plano.GetElemPlano(X,Y).GetCoords(2);
+        Edit4->Text=Plano.GetElemPlano(X,Y).GetValue();
 }
 //---------------------------------------------------------------------------
 
@@ -147,29 +148,132 @@ void TFormPpal::BorrarImg(TImage *Image1)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TFormPpal::Button11Click(TObject *Sender)
-{
-        Panel2->Show();
-        FormPpal->Refresh();
-        ListBox1->Enabled=false;
-        int Azi,Elev,Tilt;
-        Azi=AnsiReplaceText(Edit17->Text,".",",").ToDouble();
-        Elev=AnsiReplaceText(Edit18->Text,".",",").ToDouble();
-        Tilt=AnsiReplaceText(Edit19->Text,".",",").ToDouble();
-        Plano.VerPlano(Vox,Azi,Elev,Tilt);
-        Plano.Borrar();
-        Plano.CargarPlano(Vox);
-        BorrarImg(Image1);
-        Plano.Mostrar(Image1);
-        Panel2->Hide();
-        FormPpal->Refresh();
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TFormPpal::ListBox1Click(TObject *Sender)
 {
         int index=ListBox1->ItemIndex;
         Vox->Mostrar(Image1,index);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::BitBtn2Click(TObject *Sender)
+{
+        ChgStatus(false);
+        Panel2->Show();
+        FormPpal->Refresh();
+        int Azi,Elev,Tilt;
+        Azi=AnsiReplaceText(Edit5->Text,".",",").ToDouble();
+        Elev=AnsiReplaceText(Edit6->Text,".",",").ToDouble();
+        Tilt=AnsiReplaceText(Edit7->Text,".",",").ToDouble();
+        Plano.VerPlano(Vox,Azi,Elev,Tilt);
+        Plano.Borrar();
+        Plano.CargarPlano(Vox,ProgressBar1,RadioButton1->Checked,RadioButton2->Checked,CheckBox1->Checked);
+        BorrarImg(Image1);
+        if(CheckBox2->Checked==true)
+        {
+                //Ecualizar
+        }
+        if(CheckBox3->Checked==true)
+        {
+                //Isodata
+        }
+        Plano.Mostrar(Image1);
+        Panel2->Hide();
+        FormPpal->Refresh();
+        ChgStatus(true);
+}
+//---------------------------------------------------------------------------
+
+void TFormPpal::ChgStatus(bool status)
+{
+        if(status==true)
+        {
+                ListBox1->Enabled=true;
+                CheckBox1->Enabled=true;
+                CheckBox2->Enabled=true;
+                CheckBox3->Enabled=true;
+                RadioButton1->Enabled=true;
+                RadioButton2->Enabled=true;
+                Edit5->Enabled=true;
+                Edit6->Enabled=true;
+                Edit7->Enabled=true;
+                Edit8->Enabled=true;
+                Edit9->Enabled=true;
+                BitBtn1->Enabled=true;
+                BitBtn2->Enabled=true;
+                UpDown1->Enabled=true;
+                UpDown2->Enabled=true;
+        }
+        else
+        {
+                ListBox1->Enabled=false;
+                CheckBox1->Enabled=false;
+                CheckBox2->Enabled=false;
+                CheckBox3->Enabled=false;
+                RadioButton1->Enabled=false;
+                RadioButton2->Enabled=false;
+                Edit5->Enabled=false;
+                Edit6->Enabled=false;
+                Edit7->Enabled=false;
+                Edit8->Enabled=false;
+                Edit9->Enabled=false;
+                BitBtn1->Enabled=false;
+                BitBtn2->Enabled=false;
+                UpDown1->Enabled=false;
+                UpDown2->Enabled=false;
+        }
+        FormPpal->Refresh();
+}
+void __fastcall TFormPpal::Guardar1Click(TObject *Sender)
+{
+        //GUARDAR        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::Salir1Click(TObject *Sender)
+{
+        //SALIR        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::Ecualizacin1Click(TObject *Sender)
+{
+        //ECUALIZAR PLANO        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::Isodata1Click(TObject *Sender)
+{
+        //ISODATA PLANO        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::Umbralizacin1Click(TObject *Sender)
+{
+        //UMBRALIZACION PLANO        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::PasaBajos1Click(TObject *Sender)
+{
+        //PASA BAJOS        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::PasaAltos1Click(TObject *Sender)
+{
+        //PASA ALTOS        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::Rotar1Click(TObject *Sender)
+{
+        //ROTAR PLANO        
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TFormPpal::Zoom1Click(TObject *Sender)
+{
+        //ZOOM + Bilinear!        
 }
 //---------------------------------------------------------------------------
 

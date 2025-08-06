@@ -1,9 +1,11 @@
 object FormPpal: TFormPpal
-  Left = 361
-  Top = 15
-  Width = 722
-  Height = 704
-  Caption = 'Ray Casting'
+  Left = 233
+  Top = 67
+  Width = 729
+  Height = 619
+  AutoSize = True
+  BorderIcons = [biSystemMenu, biMinimize, biMaximize, biHelp]
+  Caption = '::: MIP y Volume Rendering ::: Cristian D'#39'Alessandro :::'
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -14,30 +16,9 @@ object FormPpal: TFormPpal
   OldCreateOrder = False
   PixelsPerInch = 96
   TextHeight = 13
-  object Label13: TLabel
-    Left = 24
-    Top = 578
-    Width = 23
-    Height = 13
-    Caption = 'AZI='
-  end
-  object Label14: TLabel
-    Left = 96
-    Top = 578
-    Width = 33
-    Height = 13
-    Caption = 'ELEV='
-  end
-  object Label15: TLabel
-    Left = 176
-    Top = 578
-    Width = 29
-    Height = 13
-    Caption = 'TILT='
-  end
   object GroupBox1: TGroupBox
-    Left = 24
-    Top = 8
+    Left = 0
+    Top = 0
     Width = 529
     Height = 529
     TabOrder = 0
@@ -50,45 +31,62 @@ object FormPpal: TFormPpal
       OnMouseMove = Image1MouseMove
     end
   end
+  object Aplicar: TGroupBox
+    Left = 536
+    Top = 368
+    Width = 177
+    Height = 65
+    TabOrder = 5
+    object BitBtn2: TBitBtn
+      Left = 40
+      Top = 32
+      Width = 89
+      Height = 25
+      Caption = 'A&PLICAR'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 0
+      OnClick = BitBtn2Click
+      Kind = bkOK
+    end
+    object ProgressBar1: TProgressBar
+      Left = 8
+      Top = 8
+      Width = 161
+      Height = 17
+      Min = 0
+      Max = 1000
+      Smooth = True
+      TabOrder = 1
+    end
+  end
   object Panel1: TPanel
-    Left = 560
-    Top = 8
-    Width = 137
-    Height = 529
+    Left = 536
+    Top = 0
+    Width = 177
+    Height = 129
     TabOrder = 1
     object ListBox1: TListBox
       Left = 8
       Top = 8
-      Width = 121
-      Height = 513
+      Width = 161
+      Height = 113
       ItemHeight = 13
       TabOrder = 0
       OnClick = ListBox1Click
     end
   end
-  object BitBtn1: TBitBtn
-    Left = 592
-    Top = 592
-    Width = 81
-    Height = 33
-    Caption = 'SALIR'
-    Font.Charset = DEFAULT_CHARSET
-    Font.Color = clWindowText
-    Font.Height = -11
-    Font.Name = 'MS Sans Serif'
-    Font.Style = [fsBold]
-    ParentFont = False
-    TabOrder = 2
-    OnClick = BitBtn1Click
-    Kind = bkClose
-  end
   object Panel2: TPanel
-    Left = 176
-    Top = 264
+    Left = 160
+    Top = 232
     Width = 225
     Height = 73
     Color = clInactiveCaption
-    TabOrder = 3
+    TabOrder = 2
     Visible = False
     object StaticText1: TStaticText
       Left = 56
@@ -120,33 +118,33 @@ object FormPpal: TFormPpal
     end
   end
   object GroupBox2: TGroupBox
-    Left = 24
-    Top = 536
+    Left = 0
+    Top = 528
     Width = 529
     Height = 33
-    TabOrder = 4
-    object Edit7: TEdit
+    TabOrder = 3
+    object Edit1: TEdit
       Left = 48
       Top = 8
       Width = 41
       Height = 21
       TabOrder = 0
     end
-    object Edit8: TEdit
+    object Edit2: TEdit
       Left = 136
       Top = 8
       Width = 41
       Height = 21
       TabOrder = 1
     end
-    object Edit9: TEdit
-      Left = 240
+    object Edit3: TEdit
+      Left = 232
       Top = 8
       Width = 41
       Height = 21
       TabOrder = 2
     end
-    object Edit10: TEdit
+    object Edit4: TEdit
       Left = 456
       Top = 8
       Width = 41
@@ -182,7 +180,7 @@ object FormPpal: TFormPpal
       TabOrder = 5
     end
     object StaticText5: TStaticText
-      Left = 216
+      Left = 208
       Top = 9
       Width = 21
       Height = 20
@@ -210,48 +208,281 @@ object FormPpal: TFormPpal
       TabOrder = 7
     end
   end
-  object Edit17: TEdit
-    Left = 48
-    Top = 576
-    Width = 49
-    Height = 21
-    TabOrder = 5
-    Text = '0'
+  object GroupBox3: TGroupBox
+    Left = 536
+    Top = 136
+    Width = 177
+    Height = 233
+    Caption = 'Panel de Control'
+    TabOrder = 4
+    object Bevel3: TBevel
+      Left = 8
+      Top = 141
+      Width = 161
+      Height = 84
+    end
+    object Label1: TLabel
+      Left = 34
+      Top = 154
+      Width = 43
+      Height = 13
+      Caption = 'Azimuth='
+    end
+    object Label2: TLabel
+      Left = 24
+      Top = 178
+      Width = 53
+      Height = 13
+      Caption = 'Elevaci'#243'n='
+    end
+    object Bevel1: TBevel
+      Left = 8
+      Top = 13
+      Width = 161
+      Height = 57
+    end
+    object Bevel2: TBevel
+      Left = 8
+      Top = 77
+      Width = 161
+      Height = 57
+    end
+    object Label3: TLabel
+      Left = 56
+      Top = 202
+      Width = 20
+      Height = 13
+      Caption = 'Tilt='
+    end
+    object Edit5: TEdit
+      Left = 80
+      Top = 152
+      Width = 49
+      Height = 21
+      TabOrder = 0
+      Text = '0'
+    end
+    object Edit6: TEdit
+      Left = 80
+      Top = 176
+      Width = 49
+      Height = 21
+      TabOrder = 1
+      Text = '0'
+    end
+    object CheckBox1: TCheckBox
+      Left = 16
+      Top = 16
+      Width = 97
+      Height = 17
+      Caption = 'Filtrado Trilinear'
+      Checked = True
+      State = cbChecked
+      TabOrder = 2
+    end
+    object RadioButton1: TRadioButton
+      Left = 16
+      Top = 88
+      Width = 113
+      Height = 17
+      Caption = 'Volume Rendering'
+      Checked = True
+      TabOrder = 3
+      TabStop = True
+    end
+    object RadioButton2: TRadioButton
+      Left = 16
+      Top = 104
+      Width = 113
+      Height = 17
+      Caption = 'MIP'
+      TabOrder = 4
+    end
+    object CheckBox2: TCheckBox
+      Left = 16
+      Top = 32
+      Width = 97
+      Height = 17
+      Caption = 'Ecualizaci'#243'n'
+      TabOrder = 5
+    end
+    object CheckBox3: TCheckBox
+      Left = 16
+      Top = 48
+      Width = 97
+      Height = 17
+      Caption = 'Isodata'
+      TabOrder = 6
+    end
+    object Edit7: TEdit
+      Left = 80
+      Top = 200
+      Width = 49
+      Height = 21
+      TabOrder = 7
+      Text = '0'
+    end
   end
-  object Edit18: TEdit
-    Left = 128
-    Top = 576
-    Width = 49
-    Height = 21
+  object Salir: TGroupBox
+    Left = 536
+    Top = 520
+    Width = 177
+    Height = 41
     TabOrder = 6
-    Text = '0'
+    object BitBtn1: TBitBtn
+      Left = 40
+      Top = 10
+      Width = 97
+      Height = 25
+      Caption = '&SALIR'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+      TabOrder = 0
+      OnClick = BitBtn1Click
+      Kind = bkClose
+    end
   end
-  object Edit19: TEdit
-    Left = 208
-    Top = 576
-    Width = 49
-    Height = 21
+  object ByC: TGroupBox
+    Left = 536
+    Top = 432
+    Width = 177
+    Height = 89
     TabOrder = 7
-    Text = '0'
-  end
-  object Button11: TButton
-    Left = 128
-    Top = 608
-    Width = 49
-    Height = 17
-    Caption = 'Ver'
-    TabOrder = 8
-    OnClick = Button11Click
+    object Label4: TLabel
+      Left = 68
+      Top = 9
+      Width = 45
+      Height = 13
+      Caption = 'BRILLO'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object Label5: TLabel
+      Left = 56
+      Top = 45
+      Width = 76
+      Height = 13
+      Caption = 'CONTRASTE'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
+    end
+    object UpDown1: TUpDown
+      Left = 8
+      Top = 24
+      Width = 161
+      Height = 17
+      Min = 0
+      Orientation = udHorizontal
+      Position = 0
+      TabOrder = 0
+      Wrap = False
+    end
+    object UpDown2: TUpDown
+      Left = 8
+      Top = 60
+      Width = 161
+      Height = 17
+      Min = 0
+      Orientation = udHorizontal
+      Position = 0
+      TabOrder = 1
+      Wrap = False
+    end
+    object Edit8: TEdit
+      Left = 136
+      Top = 8
+      Width = 33
+      Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -8
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 2
+      Text = '0'
+    end
+    object Edit9: TEdit
+      Left = 136
+      Top = 44
+      Width = 33
+      Height = 21
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -8
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
+      TabOrder = 3
+      Text = '0'
+    end
   end
   object OpenDialog1: TOpenDialog
   end
   object MainMenu1: TMainMenu
     Left = 32
     object Archivo1: TMenuItem
-      Caption = 'Archivo'
+      Caption = '&Archivo'
       object Abrir1: TMenuItem
-        Caption = '&Abrir...'
+        Caption = 'Abrir...'
         OnClick = Abrir1Click
+      end
+      object Guardar1: TMenuItem
+        Caption = 'Guardar...'
+        OnClick = Guardar1Click
+      end
+      object Salir1: TMenuItem
+        Caption = 'Salir'
+        OnClick = Salir1Click
+      end
+    end
+    object E1: TMenuItem
+      Caption = '&Edici'#243'n'
+      object Ecualizacin1: TMenuItem
+        Caption = 'Ecualizaci'#243'n'
+        OnClick = Ecualizacin1Click
+      end
+      object Isodata1: TMenuItem
+        Caption = 'Isodata'
+        OnClick = Isodata1Click
+      end
+      object Umbralizacin1: TMenuItem
+        Caption = 'Umbralizaci'#243'n'
+        OnClick = Umbralizacin1Click
+      end
+    end
+    object Filtros1: TMenuItem
+      Caption = '&Filtros'
+      object PasaBajos1: TMenuItem
+        Caption = 'Pasa Bajos'
+        OnClick = PasaBajos1Click
+      end
+      object PasaAltos1: TMenuItem
+        Caption = 'Pasa Altos'
+        OnClick = PasaAltos1Click
+      end
+    end
+    object Ver1: TMenuItem
+      Caption = '&Ver'
+      object Rotar1: TMenuItem
+        Caption = 'Rotar'
+        OnClick = Rotar1Click
+      end
+      object Zoom1: TMenuItem
+        Caption = 'Zoom'
+        OnClick = Zoom1Click
       end
     end
   end

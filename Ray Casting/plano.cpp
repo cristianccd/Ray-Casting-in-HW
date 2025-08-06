@@ -61,8 +61,10 @@ elemplano plano::GetElemPlano(int i, int j)
 }
 //---------------------------------------------------------------------------
 
-void plano::CargarPlano(voxel *Vox)
+void plano::CargarPlano(voxel *Vox, TProgressBar *Barra, bool Volume, bool MIP, bool Trilinear)
 {
+        Barra->Position=0;
+        Barra->Max=TamY*TamX;
         int Rx,Ry,Rz;
         float Rad=sqrt(pow(Vox->getTam(0),2)+pow(Vox->getTam(1),2)+pow(Vox->getTam(2),2));
         float Nx,Ny,Nz,Px,Py,Pz,max=0;
@@ -70,46 +72,40 @@ void plano::CargarPlano(voxel *Vox)
         Ny=Normal.GetCoords(1);
         Nz=Normal.GetCoords(2);
         for(int fila=0;fila<TamY;fila++)
+        {
                 for(int col=0;col<TamX;col++)
                 {
                         Px=Plano[fila][col].GetCoords(0);
                         Py=Plano[fila][col].GetCoords(1);
                         Pz=Plano[fila][col].GetCoords(2);
+                        Rx=Nx*Rad+Px;
+                        Ry=Ny*Rad+Py;
+                        Rz=Nz*Rad+Pz;
                         max=0;
+                        //Si en el centro hay algo tiro el rayo, sino no
+                        if(Rx>Vox->getTam(0)||Ry>Vox->getTam(1)||Rz>Vox->getTam(2))
+                                break;
+
+
+
+
                         for(int lambda=0;lambda<Rad;lambda++)
                         {
                                 Rx=Nx*lambda+Px;
                                 Ry=Ny*lambda+Py;
                                 Rz=Nz*lambda+Pz;
-                                if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>0&&Ry>0&&Rz>0)
+                                //if(Rx+1<Vox->getTam(0)&&Ry+1<Vox->getTam(1)&&Rz+1<Vox->getTam(2)&&Rx>0&&Ry>0&&Rz>0)
+                                if(Rx<Vox->getTam(0)&&Ry<Vox->getTam(1)&&Rz<Vox->getTam(2)&&Rx>=0&&Ry>=0&&Rz>=0)
                                 {
                                         //Interpolacion trilinear
-                                        float x1=0,x2=0,x3=0,x4=0,x5=0,x6=0,x7=0,x8=0;
-                                        float a=0,b=0,g=0,X=0,Y=0,Z=0,value=0;
-                                        X=Rx;
-                                        Y=Ry;
-                                        Z=Rz;
-                                        a=X-(int)X;
-                                        b=Y-(int)Y;
-                                        g=Z-(int)Z;
-                                        x1=Vox->getCubo(X,Y,Z);
-                                        x2=Vox->getCubo(X+1,Y,Z);
-                                        x3=Vox->getCubo(X,Y+1,Z);
-                                        x4=Vox->getCubo(X+1,Y+1,Z);
-                                        x5=Vox->getCubo(X,Y,Z+1);
-                                        x6=Vox->getCubo(X+1,Y,Z+1);
-                                        x7=Vox->getCubo(X,Y+1,Z+1);
-                                        x8=Vox->getCubo(X+1,Y+1,Z+1);
-                                        value=((1-g)*(1-b)*(1-a)*x1+(1-g)*(1-b)*(1+a)*x2+(1-g)*(1+b)*(1-a)*x3+
-                                              (1-g)*(1+b)*(1+a)*x4+(1+g)*(1-b)*(1-a)*x5+(1+g)*(1-b)*(1+a)*x6+
-                                              (1+g)*(1+b)*(1-a)*x7+(1+g)*(1+b)*(1+a)*x8)/8;
-                                        Vox->setCubo(X,Y,Z,value);
-                                        Rx=X;
-                                        Ry=Y;
-                                        Rz=Z;
-                                        //Fin trilinear
-                                        //Elimino ruido de la TCy comparo por el max
-                                        if(Vox->getCubo(Rx,Ry,Rz)>30&&Vox->getCubo(Rx,Ry,Rz)>max||max==255)
+                                        if(Volume==true&&Vox->getCubo(Rx,Ry,Rz)>30)
+                                        {
+                                                Plano[fila][col].SetCoords(Rx,Ry,Rz);
+                                                Plano[fila][col].SetValue(Vox->getCubo(Rx,Ry,Rz));
+                                                break;
+                                        }
+                                        //Elimino ruido de la TC y comparo por el max
+                                        if(MIP==true&&Vox->getCubo(Rx,Ry,Rz)>30&&Vox->getCubo(Rx,Ry,Rz)>max)
                                         {
                                                 max=Vox->getCubo(Rx,Ry,Rz);
                                                 Plano[fila][col].SetCoords(Rx,Ry,Rz);
@@ -119,7 +115,9 @@ void plano::CargarPlano(voxel *Vox)
                                         }
                                 }
                         }
+                        Barra->Position++;
                 }
+        }
 }
 //---------------------------------------------------------------------------
 
@@ -325,3 +323,35 @@ void plano::VerPlano(voxel *Vox,float Azi, float Elev, float Tilt)
 
 
 
+
+
+
+/*if(Trilinear==true)
+                                        {
+                                                float x1=0,x2=0,x3=0,x4=0,x5=0,x6=0,x7=0,x8=0;
+                                                float a=0,b=0,g=0,X=0,Y=0,Z=0,value=0;
+                                                voxel VoxT;
+
+                                                X=Rx;
+                                                Y=Ry;
+                                                Z=Rz;
+                                                a=X-(int)X;
+                                                b=Y-(int)Y;
+                                                g=Z-(int)Z;
+                                                x1=Vox->getCubo(X,Y,Z);
+                                                x2=Vox->getCubo(X+1,Y,Z);
+                                                x3=Vox->getCubo(X,Y+1,Z);
+                                                x4=Vox->getCubo(X+1,Y+1,Z);
+                                                x5=Vox->getCubo(X,Y,Z+1);
+                                                x6=Vox->getCubo(X+1,Y,Z+1);
+                                                x7=Vox->getCubo(X,Y+1,Z+1);
+                                                x8=Vox->getCubo(X+1,Y+1,Z+1);
+                                                value=((1-g)*(1-b)*(1-a)*x1+(1-g)*(1-b)*(1+a)*x2+(1-g)*(1+b)*(1-a)*x3+
+                                                      (1-g)*(1+b)*(1+a)*x4+(1+g)*(1-b)*(1-a)*x5+(1+g)*(1-b)*(1+a)*x6+
+                                                      (1+g)*(1+b)*(1-a)*x7+(1+g)*(1+b)*(1+a)*x8)/8;
+                                                Vox->setCubo(X,Y,Z,value);//se debe aplicar sobre un nuevo cubo
+                                                Rx=X;
+                                                Ry=Y;
+                                                Rz=Z;
+                                                //Fin trilinear
+                                        }*/

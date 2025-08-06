@@ -30,6 +30,7 @@ public:         // User declarations
         int getCubo(int x, int y, int z);
         int getTam(int index);
         void setCubo(int X, int Y, int Z, float value);
+        voxel(voxel * VoxC);
 };
 //---------------------------------------------------------------------------
 #endif
